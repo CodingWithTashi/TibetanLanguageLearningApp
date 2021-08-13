@@ -5,7 +5,7 @@ import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class PracticeDetailPage extends StatefulWidget {
   static const routeName = "/practice-detail-page";
-  final String alphabet;
+  final Alphabet alphabet;
   const PracticeDetailPage({Key? key, required this.alphabet})
       : super(key: key);
 
@@ -18,7 +18,7 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
   var selectedPageIndex = 0;
   var pageView;
 
-  List<String> alphabetList = AppConstant.alphabetList;
+  List<Alphabet> alphabetList = AppConstant.alphabetList;
   @override
   void initState() {
     selectedPageIndex = alphabetList.indexOf(widget.alphabet);
@@ -89,11 +89,12 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 80, vertical: 40),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 100, vertical: 40),
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
                     child: Text(
-                      alphabetList[index],
-                      style: TextStyle(fontSize: 150, color: Colors.white),
+                      alphabetList[index].alphabetName,
+                      style: TextStyle(fontSize: 100, color: Colors.white),
                     ),
                   ),
                 ],

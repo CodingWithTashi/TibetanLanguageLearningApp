@@ -7,6 +7,7 @@ import 'package:tibetan_language_learning_app/presentation/learn/alphabet_list_p
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -43,12 +44,12 @@ class RouteGenerator {
         );
       case AlphabetDetailPage.routeName:
         {
-          if (settings.arguments != null && settings.arguments is String) {
+          if (settings.arguments != null && settings.arguments is Alphabet) {
             return MaterialPageRoute(
               builder: (_) => BlocProvider<AudioCubit>(
                 create: (context) => AudioCubit(),
                 child: AlphabetDetailPage(
-                  alphabet: settings.arguments as String,
+                  alphabet: settings.arguments as Alphabet,
                 ),
               ),
             );
@@ -61,10 +62,10 @@ class RouteGenerator {
         );
       case PracticeDetailPage.routeName:
         {
-          if (settings.arguments != null && settings.arguments is String) {
+          if (settings.arguments != null && settings.arguments is Alphabet) {
             return MaterialPageRoute(
               builder: (_) => PracticeDetailPage(
-                alphabet: settings.arguments as String,
+                alphabet: settings.arguments as Alphabet,
               ),
             );
           }

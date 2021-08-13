@@ -15,10 +15,16 @@ class _HomePageState extends State<HomePage> {
   bool isExtended = false;
 
   @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+  void initState() {
+    Future.delayed(Duration(milliseconds: 500), () {
       _buttonOpacity = 1;
+      setState(() {});
     });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
           alignment: Alignment.bottomCenter,
@@ -57,8 +63,8 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
-              'Learn',
-              style: TextStyle(fontSize: 24, color: Colors.white),
+              'སྐད་ཡིག་སྦྱོང།',
+              style: TextStyle(fontSize: 22, color: Colors.white),
             ),
           ),
         ),
@@ -72,11 +78,11 @@ class _HomePageState extends State<HomePage> {
           duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
           opacity: _buttonOpacity,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
-              'Practice',
-              style: TextStyle(fontSize: 24, color: Colors.white),
+              'སྦྱོང་བརྡར་བྱེད།',
+              style: TextStyle(fontSize: 22, color: Colors.white),
             ),
           ),
         ),
@@ -106,7 +112,10 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.only(right: 4.0),
                       child: Icon(Icons.play_arrow),
                     ),
-                    Text("Play Game")
+                    Text(
+                      "རྩེད་མོ་རྩེ།",
+                      style: TextStyle(fontSize: 16),
+                    )
                   ],
                 ),
         ),

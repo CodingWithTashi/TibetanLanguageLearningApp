@@ -5,7 +5,7 @@ import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class AlphabetDetailPage extends StatefulWidget {
-  final String alphabet;
+  final Alphabet alphabet;
   static const routeName = "/alphabet-detail-page";
   const AlphabetDetailPage({Key? key, required this.alphabet})
       : super(key: key);
@@ -18,7 +18,7 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
   var controller;
   var selectedPageIndex = 0;
   var pageView;
-  List<String> alphabetList = AppConstant.alphabetList;
+  List<Alphabet> alphabetList = AppConstant.alphabetList;
   late AudioPlayer _audioPlayer;
   var playPauseIcon = Icons.play_arrow;
 
@@ -96,11 +96,12 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 80, vertical: 40),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 100, vertical: 40),
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
                     child: Text(
-                      alphabetList[index],
-                      style: TextStyle(fontSize: 150, color: Colors.white),
+                      alphabetList[index].alphabetName,
+                      style: TextStyle(fontSize: 120, color: Colors.white),
                     ),
                   ),
                 ],
@@ -137,7 +138,7 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
             onClick: () async {
               if (!_audioPlayer.playing) {
                 await _audioPlayer.setAsset(ApplicationUtil.getAudioAssetPath(
-                    audioName: alphabetList[selectedPageIndex]));
+                    audioName: alphabetList[selectedPageIndex].fileName));
                 playPauseIcon = Icons.pause;
                 _audioPlayer.play();
               } else {

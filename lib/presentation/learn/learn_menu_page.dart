@@ -69,7 +69,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'Learn Alphabet',
+            'ཀ་མད་གསུམ་བཅུ།',
             style: TextStyle(fontSize: 24, color: Colors.white),
           ),
         ),
@@ -78,10 +78,10 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         height: 20,
       ),
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 60, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
         decoration: ApplicationUtil.getBoxDecorationOne(context),
         child: Text(
-          'Learn Word',
+          'མིང་ཚིག།',
           style: TextStyle(fontSize: 24, color: Colors.white),
         ),
       ),
@@ -92,7 +92,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         decoration: ApplicationUtil.getBoxDecorationOne(context),
         child: Text(
-          'Learn Sentence',
+          'ཚིག་གྲུབ།',
           style: TextStyle(fontSize: 24, color: Colors.white),
         ),
       ),
@@ -100,11 +100,14 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         height: 20,
       ),
       Container(
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          'Go back',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+        child: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
         ),
       ),
     ];

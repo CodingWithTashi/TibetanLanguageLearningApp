@@ -14,7 +14,7 @@ class PracticeMenuPage extends StatefulWidget {
 }
 
 class _PracticeMenuPageState extends State<PracticeMenuPage> {
-  List<String> alphabetList = [];
+  List<Alphabet> alphabetList = [];
   @override
   void initState() {
     alphabetList = AppConstant.alphabetList;
@@ -51,7 +51,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
                 ),
                 crossAxisSpacing: 30,
                 mainAxisSpacing: 10,
-                crossAxisCount: kIsWeb ? 4 : 2,
+                crossAxisCount: kIsWeb ? 3 : 2,
                 children: List.generate(
                   alphabetList.length,
                   (int index) {
@@ -77,7 +77,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
     );
   }
 
-  _getGridViewItem(String alphabet) {
+  _getGridViewItem(Alphabet alphabet) {
     return InkWell(
       onTap: () {
         Navigator.pushNamed(context, PracticeDetailPage.routeName,
@@ -93,7 +93,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
           height: 50,
           child: Center(
             child: Text(
-              alphabet,
+              alphabet.alphabetName,
               style: TextStyle(fontSize: 100, color: Colors.white),
             ),
           ),

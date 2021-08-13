@@ -13,7 +13,7 @@ class AlphabetListPage extends StatefulWidget {
 }
 
 class _AlphabetListPageState extends State<AlphabetListPage> {
-  late List<String> alphabetList;
+  late List<Alphabet> alphabetList;
   @override
   void initState() {
     alphabetList = AppConstant.alphabetList;
@@ -82,14 +82,14 @@ class _AlphabetListPageState extends State<AlphabetListPage> {
                   arguments: alphabet);
             },
             child: Hero(
-              tag: alphabet,
+              tag: alphabet.alphabetName,
               flightShuttleBuilder: ApplicationUtil.flightShuttleBuilder,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 40),
+                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 decoration: ApplicationUtil.getBoxDecorationOne(context),
                 child: Text(
-                  alphabet,
-                  style: TextStyle(fontSize: 30, color: Colors.white),
+                  alphabet.alphabetName,
+                  style: TextStyle(fontSize: 60, color: Colors.white),
                 ),
               ),
             ),
