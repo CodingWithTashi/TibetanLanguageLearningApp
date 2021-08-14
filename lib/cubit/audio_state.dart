@@ -16,3 +16,23 @@ class AudioLoaded extends AudioState {
   final AudioPlayer audio;
   AudioLoaded(this.audio);
 }
+
+class AudioPlay extends AudioState {
+  const AudioPlay();
+}
+
+class AudioPause extends AudioState {
+  const AudioPause();
+}
+
+class AudioStopped extends AudioState {
+  const AudioStopped();
+}
+
+class AudioFinish extends AudioState {
+  const AudioFinish();
+}
+
+class AudioRepeat extends AudioState {
+  const AudioRepeat();
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet_list_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 
 class LearnMenuPage extends StatefulWidget {
@@ -77,23 +78,35 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
       SizedBox(
         height: 20,
       ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          'མིང་ཚིག།',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+      InkWell(
+        onTap: () => Navigator.pushNamed(context, VerbListPage.routeName),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'མིང་ཚིག།',
+            style: TextStyle(fontSize: 24, color: Colors.white),
+          ),
         ),
       ),
       SizedBox(
         height: 20,
       ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          'ཚིག་གྲུབ།',
-          style: TextStyle(fontSize: 24, color: Colors.white),
+      InkWell(
+        onTap: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("དར་རྒྱས་གཏོང་བཞིན་ཡོད།"),
+            ),
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ཚིག་གྲུབ།',
+            style: TextStyle(fontSize: 24, color: Colors.white),
+          ),
         ),
       ),
       SizedBox(

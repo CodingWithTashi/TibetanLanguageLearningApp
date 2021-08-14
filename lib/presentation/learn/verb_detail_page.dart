@@ -4,28 +4,36 @@ import 'package:tibetan_language_learning_app/presentation/widget/alphabet_audio
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
-class AlphabetDetailPage extends StatefulWidget {
-  final Alphabet alphabet;
-  static const routeName = "/alphabet-detail-page";
-  const AlphabetDetailPage({Key? key, required this.alphabet})
-      : super(key: key);
+class VerbDetailPage extends StatefulWidget {
+  final Verb verb;
+  VerbDetailPage({required this.verb});
 
+  static const routeName = "/verbs-detail";
   @override
-  _AlphabetDetailPageState createState() => _AlphabetDetailPageState();
+  _VerbDetailPageState createState() => _VerbDetailPageState();
 }
 
-class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
+class _VerbDetailPageState extends State<VerbDetailPage> {
   var controller;
   var selectedPageIndex = 0;
   var pageView;
-  List<Alphabet> alphabetList = AppConstant.alphabetList;
+  List<Verb> verbsList = AppConstant.verbsList;
   late AudioPlayer _audioPlayer;
+
   var playPauseIcon = Icons.play_arrow;
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     _audioPlayer = AudioPlayer();
-    selectedPageIndex = alphabetList.indexOf(widget.alphabet);
+    selectedPageIndex = verbsList.indexOf(widget.verb);
     controller = PageController(
       initialPage: selectedPageIndex,
     );
@@ -39,14 +47,6 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
     });
     initPageView();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _audioPlayer.dispose();
-
-    controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -64,14 +64,14 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  height: 350,
+                  height: 500,
                   child: pageView,
                 ),
                 SizedBox(
                   height: 20,
                 ),
                 AlphabetAudioControl(
-                    filePath: alphabetList[selectedPageIndex].fileName)
+                    filePath: verbsList[selectedPageIndex].fileName)
               ],
             ),
           ),
@@ -84,12 +84,12 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
   void initPageView() {
     pageView = PageView.builder(
       physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      itemCount: alphabetList.length,
+      itemCount: verbsList.length,
       controller: controller,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
         return Hero(
-          tag: alphabetList[index].alphabetName,
+          tag: verbsList[index].word,
           //center and scrollview is for hero animation
           child: Center(
             child: SingleChildScrollView(
@@ -101,19 +101,19 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                     children: [
                       Container(
                         width: double.infinity,
-                        margin: EdgeInsets.symmetric(horizontal: 50),
+                        margin: EdgeInsets.symmetric(horizontal: 20),
                         padding: EdgeInsets.symmetric(vertical: 40),
                         decoration:
                             ApplicationUtil.getBoxDecorationOne(context),
-                        child: Text(
-                          alphabetList[index].alphabetName,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 120, color: Colors.white),
+                        child: Image.asset(
+                          AppConstant.getImagePath(verbsList[index].fileName),
+                          height: 200,
+                          width: 200,
                         ),
                       ),
                       Container(
                         width: double.infinity,
-                        margin: EdgeInsets.only(left: 55, right: 44),
+                        margin: EdgeInsets.only(left: 30, right: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -136,6 +136,19 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                       )
                     ],
                   ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    width: double.infinity,
+                    decoration: ApplicationUtil.getBoxDecorationOne(context),
+                    child: Text(
+                      verbsList[index].word,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 50, color: Colors.white),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -145,54 +158,4 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
       onPageChanged: (index) => setState(() => selectedPageIndex = index),
     );
   }
-
-  /* _getPlayerControl() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Flexible(
-          child: AlphabetAudioControl(
-            icon: Icons.repeat,
-            onClick: () {
-              print('clicked repeat');
-              _audioPlayer.setLoopMode(LoopMode.one);
-            },
-          ),
-        ),
-        Flexible(
-          child: SizedBox(
-            width: 20,
-          ),
-        ),
-        Flexible(
-          child: AlphabetAudioControl(
-            icon: playPauseIcon,
-            onClick: () async {
-              if (!_audioPlayer.playing) {
-                await _audioPlayer.setAsset(ApplicationUtil.getAudioAssetPath(
-                    audioName: alphabetList[selectedPageIndex].fileName));
-                playPauseIcon = Icons.pause;
-                _audioPlayer.play();
-              } else {
-                playPauseIcon = Icons.play_arrow;
-                _audioPlayer.pause();
-              }
-              setState(() {});
-            },
-          ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        AlphabetAudioControl(
-          icon: Icons.stop,
-          onClick: () {
-            if (_audioPlayer.playing) {
-              _audioPlayer.stop();
-            }
-          },
-        ),
-      ],
-    );
-  }*/
 }

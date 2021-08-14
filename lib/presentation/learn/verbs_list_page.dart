@@ -1,23 +1,22 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verb_detail_page.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
-class PracticeMenuPage extends StatefulWidget {
-  static const routeName = "/practice-menu-page";
-  const PracticeMenuPage({Key? key}) : super(key: key);
+class VerbListPage extends StatefulWidget {
+  static const routeName = "/verbs-list";
 
   @override
-  _PracticeMenuPageState createState() => _PracticeMenuPageState();
+  _VerbListPageState createState() => _VerbListPageState();
 }
 
-class _PracticeMenuPageState extends State<PracticeMenuPage> {
-  List<Alphabet> alphabetList = [];
+class _VerbListPageState extends State<VerbListPage> {
+  List<Verb> verbsList = [];
   @override
   void initState() {
-    alphabetList = AppConstant.alphabetList;
+    verbsList = AppConstant.verbsList;
     super.initState();
   }
 
@@ -53,7 +52,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
                 mainAxisSpacing: 10,
                 crossAxisCount: kIsWeb ? 3 : 2,
                 children: List.generate(
-                  alphabetList.length,
+                  verbsList.length,
                   (int index) {
                     return AnimationConfiguration.staggeredGrid(
                       position: index,
@@ -62,7 +61,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
                       columnCount: 2,
                       child: ScaleAnimation(
                         child: FadeInAnimation(
-                          child: _getGridViewItem(alphabetList[index]),
+                          child: _getGridViewItem(verbsList[index]),
                         ),
                       ),
                     );
@@ -77,24 +76,34 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
     );
   }
 
-  _getGridViewItem(Alphabet alphabet) {
+  _getGridViewItem(Verb verb) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, PracticeDetailPage.routeName,
-            arguments: alphabet);
+        Navigator.pushNamed(context, VerbDetailPage.routeName, arguments: verb);
       },
       child: Hero(
         flightShuttleBuilder: ApplicationUtil.flightShuttleBuilder,
-        tag: alphabet,
+        tag: verb.word,
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           width: 50,
           height: 50,
           child: Center(
-            child: Text(
-              alphabet.alphabetName,
-              style: TextStyle(fontSize: 70, color: Colors.white),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  AppConstant.getImagePath(verb.fileName),
+                  height: 40,
+                  width: 40,
+                ),
+                Text(
+                  verb.word,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 30, color: Colors.white),
+                ),
+              ],
             ),
           ),
         ),

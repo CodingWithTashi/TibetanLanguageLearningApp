@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verb_detail_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/service/audio_service.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class RouteGenerator {
@@ -47,7 +51,8 @@ class RouteGenerator {
           if (settings.arguments != null && settings.arguments is Alphabet) {
             return MaterialPageRoute(
               builder: (_) => BlocProvider<AudioCubit>(
-                create: (context) => AudioCubit(),
+                create: (context) =>
+                    AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
                 child: AlphabetDetailPage(
                   alphabet: settings.arguments as Alphabet,
                 ),
@@ -66,6 +71,22 @@ class RouteGenerator {
             return MaterialPageRoute(
               builder: (_) => PracticeDetailPage(
                 alphabet: settings.arguments as Alphabet,
+              ),
+            );
+          }
+          return _errorRoute();
+        }
+
+      case VerbListPage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => VerbListPage(),
+        );
+      case VerbDetailPage.routeName:
+        {
+          if (settings.arguments != null && settings.arguments is Verb) {
+            return MaterialPageRoute(
+              builder: (_) => VerbDetailPage(
+                verb: settings.arguments as Verb,
               ),
             );
           }
