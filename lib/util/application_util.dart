@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ApplicationUtil {
   static const ANIMATION_DURATION = 500;
@@ -84,7 +85,23 @@ class ApplicationUtil {
     return MaterialColor(color.value, swatch);
   }
 
-  static getAudioAssetPath({required String audioName}) {
-    return 'assets/audio/$audioName.mp3';
+  static getAudioAssetPath({required pathName, required String audioName}) {
+    return '$pathName$audioName.mp3';
+  }
+
+  static getImagePath(String verb) {
+    return 'assets/images/' + verb + ".png";
+  }
+
+  static Future<void> launchInBrowser(url) async {
+    if (await canLaunch(url)) {
+      await launch(
+        url,
+        forceSafariVC: false,
+        forceWebView: false,
+      );
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

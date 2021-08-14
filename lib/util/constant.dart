@@ -13,6 +13,20 @@ class Verb {
 }
 
 class AppConstant {
+  static const String CONTACT_US = 'Contact Us';
+  static const String EMAIL = 'developer.kharag@gmail.com';
+  static const String SUBJECT = 'Feedback & report';
+  static const String AD_UNIT_ID = 'ca-app-pub-8284901143739274/9910851014';
+  static const String TEST_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111';
+  static const String SHARE_URL =
+      'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
+  static const String MORE_URL =
+      'https://play.google.com/store/apps/dev?id=5910382695653514663';
+  static const String CALENDER_URL =
+      'http://www.digitaltibetan.org/cgi-bin/phugpa.pl';
+  static const String APP_URL =
+      'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
+
   static List<Alphabet> alphabetList = [
     Alphabet(fileName: 'ka', alphabetName: 'ཀ'),
     Alphabet(fileName: 'kha', alphabetName: 'ཁ'),
@@ -34,7 +48,7 @@ class AppConstant {
     Alphabet(fileName: 'tsha', alphabetName: 'ཚ'),
     Alphabet(fileName: 'dza', alphabetName: 'ཛ'),
     Alphabet(fileName: 'wa', alphabetName: 'ཝ'),
-    Alphabet(fileName: 'ja', alphabetName: 'ཞ'),
+    Alphabet(fileName: 'jha', alphabetName: 'ཞ'),
     Alphabet(fileName: 'za', alphabetName: 'ཟ'),
     Alphabet(fileName: 'yya', alphabetName: 'འ'),
     Alphabet(fileName: 'ya', alphabetName: 'ཡ'),
@@ -46,14 +60,10 @@ class AppConstant {
     Alphabet(fileName: 'aa', alphabetName: 'ཨ'),
   ];
 
-  static getAudioByAlphabet(String alphabet) {
-    return alphabet + ".mp3";
-  }
-
   static List<Verb> verbsList = [
     Verb(fileName: 'apple', word: 'ཀུ་ཤུ།'),
     Verb(fileName: 'phone', word: 'ཁ་པར།'),
-    Verb(fileName: 'ballon', word: 'སྒང་ཕུག།'),
+    Verb(fileName: 'balloon', word: 'སྒང་ཕུག།'),
     Verb(fileName: 'duck', word: 'ངང་པ།'),
     Verb(fileName: 'chain', word: 'ལྕགས་ཐག།'),
     Verb(fileName: 'water', word: 'ཆུ།'),
@@ -83,10 +93,6 @@ class AppConstant {
     Verb(fileName: 'mango', word: 'ཨམ།'),
   ];
   static getAudioByVerb(String verb) {
-    return verb + ".mp3";
-  }
-
-  static getImagePath(String verb) {
-    return 'assets/images/' + verb + ".png";
+    return 'assets/audio/words/' + verb + ".mp3";
   }
 }

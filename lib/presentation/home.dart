@@ -1,7 +1,12 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
+import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -31,6 +36,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             _getBackgroundImage(),
             _getButtons(),
+            _getBottomSheetButton(),
           ],
         ),
         floatingActionButton: _getHomeFab());
@@ -133,4 +139,145 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+
+  _getBottomSheetButton() => Positioned(
+        bottom: 10,
+        child: GestureDetector(
+            onPanUpdate: (details) {
+              if (details.delta.dy < 0) {
+                showAboutUs();
+              }
+            },
+            onTap: () {
+              showAboutUs();
+            },
+            child: RotatedBox(
+              quarterTurns: -1,
+              child: Icon(
+                Icons.arrow_forward_ios_outlined,
+                size: 40,
+                color: Theme.of(context).primaryColorLight,
+              ),
+            )),
+      );
+  void showAboutUs() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                    padding: EdgeInsets.all(10),
+                    child: DefaultTextStyle(
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          color: Theme.of(context).primaryColor),
+                      child: AnimatedTextKit(
+                        animatedTexts: [
+                          ColorizeAnimatedText(
+                            'Made With ❤ by KharagEdition',
+                            speed: Duration(milliseconds: 300),
+                            textStyle: TextStyle(
+                              fontSize: 20.0,
+                              fontFamily: 'jomolhari',
+                            ),
+                            colors: [
+                              Theme.of(context).primaryColor,
+                              Colors.blue,
+                              Colors.red,
+                              Colors.black,
+                            ],
+                          ),
+                        ],
+                        isRepeatingAnimation: false,
+                        onTap: () {},
+                      ),
+                    )
+                    /*Text(
+                    'Made With ❤️ by KharagEdition',
+                    style: TextStyle(fontSize: 18),
+                  ),*/
+                    ),
+                ListTile(
+                  leading: new Icon(
+                    Icons.email_outlined,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text(AppConstant.CONTACT_US),
+                  onTap: () {
+                    _launchEmail(AppConstant.EMAIL, AppConstant.SUBJECT);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: new Icon(
+                    Icons.share,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text('Share'),
+                  onTap: () {
+                    Share.share(AppConstant.SHARE_URL,
+                        subject:
+                            'Check out this Tibetan Language Learning  App.');
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: new Icon(
+                    Icons.star_rate,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text('Rate Us'),
+                  onTap: () {
+                    ApplicationUtil.launchInBrowser(AppConstant.APP_URL);
+
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: new Icon(
+                    Icons.apps,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text('More App from Kharag'),
+                  onTap: () {
+                    ApplicationUtil.launchInBrowser(AppConstant.MORE_URL);
+
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: new Icon(
+                    Icons.close,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text('Exit'),
+                  onTap: () {
+                    SystemNavigator.pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  void _launchEmail(email, sub) async {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: '$email',
+      query: 'subject=$sub', //add subject and body here
+    );
+    if (await canLaunch(params.toString())) {
+      await launch(params.toString());
+    } else {
+      throw 'Could not launch $params';
+    }
+  }
 }

@@ -85,8 +85,12 @@ class RouteGenerator {
         {
           if (settings.arguments != null && settings.arguments is Verb) {
             return MaterialPageRoute(
-              builder: (_) => VerbDetailPage(
-                verb: settings.arguments as Verb,
+              builder: (_) => BlocProvider<AudioCubit>(
+                create: (context) =>
+                    AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+                child: VerbDetailPage(
+                  verb: settings.arguments as Verb,
+                ),
               ),
             );
           }

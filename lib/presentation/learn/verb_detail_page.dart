@@ -18,33 +18,20 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
   var selectedPageIndex = 0;
   var pageView;
   List<Verb> verbsList = AppConstant.verbsList;
-  late AudioPlayer _audioPlayer;
-
-  var playPauseIcon = Icons.play_arrow;
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
-
     controller.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
-    _audioPlayer = AudioPlayer();
     selectedPageIndex = verbsList.indexOf(widget.verb);
     controller = PageController(
       initialPage: selectedPageIndex,
     );
-    _audioPlayer.playerStateStream.listen((event) {
-      print('Listening');
-      if (event.playing) {
-        print(event.processingState);
-      } else {
-        print("stop");
-      }
-    });
+
     initPageView();
     super.initState();
   }
@@ -71,7 +58,8 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
                   height: 20,
                 ),
                 AlphabetAudioControl(
-                    filePath: verbsList[selectedPageIndex].fileName)
+                    pathName: 'assets/audio/words/',
+                    fileName: verbsList[selectedPageIndex].fileName)
               ],
             ),
           ),
@@ -106,7 +94,8 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
                         decoration:
                             ApplicationUtil.getBoxDecorationOne(context),
                         child: Image.asset(
-                          AppConstant.getImagePath(verbsList[index].fileName),
+                          ApplicationUtil.getImagePath(
+                              verbsList[index].fileName),
                           height: 200,
                           width: 200,
                         ),

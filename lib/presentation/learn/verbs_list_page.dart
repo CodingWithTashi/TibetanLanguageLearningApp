@@ -94,7 +94,7 @@ class _VerbListPageState extends State<VerbListPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                  AppConstant.getImagePath(verb.fileName),
+                  ApplicationUtil.getImagePath(verb.fileName),
                   height: 40,
                   width: 40,
                 ),

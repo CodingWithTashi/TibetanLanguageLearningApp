@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.kharagedition_tibetan_language_learning.tibetan_language_learning_app">
+    package="com.kharagedition.tibetan_language_learning_app">
    <application
-        android:label="tibetan_language_learning_app"
+        android:label="Tibetan Language Learning App"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

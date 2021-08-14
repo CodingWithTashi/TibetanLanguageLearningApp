@@ -19,32 +19,19 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
   var selectedPageIndex = 0;
   var pageView;
   List<Alphabet> alphabetList = AppConstant.alphabetList;
-  late AudioPlayer _audioPlayer;
-  var playPauseIcon = Icons.play_arrow;
 
   @override
   void initState() {
-    _audioPlayer = AudioPlayer();
     selectedPageIndex = alphabetList.indexOf(widget.alphabet);
     controller = PageController(
       initialPage: selectedPageIndex,
     );
-    _audioPlayer.playerStateStream.listen((event) {
-      print('Listening');
-      if (event.playing) {
-        print(event.processingState);
-      } else {
-        print("stop");
-      }
-    });
     initPageView();
     super.initState();
   }
 
   @override
   void dispose() {
-    _audioPlayer.dispose();
-
     controller.dispose();
     super.dispose();
   }
@@ -71,7 +58,8 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                   height: 20,
                 ),
                 AlphabetAudioControl(
-                    filePath: alphabetList[selectedPageIndex].fileName)
+                    pathName: 'assets/audio/',
+                    fileName: alphabetList[selectedPageIndex].fileName)
               ],
             ),
           ),

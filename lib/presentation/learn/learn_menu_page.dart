@@ -96,7 +96,10 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         onTap: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("དར་རྒྱས་གཏོང་བཞིན་ཡོད།"),
+              content: Text(
+                "དར་རྒྱས་གཏོང་བཞིན་ཡོད།",
+                style: TextStyle(fontFamily: 'jomolhari'),
+              ),
             ),
           );
         },

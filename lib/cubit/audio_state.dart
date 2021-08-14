@@ -36,3 +36,15 @@ class AudioFinish extends AudioState {
 class AudioRepeat extends AudioState {
   const AudioRepeat();
 }
+
+class AudioPlaying extends AudioState {
+  const AudioPlaying();
+}
+
+class AudioRepeatOff extends AudioState {
+  const AudioRepeatOff();
+}
+
+class AudioRepeatOn extends AudioState {
+  const AudioRepeatOn();
+}
