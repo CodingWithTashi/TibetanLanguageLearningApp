@@ -33,15 +33,25 @@ dependencies:
   url_launcher: 6.0.9
   share_plus: 2.1.4
   animated_text_kit: 4.2.1
+  google_mobile_ads: 0.13.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: 0.9.1
+  flutter_native_splash: 1.2.1
 flutter_icons:
   image_path: "assets/images/ic_launcher.png"
   android: true
   ios: true
+
+flutter_native_splash:
+  color: "#57612F"
+  image: assets/images/splash.png
+  fullscreen: true
+  android: true
+  ios: true
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

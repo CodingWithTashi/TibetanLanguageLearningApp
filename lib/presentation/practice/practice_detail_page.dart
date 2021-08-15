@@ -42,8 +42,6 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
       body: Container(
         child: Center(
           child: SingleChildScrollView(
-            physics:
-                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,7 +50,7 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
                   height: MediaQuery.of(context).padding.top,
                 ),
                 Container(
-                  height: 300,
+                  height: 220,
                   child: pageView,
                 ),
                 Container(
@@ -89,8 +87,7 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 100, vertical: 40),
+                    padding: EdgeInsets.symmetric(horizontal: 80, vertical: 20),
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
                     child: Text(
                       alphabetList[index].alphabetName,

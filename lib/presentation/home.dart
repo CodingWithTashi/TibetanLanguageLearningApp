@@ -1,6 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
@@ -18,6 +20,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double _buttonOpacity = 0;
   bool isExtended = false;
+  late BannerAd myBanner;
+  late BannerAdListener listener;
+  late AdWidget adWidget;
 
   @override
   void initState() {
@@ -25,6 +30,33 @@ class _HomePageState extends State<HomePage> {
       _buttonOpacity = 1;
       setState(() {});
     });
+
+    listener = BannerAdListener(
+      // Called when an ad is successfully received.
+      onAdLoaded: (Ad ad) => print('Ad loaded.'),
+      // Called when an ad request failed.
+      onAdFailedToLoad: (Ad ad, LoadAdError error) {
+        // Dispose the ad here to free resources.
+        ad.dispose();
+        print('Ad failed to load: $error');
+      },
+      // Called when an ad opens an overlay that covers the screen.
+      onAdOpened: (Ad ad) => print('Ad opened.'),
+      // Called when an ad removes an overlay that covers the screen.
+      onAdClosed: (Ad ad) => print('Ad closed.'),
+      // Called when an impression occurs on the ad.
+      onAdImpression: (Ad ad) => print('Ad impression.'),
+    );
+    myBanner = BannerAd(
+      adUnitId: AppConstant.BANNER_AD_HOME_UNIT_ID,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: listener,
+    );
+    if (!kIsWeb) {
+      adWidget = AdWidget(ad: myBanner);
+      myBanner.load();
+    }
     super.initState();
   }
 
@@ -37,6 +69,7 @@ class _HomePageState extends State<HomePage> {
             _getBackgroundImage(),
             _getButtons(),
             _getBottomSheetButton(),
+            _topBannerAds(),
           ],
         ),
         floatingActionButton: _getHomeFab());
@@ -280,4 +313,16 @@ class _HomePageState extends State<HomePage> {
       throw 'Could not launch $params';
     }
   }
+
+  _topBannerAds() => !kIsWeb
+      ? Positioned(
+          top: 40,
+          child: Container(
+            alignment: Alignment.center,
+            child: adWidget,
+            width: myBanner.size.width.toDouble(),
+            height: myBanner.size.height.toDouble(),
+          ),
+        )
+      : Container();
 }
