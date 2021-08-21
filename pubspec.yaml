@@ -34,6 +34,7 @@ dependencies:
   share_plus: 2.1.4
   animated_text_kit: 4.2.1
   google_mobile_ads: 0.13.3
+  flare_flutter: 3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,8 @@ flutter:
     - assets/images/
     - assets/audio/
     - assets/audio/words/
+    - assets/flr/
+    - assets/others/
     - assets/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

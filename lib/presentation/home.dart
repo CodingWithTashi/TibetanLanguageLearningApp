@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -48,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
     myBanner = BannerAd(
-      adUnitId: AppConstant.BANNER_AD_HOME_UNIT_ID,
+      adUnitId: AppConstant.TEST_UNIT_ID,
       size: AdSize.banner,
       request: AdRequest(),
       listener: listener,
@@ -67,6 +69,7 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.bottomCenter,
           children: [
             _getBackgroundImage(),
+            _getAppName(),
             _getButtons(),
             _getBottomSheetButton(),
             _topBannerAds(),
@@ -76,16 +79,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   _getButtons() => Positioned(
-        bottom: 100,
+        bottom: 90,
         child: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _getLearnButtons(),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               _getPracticeButtons(),
+              SizedBox(
+                height: 20,
+              ),
+              _useCasesButtons(),
             ],
           ),
         ),
@@ -178,11 +185,11 @@ class _HomePageState extends State<HomePage> {
         child: GestureDetector(
             onPanUpdate: (details) {
               if (details.delta.dy < 0) {
-                showAboutUs();
+                ApplicationUtil.showAboutUs(context);
               }
             },
             onTap: () {
-              showAboutUs();
+              ApplicationUtil.showAboutUs(context);
             },
             child: RotatedBox(
               quarterTurns: -1,
@@ -193,126 +200,6 @@ class _HomePageState extends State<HomePage> {
               ),
             )),
       );
-  void showAboutUs() {
-    showModalBottomSheet(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        context: context,
-        builder: (context) {
-          return Container(
-            padding: EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                    padding: EdgeInsets.all(10),
-                    child: DefaultTextStyle(
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Theme.of(context).primaryColor),
-                      child: AnimatedTextKit(
-                        animatedTexts: [
-                          ColorizeAnimatedText(
-                            'Made With ❤ by KharagEdition',
-                            speed: Duration(milliseconds: 300),
-                            textStyle: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'jomolhari',
-                            ),
-                            colors: [
-                              Theme.of(context).primaryColor,
-                              Colors.blue,
-                              Colors.red,
-                              Colors.black,
-                            ],
-                          ),
-                        ],
-                        isRepeatingAnimation: false,
-                        onTap: () {},
-                      ),
-                    )
-                    /*Text(
-                    'Made With ❤️ by KharagEdition',
-                    style: TextStyle(fontSize: 18),
-                  ),*/
-                    ),
-                ListTile(
-                  leading: new Icon(
-                    Icons.email_outlined,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text(AppConstant.CONTACT_US),
-                  onTap: () {
-                    _launchEmail(AppConstant.EMAIL, AppConstant.SUBJECT);
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: new Icon(
-                    Icons.share,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text('Share'),
-                  onTap: () {
-                    Share.share(AppConstant.SHARE_URL,
-                        subject:
-                            'Check out this Tibetan Language Learning  App.');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: new Icon(
-                    Icons.star_rate,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text('Rate Us'),
-                  onTap: () {
-                    ApplicationUtil.launchInBrowser(AppConstant.APP_URL);
-
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: new Icon(
-                    Icons.apps,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text('More App from Kharag'),
-                  onTap: () {
-                    ApplicationUtil.launchInBrowser(AppConstant.MORE_URL);
-
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: new Icon(
-                    Icons.close,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text('Exit'),
-                  onTap: () {
-                    SystemNavigator.pop();
-                  },
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
-  void _launchEmail(email, sub) async {
-    final Uri params = Uri(
-      scheme: 'mailto',
-      path: '$email',
-      query: 'subject=$sub', //add subject and body here
-    );
-    if (await canLaunch(params.toString())) {
-      await launch(params.toString());
-    } else {
-      throw 'Could not launch $params';
-    }
-  }
 
   _topBannerAds() => !kIsWeb
       ? Positioned(
@@ -325,4 +212,50 @@ class _HomePageState extends State<HomePage> {
           ),
         )
       : Container();
+
+  _useCasesButtons() => InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, UseCaseMenuPage.routeName);
+        },
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+          opacity: _buttonOpacity,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            decoration: ApplicationUtil.getBoxDecorationOne(context),
+            child: Text(
+              'བེད་སྤྱོད་བྱེད།',
+              style: TextStyle(fontSize: 22, color: Colors.white),
+            ),
+          ),
+        ),
+      );
+
+  _getAppName() => Positioned(
+        top: 10,
+        child: Container(
+          width: 270,
+          height: 270,
+          child: Stack(
+            children: [
+              FlareActor(
+                'assets/flr/circle_animation.flr',
+                animation: 'Alarm',
+                color: Theme.of(context).primaryColor.withOpacity(0.5),
+              ),
+              Center(
+                child: Text(
+                  //'Learn\nTibetan',
+                  'བོད་ཡིག་\nསྦྱོང་བརྡར་བྱེད།',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
 }

@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
+import 'package:tibetan_language_learning_app/model/alphabet.dart';
+import 'package:tibetan_language_learning_app/model/verb.dart';
+import 'package:tibetan_language_learning_app/model/word.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
-import 'package:tibetan_language_learning_app/presentation/learn/alphabet_detail_page.dart';
-import 'package:tibetan_language_learning_app/presentation/learn/alphabet_list_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_detail_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
-import 'package:tibetan_language_learning_app/presentation/learn/verb_detail_page.dart';
-import 'package:tibetan_language_learning_app/presentation/learn/verbs_list_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verbs/verb_detail_page.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
+import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/service/audio_service.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -96,6 +101,22 @@ class RouteGenerator {
           }
           return _errorRoute();
         }
+      case UseCaseMenuPage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => UseCaseMenuPage(),
+        );
+      case UseCaseItemList.routeName:
+        {
+          if (settings.arguments != null && settings.arguments is UseCaseType) {
+            return MaterialPageRoute(
+              builder: (_) => UseCaseItemList(
+                type: settings.arguments as UseCaseType,
+              ),
+            );
+          }
+          return _errorRoute();
+        }
+
       default:
         return _errorRoute();
     }

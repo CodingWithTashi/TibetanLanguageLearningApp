@@ -1,16 +1,9 @@
+import 'package:tibetan_language_learning_app/model/alphabet.dart';
+import 'package:tibetan_language_learning_app/model/verb.dart';
+import 'package:tibetan_language_learning_app/model/word.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 
-class Alphabet {
-  String fileName;
-  String alphabetName;
-  Alphabet({required this.fileName, required this.alphabetName});
-}
-
-class Verb {
-  String fileName;
-  String word;
-  Verb({required this.fileName, required this.word});
-}
+enum UseCaseType { PRONOUN, GREETING, COLORS, FAMILY, NUMBERS }
 
 class AppConstant {
   static const String CONTACT_US = 'Contact Us';
@@ -98,5 +91,213 @@ class AppConstant {
   ];
   static getAudioByVerb(String verb) {
     return 'assets/audio/words/' + verb + ".mp3";
+  }
+
+  static List<Word> getWordList(UseCaseType type) {
+    switch (type) {
+      case UseCaseType.COLORS:
+        {
+          return _colorList();
+        }
+      case UseCaseType.FAMILY:
+        {
+          return _familyWordList();
+        }
+      case UseCaseType.GREETING:
+        {
+          return _greetingWordList();
+        }
+      case UseCaseType.NUMBERS:
+        {
+          return _numberWordList();
+        }
+      case UseCaseType.PRONOUN:
+        {
+          return _pronounWordList();
+        }
+      default:
+        return [];
+    }
+  }
+
+  static List<Word> _colorList() {
+    return [
+      Word(english: 'White', tibetan: 'དཀར་པོ།', englishSound: 'karpo'),
+      Word(english: 'Red', tibetan: 'དམར་པོ།', englishSound: 'marpo'),
+      Word(english: 'Black', tibetan: 'ནག་པོ།', englishSound: 'nakpo'),
+      Word(english: 'Yellow', tibetan: 'གསེར་པོ།', englishSound: 'sairpo'),
+      Word(english: 'Green', tibetan: 'ལྗང་ཁུ།', englishSound: 'jangkhu'),
+      Word(english: 'Blue', tibetan: 'སྔོན་པོ།', englishSound: 'ngonpo'),
+      Word(english: 'Pink', tibetan: 'ཟིང་སྐྱ།', englishSound: 'zingkya'),
+      Word(english: 'Purple', tibetan: 'མུ་མེན།', englishSound: 'mumain'),
+      Word(english: 'Orange', tibetan: 'ལི་ལྦང།', englishSound: 'liwang'),
+      Word(english: 'Grey', tibetan: 'ཐལ་མདོག།', englishSound: 'thaldok'),
+      Word(english: 'Brown', tibetan: 'རྒྱ་མུག།', englishSound: 'gyamuk'),
+      Word(english: 'Gold', tibetan: 'གསེར་མདོག།', englishSound: 'sairdok'),
+      Word(english: 'Silver', tibetan: 'དངུལ་མདོག།', englishSound: 'nguldok'),
+    ];
+  }
+
+  static List<Word> _familyWordList() {
+    return [
+      Word(english: 'Family', tibetan: 'ནང་མི།', englishSound: 'nang mi'),
+      Word(english: 'Parent', tibetan: 'ཕ་མ།', englishSound: 'phama'),
+      Word(english: 'Mother', tibetan: 'ཨ་མ་ལགས།', englishSound: 'ama la'),
+      Word(english: 'Father', tibetan: 'པྰ་ལགས།', englishSound: 'pa la'),
+      Word(english: 'Son', tibetan: 'བུ།', englishSound: 'bu'),
+      Word(english: 'Daughter', tibetan: 'བུ་མོ།', englishSound: 'bumo'),
+      Word(english: 'Brother', tibetan: 'ཅོ་ཅོ།', englishSound: 'cho cho'),
+      Word(
+          english: 'Elder Brother',
+          tibetan: 'ཅོ་ཅོ་རྒན་པ།',
+          englishSound: 'chocho gyanpa'),
+      Word(
+          english: 'Younger Brother',
+          tibetan: 'ཅོ་ཅོ་ཆུང་བ།',
+          englishSound: 'chocho chungva'),
+      Word(english: 'Sister', tibetan: 'ཨ་ཅག།', englishSound: 'achak'),
+      Word(
+          english: 'Elder Sister',
+          tibetan: 'ཨ་ཅག་རྒན་པ།',
+          englishSound: 'achack gyanpa'),
+      Word(
+          english: 'Younger Sister',
+          tibetan: 'ཨ་ཅག་ཆུང་བ།',
+          englishSound: 'achack chungva'),
+      Word(english: 'Grandson/Nephew', tibetan: 'ཚ་བོ།', englishSound: 'tsapo'),
+      Word(
+          english: 'GrandDaughter/Niece',
+          tibetan: 'ཚ་མོ།',
+          englishSound: 'tasmo'),
+      Word(english: 'Uncle', tibetan: 'ཨ་ཞང།', englishSound: 'ashang'),
+      Word(english: 'Aunt', tibetan: 'ཨ་ནི།', englishSound: 'aani'),
+      Word(english: 'Husband', tibetan: 'ཁྱོ་ཁ།', englishSound: 'kyoga'),
+      Word(english: 'Wife', tibetan: 'ཟ་ཟླ།', englishSound: 'za dha'),
+      Word(english: 'Boy Friend', tibetan: 'དགའ་རོགས', englishSound: 'ga rog'),
+      Word(english: 'Relative', tibetan: 'སྤུན་ཉེ།', englishSound: 'pun chath'),
+      Word(english: 'Grand Father', tibetan: 'པོ་པོ།', englishSound: 'popo'),
+      Word(english: 'Grand Mother', tibetan: 'མོ་མོ།', englishSound: 'mho mho'),
+    ];
+  }
+
+  static List<Word> _greetingWordList() {
+    return [
+      Word(
+          english: 'Hello/Hi',
+          tibetan: 'བཀྲ་ཤིས་བདེ་ལེགས།',
+          englishSound: 'Tashi Delek'),
+      Word(
+          english: 'Good Morning',
+          tibetan: 'སྔ་དྲོ་བདེ་ལེགས།',
+          englishSound: 'Nga do delek'),
+      Word(
+          english: 'Good Afternoon',
+          tibetan: 'ཉིན་གུང་བདེ་ལེགས།',
+          englishSound: 'Nyigung delek'),
+      Word(
+          english: 'Good Evening',
+          tibetan: 'དགོང་དྲོ་བདེ་ལེགས།',
+          englishSound: 'Gongdo Delek'),
+      Word(
+          english: 'Good Night',
+          tibetan: 'གཟིམ་འཇག་གནང།',
+          englishSound: 'Zim jag nang go'),
+      Word(english: 'Good Bye', tibetan: 'བཞུགས་ཨ།', englishSound: 'Jhug ah'),
+      Word(
+          english: 'Take care',
+          tibetan: 'ཅག་པོ་བྱེད།',
+          englishSound: 'Chack po jay'),
+      Word(
+          english: 'See You later',
+          tibetan: 'རྗེས་ལ་མཇལ་ཡོང།',
+          englishSound: 'Jay la jal yong'),
+      Word(
+          english: 'Nice to meet you',
+          tibetan: 'རང་ཐུག་པ་དགའ་པོ་བྱུང།',
+          englishSound: 'rang thukapa gapo jhung'),
+      Word(
+          english: 'Cheers',
+          tibetan: 'དགའ་བསུ་བྱེད།',
+          englishSound: 'gasu jay'),
+      Word(english: 'Great/Nice', tibetan: 'ལེགས་པོ།', englishSound: 'lakhpo'),
+      Word(
+          english: 'Celebration',
+          tibetan: 'རྟེན་འབྲེལ།',
+          englishSound: 'Tendral'),
+      Word(english: 'Respect', tibetan: 'གུས་ཞབས།', englishSound: 'Guzhab'),
+      Word(english: 'Smile', tibetan: 'འཛུམ།', englishSound: 'zoom'),
+    ];
+  }
+
+  static List<Word> _numberWordList() {
+    return [
+      Word(english: 'Zero', tibetan: 'ཀླད་ཀོར།', englishSound: 'lhai koy'),
+      Word(english: 'One', tibetan: 'གཅིག།', englishSound: 'chik'),
+      Word(english: 'Two', tibetan: 'གཉིས།', englishSound: 'nyi'),
+      Word(english: 'Three', tibetan: 'གསུམ།', englishSound: 'syum'),
+      Word(english: 'Four', tibetan: 'བཞི།', englishSound: 'zshi'),
+      Word(english: 'Five', tibetan: 'ལྔ།', englishSound: 'nga'),
+      Word(english: 'Six', tibetan: 'དྲུག།', englishSound: 'druk'),
+      Word(english: 'Seven', tibetan: 'བདུན།', englishSound: 'dun'),
+      Word(english: 'Eight', tibetan: 'བརྒྱད།', englishSound: 'gyay'),
+      Word(english: 'Nine', tibetan: 'དགུ།', englishSound: 'ghu'),
+      Word(english: 'Ten', tibetan: 'བཅུ།', englishSound: 'chu'),
+      Word(english: 'Hundred', tibetan: 'བརྒྱ།', englishSound: 'gya'),
+      Word(
+          english: 'Two hundred',
+          tibetan: 'གཉིས་བརྒྱ།',
+          englishSound: 'nyi gya'),
+      Word(
+          english: 'Three hundred',
+          tibetan: 'གསུམ་བརྒྱ།',
+          englishSound: 'syum gya'),
+      Word(
+          english: 'Four hundred',
+          tibetan: 'བཞི་བརྒྱ།',
+          englishSound: 'zshi gya'),
+      Word(
+          english: 'Five hundred',
+          tibetan: 'ལྔ་བརྒྱ།',
+          englishSound: 'nga gya'),
+      Word(
+          english: 'Six hundred',
+          tibetan: 'དྲུག་བརྒྱ།',
+          englishSound: 'druk gya'),
+      Word(
+          english: 'Seven hundred',
+          tibetan: 'བདུན་བརྒྱ།',
+          englishSound: 'dun gya'),
+      Word(
+          english: 'Eight hundred',
+          tibetan: 'བརྒྱད་བརྒྱ།',
+          englishSound: 'gyay gya'),
+      Word(
+          english: 'Nine hundred',
+          tibetan: 'དགུ་བརྒྱ།',
+          englishSound: 'ghu gya'),
+      Word(english: 'Thousand', tibetan: 'སྟོང།', englishSound: 'tong'),
+      Word(english: 'Ten thousand', tibetan: 'ཁྲི།', englishSound: 'tri'),
+      Word(english: 'Hundred Thousand', tibetan: 'འབུམ།', englishSound: 'bhum'),
+      Word(english: 'Million', tibetan: 'ས་ཡ།', englishSound: 'saya'),
+      Word(english: 'Billion', tibetan: 'བྱེ་བ།', englishSound: 'jayva'),
+    ];
+  }
+
+  static List<Word> _pronounWordList() {
+    return [
+      Word(english: 'I', tibetan: 'ང།', englishSound: 'nga'),
+      Word(english: 'You', tibetan: 'ཁྱེད་རང།', englishSound: 'khey rang'),
+      Word(english: 'He/She', tibetan: 'ཁོང།', englishSound: 'khong'),
+      Word(english: 'We', tibetan: 'ང་ཚོ།', englishSound: 'nga tso'),
+      Word(english: 'They', tibetan: 'ཁོ་ཚོ།', englishSound: 'khon tso'),
+      Word(english: 'This', tibetan: 'འདི།', englishSound: 'di'),
+      Word(english: 'That', tibetan: 'དེ།', englishSound: 'dhay'),
+      Word(english: 'These', tibetan: 'འདི་ཚོ།', englishSound: 'de tso'),
+      Word(english: 'Those', tibetan: 'དེ་ཚོ།', englishSound: 'dhay tso'),
+      Word(
+          english: 'Their',
+          tibetan: 'ཁོང་རང་ཚོ།',
+          englishSound: 'khong rang tso'),
+    ];
   }
 }
