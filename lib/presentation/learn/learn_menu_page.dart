@@ -4,6 +4,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
+import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -63,23 +64,29 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top + 20, right: 40),
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
               child: AnimationLimiter(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(
-                        milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      horizontalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: widget,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      right: 40,
+                      left: 50,
+                      top: MediaQuery.of(context).padding.top + 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: AnimationConfiguration.toStaggeredList(
+                      duration: const Duration(
+                          milliseconds: ApplicationUtil.ANIMATION_DURATION),
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        horizontalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: widget,
+                        ),
                       ),
+                      children: _getWidgetList(),
                     ),
-                    children: _getWidgetList(),
                   ),
                 ),
               ),
@@ -96,13 +103,17 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
     List<Widget> widgetList = [
       InkWell(
         onTap: () {
+          getIt<AlphabetType>().type = AlphabetCategoryType.ALPHABET;
+
           Navigator.pushNamed(context, AlphabetListPage.routeName);
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ཀ་མད་གསུམ་བཅུ།',
+            'གསལ་བྱེད་སུམ་ཅུ།',
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 30, color: Colors.white),
           ),
         ),
@@ -111,12 +122,15 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         height: 20,
       ),
       InkWell(
-        onTap: () => Navigator.pushNamed(context, VerbListPage.routeName),
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.VOWEL),
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 50, vertical: 30),
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'མིང་ཚིག།',
+            'དབྱངས་བཞི།',
+            textAlign: TextAlign.center,
             style: TextStyle(fontSize: 30, color: Colors.white),
           ),
         ),
@@ -124,17 +138,160 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
       SizedBox(
         height: 20,
       ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-            size: 30,
+      InkWell(
+        onTap: () =>
+            _navigateToAlphabetDetailPage(AlphabetCategoryType.FIVE_PREFIX),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'སྔོན་འཇུག་ལྔ།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
           ),
         ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () =>
+            _navigateToAlphabetDetailPage(AlphabetCategoryType.TEN_SUFFIX),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 30),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'རྗེས་འཇུག་བཅུ།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () =>
+            _navigateToAlphabetDetailPage(AlphabetCategoryType.TWO_POSTFIX),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 40),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ཡང་འཇུག་གཉིས།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.RAGO),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 50),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ར་མགོ་བཅུ་གཉིས།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.LAGO),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 40),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ལ་མགོ་བཅུ།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.SAGO),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 30),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ས་མགོ་བཅུ་གཅིག།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.YATAK),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ཡ་བཏགས་བདུན།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.RATAK),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ར་བཏགས་བཅུ་གཉིས།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.LATAK),
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Text(
+            'ལ་བཏགས་དྲུག།',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 30, color: Colors.white),
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
       ),
     ];
     return widgetList;
@@ -154,4 +311,10 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           ),
         )
       : Container();
+
+  _navigateToAlphabetDetailPage(AlphabetCategoryType type) {
+    getIt<AlphabetType>().type = type;
+
+    Navigator.pushNamed(context, AlphabetListPage.routeName);
+  }
 }

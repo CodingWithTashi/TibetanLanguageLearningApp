@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/widget/alphabet_audio_control.dart';
+import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -19,7 +20,8 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
   var controller;
   var selectedPageIndex = 0;
   var pageView;
-  List<Alphabet> alphabetList = AppConstant.alphabetList;
+  List<Alphabet> alphabetList =
+      AppConstant.getAlphabetList(getIt<AlphabetType>().type);
 
   @override
   void initState() {
@@ -58,9 +60,20 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                 SizedBox(
                   height: 20,
                 ),
-                AlphabetAudioControl(
-                    pathName: 'assets/audio/',
-                    fileName: alphabetList[selectedPageIndex].fileName)
+                alphabetList[selectedPageIndex].fileName.isNotEmpty
+                    ? AlphabetAudioControl(
+                        pathName: 'assets/audio/',
+                        fileName: alphabetList[selectedPageIndex].fileName)
+                    : Container(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          'No Audio Found, We will update and let you know',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white.withOpacity(0.5),
+                              fontSize: 20),
+                        ),
+                      )
               ],
             ),
           ),
@@ -106,19 +119,23 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Icon(
-                              Icons.arrow_back_ios,
-                              size: 40,
-                              color: Theme.of(context)
-                                  .primaryColorLight
-                                  .withAlpha(80),
+                            Expanded(
+                              child: Icon(
+                                Icons.arrow_back_ios,
+                                size: 40,
+                                color: Theme.of(context)
+                                    .primaryColorLight
+                                    .withAlpha(80),
+                              ),
                             ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 40,
-                              color: Theme.of(context)
-                                  .primaryColorLight
-                                  .withAlpha(80),
+                            Expanded(
+                              child: Icon(
+                                Icons.arrow_forward_ios,
+                                size: 40,
+                                color: Theme.of(context)
+                                    .primaryColorLight
+                                    .withAlpha(80),
+                              ),
                             ),
                           ],
                         ),
@@ -134,54 +151,4 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
       onPageChanged: (index) => setState(() => selectedPageIndex = index),
     );
   }
-
-  /* _getPlayerControl() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Flexible(
-          child: AlphabetAudioControl(
-            icon: Icons.repeat,
-            onClick: () {
-              print('clicked repeat');
-              _audioPlayer.setLoopMode(LoopMode.one);
-            },
-          ),
-        ),
-        Flexible(
-          child: SizedBox(
-            width: 20,
-          ),
-        ),
-        Flexible(
-          child: AlphabetAudioControl(
-            icon: playPauseIcon,
-            onClick: () async {
-              if (!_audioPlayer.playing) {
-                await _audioPlayer.setAsset(ApplicationUtil.getAudioAssetPath(
-                    audioName: alphabetList[selectedPageIndex].fileName));
-                playPauseIcon = Icons.pause;
-                _audioPlayer.play();
-              } else {
-                playPauseIcon = Icons.play_arrow;
-                _audioPlayer.pause();
-              }
-              setState(() {});
-            },
-          ),
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        AlphabetAudioControl(
-          icon: Icons.stop,
-          onClick: () {
-            if (_audioPlayer.playing) {
-              _audioPlayer.stop();
-            }
-          },
-        ),
-      ],
-    );
-  }*/
 }

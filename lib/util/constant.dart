@@ -3,7 +3,30 @@ import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/model/word.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 
-enum UseCaseType { PRONOUN, GREETING, COLORS, FAMILY, NUMBERS }
+enum UseCaseType {
+  PRONOUN,
+  GREETING,
+  COLORS,
+  FAMILY,
+  NUMBERS,
+}
+enum AlphabetCategoryType {
+  ALPHABET,
+  VOWEL,
+  FIVE_PREFIX,
+  TEN_SUFFIX,
+  TWO_POSTFIX,
+  RAGO,
+  LAGO,
+  SAGO,
+  YATAK,
+  RATAK,
+  LATAK
+}
+
+class AlphabetType {
+  AlphabetCategoryType type = AlphabetCategoryType.ALPHABET;
+}
 
 class AppConstant {
   static const String CONTACT_US = 'Contact Us';
@@ -23,39 +46,6 @@ class AppConstant {
       'http://www.digitaltibetan.org/cgi-bin/phugpa.pl';
   static const String APP_URL =
       'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
-
-  static List<Alphabet> alphabetList = [
-    Alphabet(fileName: 'ka', alphabetName: 'ཀ'),
-    Alphabet(fileName: 'kha', alphabetName: 'ཁ'),
-    Alphabet(fileName: 'ga', alphabetName: 'ག'),
-    Alphabet(fileName: 'nga', alphabetName: 'ང'),
-    Alphabet(fileName: 'ca', alphabetName: 'ཅ'),
-    Alphabet(fileName: 'cha', alphabetName: 'ཆ'),
-    Alphabet(fileName: 'ja', alphabetName: 'ཇ'),
-    Alphabet(fileName: 'nya', alphabetName: 'ཉ'),
-    Alphabet(fileName: 'ta', alphabetName: 'ཏ'),
-    Alphabet(fileName: 'tha', alphabetName: 'ཐ'),
-    Alphabet(fileName: 'da', alphabetName: 'ད'),
-    Alphabet(fileName: 'na', alphabetName: 'ན'),
-    Alphabet(fileName: 'pa', alphabetName: 'པ'),
-    Alphabet(fileName: 'pha', alphabetName: 'ཕ'),
-    Alphabet(fileName: 'ba', alphabetName: 'བ'),
-    Alphabet(fileName: 'ma', alphabetName: 'མ'),
-    Alphabet(fileName: 'tsa', alphabetName: 'ཙ'),
-    Alphabet(fileName: 'tsha', alphabetName: 'ཚ'),
-    Alphabet(fileName: 'dza', alphabetName: 'ཛ'),
-    Alphabet(fileName: 'wa', alphabetName: 'ཝ'),
-    Alphabet(fileName: 'jha', alphabetName: 'ཞ'),
-    Alphabet(fileName: 'za', alphabetName: 'ཟ'),
-    Alphabet(fileName: 'yya', alphabetName: 'འ'),
-    Alphabet(fileName: 'ya', alphabetName: 'ཡ'),
-    Alphabet(fileName: 'ra', alphabetName: 'ར'),
-    Alphabet(fileName: 'la', alphabetName: 'ལ'),
-    Alphabet(fileName: 'sha', alphabetName: 'ཤ'),
-    Alphabet(fileName: 'sa', alphabetName: 'ས'),
-    Alphabet(fileName: 'ha', alphabetName: 'ཧ'),
-    Alphabet(fileName: 'aa', alphabetName: 'ཨ'),
-  ];
 
   static List<Verb> verbsList = [
     Verb(fileName: 'apple', word: 'ཀུ་ཤུ།'),
@@ -91,6 +81,57 @@ class AppConstant {
   ];
   static getAudioByVerb(String verb) {
     return 'assets/audio/words/' + verb + ".mp3";
+  }
+
+  static List<Alphabet> getAlphabetList(AlphabetCategoryType type) {
+    switch (type) {
+      case AlphabetCategoryType.ALPHABET:
+        {
+          return _alphabetList();
+        }
+      case AlphabetCategoryType.VOWEL:
+        {
+          return _vowelList();
+        }
+      case AlphabetCategoryType.FIVE_PREFIX:
+        {
+          return _fivePrefixList();
+        }
+      case AlphabetCategoryType.TEN_SUFFIX:
+        {
+          return _tenSuffixList();
+        }
+      case AlphabetCategoryType.TWO_POSTFIX:
+        {
+          return _twoPostfixList();
+        }
+      case AlphabetCategoryType.RAGO:
+        {
+          return _ragoList();
+        }
+      case AlphabetCategoryType.LAGO:
+        {
+          return _lagoList();
+        }
+      case AlphabetCategoryType.SAGO:
+        {
+          return _sogoList();
+        }
+      case AlphabetCategoryType.YATAK:
+        {
+          return _yatakList();
+        }
+      case AlphabetCategoryType.RATAK:
+        {
+          return _ratakList();
+        }
+      case AlphabetCategoryType.LATAK:
+        {
+          return _latakist();
+        }
+      default:
+        return [];
+    }
   }
 
   static List<Word> getWordList(UseCaseType type) {
@@ -298,6 +339,170 @@ class AppConstant {
           english: 'Their',
           tibetan: 'ཁོང་རང་ཚོ།',
           englishSound: 'khong rang tso'),
+    ];
+  }
+
+  static List<Alphabet> _alphabetList() {
+    return [
+      Alphabet(fileName: 'ka', alphabetName: 'ཀ'),
+      Alphabet(fileName: 'kha', alphabetName: 'ཁ'),
+      Alphabet(fileName: 'ga', alphabetName: 'ག'),
+      Alphabet(fileName: 'nga', alphabetName: 'ང'),
+      Alphabet(fileName: 'ca', alphabetName: 'ཅ'),
+      Alphabet(fileName: 'cha', alphabetName: 'ཆ'),
+      Alphabet(fileName: 'ja', alphabetName: 'ཇ'),
+      Alphabet(fileName: 'nya', alphabetName: 'ཉ'),
+      Alphabet(fileName: 'ta', alphabetName: 'ཏ'),
+      Alphabet(fileName: 'tha', alphabetName: 'ཐ'),
+      Alphabet(fileName: 'da', alphabetName: 'ད'),
+      Alphabet(fileName: 'na', alphabetName: 'ན'),
+      Alphabet(fileName: 'pa', alphabetName: 'པ'),
+      Alphabet(fileName: 'pha', alphabetName: 'ཕ'),
+      Alphabet(fileName: 'ba', alphabetName: 'བ'),
+      Alphabet(fileName: 'ma', alphabetName: 'མ'),
+      Alphabet(fileName: 'tsa', alphabetName: 'ཙ'),
+      Alphabet(fileName: 'tsha', alphabetName: 'ཚ'),
+      Alphabet(fileName: 'dza', alphabetName: 'ཛ'),
+      Alphabet(fileName: 'wa', alphabetName: 'ཝ'),
+      Alphabet(fileName: 'jha', alphabetName: 'ཞ'),
+      Alphabet(fileName: 'za', alphabetName: 'ཟ'),
+      Alphabet(fileName: 'yya', alphabetName: 'འ'),
+      Alphabet(fileName: 'ya', alphabetName: 'ཡ'),
+      Alphabet(fileName: 'ra', alphabetName: 'ར'),
+      Alphabet(fileName: 'la', alphabetName: 'ལ'),
+      Alphabet(fileName: 'sha', alphabetName: 'ཤ'),
+      Alphabet(fileName: 'sa', alphabetName: 'ས'),
+      Alphabet(fileName: 'ha', alphabetName: 'ཧ'),
+      Alphabet(fileName: 'aa', alphabetName: 'ཨ'),
+    ];
+  }
+
+  static List<Alphabet> _vowelList() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'ཨི།'),
+      Alphabet(fileName: '', alphabetName: 'ཨུ།'),
+      Alphabet(fileName: '', alphabetName: 'ཨེ།'),
+      Alphabet(fileName: '', alphabetName: 'ཨོ།'),
+    ];
+  }
+
+  static List<Alphabet> _fivePrefixList() {
+    return [
+      Alphabet(fileName: 'ga', alphabetName: 'ག'),
+      Alphabet(fileName: 'da', alphabetName: 'ད'),
+      Alphabet(fileName: 'ba', alphabetName: 'བ'),
+      Alphabet(fileName: 'ma', alphabetName: 'མ'),
+      Alphabet(fileName: 'yya', alphabetName: 'འ'),
+    ];
+  }
+
+  static List<Alphabet> _tenSuffixList() {
+    return [
+      Alphabet(fileName: 'ga', alphabetName: 'ག'),
+      Alphabet(fileName: 'nga', alphabetName: 'ང'),
+      Alphabet(fileName: 'da', alphabetName: 'ད'),
+      Alphabet(fileName: 'na', alphabetName: 'ན'),
+      Alphabet(fileName: 'ba', alphabetName: 'བ'),
+      Alphabet(fileName: 'ma', alphabetName: 'མ'),
+      Alphabet(fileName: 'yya', alphabetName: 'འ'),
+      Alphabet(fileName: 'ra', alphabetName: 'ར'),
+      Alphabet(fileName: 'la', alphabetName: 'ལ'),
+      Alphabet(fileName: 'sa', alphabetName: 'ས'),
+    ];
+  }
+
+  static List<Alphabet> _twoPostfixList() {
+    return [
+      Alphabet(fileName: 'da', alphabetName: 'ད'),
+      Alphabet(fileName: 'sa', alphabetName: 'ས'),
+    ];
+  }
+
+  static List<Alphabet> _ragoList() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'རྐ།'),
+      Alphabet(fileName: '', alphabetName: 'རྒ།'),
+      Alphabet(fileName: '', alphabetName: 'རྔ།'),
+      Alphabet(fileName: '', alphabetName: 'རྗ།'),
+      Alphabet(fileName: '', alphabetName: 'རྙ།'),
+      Alphabet(fileName: '', alphabetName: 'རྟ།'),
+      Alphabet(fileName: '', alphabetName: 'རྡ།'),
+      Alphabet(fileName: '', alphabetName: 'རྣ།'),
+      Alphabet(fileName: '', alphabetName: 'རྦ།'),
+      Alphabet(fileName: '', alphabetName: 'རྨ།'),
+      Alphabet(fileName: '', alphabetName: 'རྩ།'),
+      Alphabet(fileName: '', alphabetName: 'རྫ'),
+    ];
+  }
+
+  static List<Alphabet> _lagoList() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'ལྐ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྒ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྔ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྕ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྗ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྟ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྡ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྤ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྦ།'),
+      Alphabet(fileName: '', alphabetName: 'ལྷ།'),
+    ];
+  }
+
+  static List<Alphabet> _sogoList() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'སྐ།'),
+      Alphabet(fileName: '', alphabetName: 'སྑ།'),
+      Alphabet(fileName: '', alphabetName: 'སྔ།'),
+      Alphabet(fileName: '', alphabetName: 'སྙ།'),
+      Alphabet(fileName: '', alphabetName: 'སྟ།'),
+      Alphabet(fileName: '', alphabetName: 'སྡ།'),
+      Alphabet(fileName: '', alphabetName: 'སྣ།'),
+      Alphabet(fileName: '', alphabetName: 'སྤ།'),
+      Alphabet(fileName: '', alphabetName: 'སྦ།'),
+      Alphabet(fileName: '', alphabetName: 'སྨ།'),
+      Alphabet(fileName: '', alphabetName: 'སྩ།'),
+    ];
+  }
+
+  static List<Alphabet> _yatakList() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'ཀྱ།'),
+      Alphabet(fileName: '', alphabetName: 'ཁྱ།'),
+      Alphabet(fileName: '', alphabetName: 'གྱ།'),
+      Alphabet(fileName: '', alphabetName: 'པྱ།'),
+      Alphabet(fileName: '', alphabetName: 'ཕྱ།'),
+      Alphabet(fileName: '', alphabetName: 'བྱ།'),
+      Alphabet(fileName: '', alphabetName: 'མྱ།'),
+    ];
+  }
+
+  static List<Alphabet> _ratakList() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'ཀྲ།'),
+      Alphabet(fileName: '', alphabetName: 'ཁྲ།'),
+      Alphabet(fileName: '', alphabetName: 'གྲ།'),
+      Alphabet(fileName: '', alphabetName: 'ཏྲ།'),
+      Alphabet(fileName: '', alphabetName: 'ཐྲ།'),
+      Alphabet(fileName: '', alphabetName: 'དྲ།'),
+      Alphabet(fileName: '', alphabetName: 'པྲ།'),
+      Alphabet(fileName: '', alphabetName: 'ཕྲ།'),
+      Alphabet(fileName: '', alphabetName: 'བྲ།'),
+      Alphabet(fileName: '', alphabetName: 'མྲ།'),
+      Alphabet(fileName: '', alphabetName: 'སྲ།'),
+      Alphabet(fileName: '', alphabetName: 'ཧྲ།'),
+    ];
+  }
+
+  static List<Alphabet> _latakist() {
+    return [
+      Alphabet(fileName: '', alphabetName: 'ཀླ།'),
+      Alphabet(fileName: '', alphabetName: 'གླ།'),
+      Alphabet(fileName: '', alphabetName: 'བླ།'),
+      Alphabet(fileName: '', alphabetName: 'ཟླ།'),
+      Alphabet(fileName: '', alphabetName: 'རླ།'),
+      Alphabet(fileName: '', alphabetName: 'སླ།'),
     ];
   }
 }

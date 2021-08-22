@@ -217,16 +217,19 @@ class ApplicationUtil {
         });
   }
 
+  static String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+
   static void launchEmail(email, sub) async {
-    final Uri params = Uri(
+    final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: '$email',
-      query: 'subject=$sub',
+      query: encodeQueryParameters(<String, String>{'subject': sub}),
     );
-    if (await canLaunch(params.toString())) {
-      await launch(params.toString());
-    } else {
-      throw 'Could not launch $params';
-    }
+    launch(emailLaunchUri.toString());
   }
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
+import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -18,7 +19,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
   List<Alphabet> alphabetList = [];
   @override
   void initState() {
-    alphabetList = AppConstant.alphabetList;
+    alphabetList = AppConstant.getAlphabetList(getIt<AlphabetType>().type);
     super.initState();
   }
 

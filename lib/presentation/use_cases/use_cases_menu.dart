@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
@@ -66,6 +67,30 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
     List<Widget> widgetList = [
       SizedBox(
         height: MediaQuery.of(context).padding.top + 20,
+      ),
+      InkWell(
+          onTap: () => Navigator.pushNamed(context, VerbListPage.routeName),
+          child: Container(
+            width: 220,
+            padding: EdgeInsets.symmetric(vertical: 30),
+            decoration: ApplicationUtil.getBoxDecorationOne(context),
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/apple.png',
+                  width: 80,
+                  height: 80,
+                ),
+                Text(
+                  'མིང་ཚིག།',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                ),
+              ],
+            ),
+          )),
+      SizedBox(
+        height: 20,
       ),
       InkWell(
         onTap: () {

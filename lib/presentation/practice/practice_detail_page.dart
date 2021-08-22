@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/draw_page.dart';
+import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -19,7 +20,8 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
   var selectedPageIndex = 0;
   var pageView;
 
-  List<Alphabet> alphabetList = AppConstant.alphabetList;
+  List<Alphabet> alphabetList =
+      AppConstant.getAlphabetList(getIt<AlphabetType>().type);
   @override
   void initState() {
     selectedPageIndex = alphabetList.indexOf(widget.alphabet);

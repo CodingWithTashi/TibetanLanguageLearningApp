@@ -234,8 +234,8 @@ class _HomePageState extends State<HomePage> {
   _getAppName() => Positioned(
         top: 10,
         child: Container(
-          width: 270,
-          height: 270,
+          width: 290,
+          height: 290,
           child: Stack(
             children: [
               FlareActor(
@@ -246,11 +246,11 @@ class _HomePageState extends State<HomePage> {
               Center(
                 child: Text(
                   //'Learn\nTibetan',
-                  'བོད་ཡིག་\nསྦྱོང་བརྡར་བྱེད།',
+                  'སྐད་ཡིག་ནི་མི་རིགས་\nཀྱི་སྲོག་རྩ་ཡིན།',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 22,
+                    fontSize: 20,
                   ),
                 ),
               )
