@@ -126,7 +126,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'དབྱངས་བཞི།',
@@ -144,7 +143,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'སྔོན་འཇུག་ལྔ།',
@@ -162,7 +160,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 30),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'རྗེས་འཇུག་བཅུ།',
@@ -180,7 +177,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 40),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'ཡང་འཇུག་གཉིས།',
@@ -197,7 +193,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 50),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'ར་མགོ་བཅུ་གཉིས།',
@@ -214,7 +209,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 40),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'ལ་མགོ་བཅུ།',
@@ -231,7 +225,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 30),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'ས་མགོ་བཅུ་གཅིག།',
@@ -248,7 +241,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 20),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'ཡ་བཏགས་བདུན།',
@@ -265,7 +257,6 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         child: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          margin: EdgeInsets.symmetric(horizontal: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             'ར་བཏགས་བཅུ་གཉིས།',

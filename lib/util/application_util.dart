@@ -122,38 +122,33 @@ class ApplicationUtil {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                    padding: EdgeInsets.all(10),
-                    child: DefaultTextStyle(
-                      style: TextStyle(
-                          fontSize: 20.0,
-                          color: Theme.of(context).primaryColor),
-                      child: AnimatedTextKit(
-                        animatedTexts: [
-                          ColorizeAnimatedText(
-                            'Made With ❤ by KharagEdition',
-                            speed: Duration(milliseconds: 300),
-                            textStyle: TextStyle(
-                              fontSize: 20.0,
-                              fontFamily: 'jomolhari',
-                            ),
-                            colors: [
-                              Theme.of(context).primaryColor,
-                              Colors.blue,
-                              Colors.red,
-                              Colors.black,
-                            ],
+                  padding: EdgeInsets.all(10),
+                  child: DefaultTextStyle(
+                    style: TextStyle(
+                        fontSize: 20.0, color: Theme.of(context).primaryColor),
+                    child: AnimatedTextKit(
+                      animatedTexts: [
+                        ColorizeAnimatedText(
+                          'Made With ❤ by KharagEdition',
+                          speed: Duration(milliseconds: 300),
+                          textStyle: TextStyle(
+                            fontSize: 20.0,
+                            fontFamily: 'jomolhari',
                           ),
-                        ],
-                        isRepeatingAnimation: false,
-                        onTap: () {},
-                      ),
-                    )
-                    /*Text(
-                    'Made With ❤️ by KharagEdition',
-                    style: TextStyle(fontSize: 18),
-                  ),*/
+                          colors: [
+                            Theme.of(context).primaryColor,
+                            Colors.blue,
+                            Colors.red,
+                            Colors.black,
+                          ],
+                        ),
+                      ],
+                      isRepeatingAnimation: false,
+                      onTap: () {},
                     ),
-                ListTile(
+                  ),
+                ),
+                /* ListTile(
                   leading: new Icon(
                     Icons.email_outlined,
                     color: Theme.of(context).primaryColor,
@@ -163,7 +158,7 @@ class ApplicationUtil {
                     launchEmail(AppConstant.EMAIL, AppConstant.SUBJECT);
                     Navigator.pop(context);
                   },
-                ),
+                ),*/
                 ListTile(
                   leading: new Icon(
                     Icons.share,
