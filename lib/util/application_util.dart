@@ -109,12 +109,12 @@ class ApplicationUtil {
     }
   }
 
-  static void showAboutUs(BuildContext context) {
+  static void showAboutUs(BuildContext ctx) {
     showModalBottomSheet(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
-        context: context,
+        context: ctx,
         builder: (context) {
           return Container(
             padding: EdgeInsets.all(10),

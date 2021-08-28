@@ -1,0 +1,24 @@
+{
+     "language": "English",
+      "learnLangauge": "Learn",
+      "practiceLanguage": "Practice",
+      "useCases": "Use Words",
+      "thirtyConsonant":"Tibetan 30 consonants",
+      "fourVowels":"Four Vowels",
+      "fivePrefixes":"five Prefixes",
+      "tenSuffixes":"Ten Suffixes",
+      "twoPostFixes":"Two Postfixes",
+      "ragoSurmounted":"12 Rango Surmounted",
+      "lagoSurmounted":"10 Lango Surmounted",
+      "sagoSarmounted":"11 Sago Surmounted",
+      "yatakSubJoin":"7 Yatak Subjoined",
+      "ratakSubJoined":"12 Ratak Subjoined",
+      "latakSubJoined":"6 Latak Subjoined",
+      "verb":"Verbs",
+      "pronoun":"Pronoun",
+      "greeting":"Greetings",
+      "color":"Colors",
+      "family":"Family",
+      "number":"Numbers"
+
+}

@@ -1,0 +1,23 @@
+{
+    "language": "Tibetan",
+    "learnLangauge": "སྐད་ཡིག་སྦྱོང།",
+    "practiceLanguage": "སྦྱོང་བརྡར་བྱེད།",
+    "useCases": "བེད་སྤྱོད་བྱེད།",
+    "thirtyConsonant":"གསལ་བྱེད་སུམ་ཅུ།",
+    "fourVowels":"དབྱངས་བཞི།",
+    "fivePrefixes":"སྔོན་འཇུག་ལྔ།",
+    "tenSuffixes":"རྗེས་འཇུག་བཅུ།",
+    "twoPostFixes":"ཡང་འཇུག་གཉིས།",
+    "ragoSurmounted":"ར་མགོ་བཅུ་གཉིས།",
+    "lagoSurmounted":"ལ་མགོ་བཅུ།",
+    "sagoSarmounted":"ས་མགོ་བཅུ་གཅིག།",
+    "yatakSubJoin":"ཡ་བཏགས་བདུན།",
+    "ratakSubJoined":"ར་བཏགས་བཅུ་གཉིས།",
+    "latakSubJoined":"ལ་བཏགས་དྲུག།",
+    "verb":"མིང་ཚིག།",
+    "pronoun":"མིང་ཚབ།",
+    "greeting":"འཚམས་འདྲི།",
+    "color":"ཚོན་མདོག།",
+    "family":"ནང་ཚང།",
+    "number":"ཨང་ཀི།"
+}

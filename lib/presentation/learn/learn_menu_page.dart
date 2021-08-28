@@ -7,6 +7,7 @@ import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_lis
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LearnMenuPage extends StatefulWidget {
   static const routeName = "/learn-menu-page";
@@ -20,6 +21,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
   late BannerAd myBanner;
   late BannerAdListener listener;
   late AdWidget adWidget;
+  double menuFontSize = 30;
   @override
   void initState() {
     listener = BannerAdListener(
@@ -47,6 +49,12 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    if (locale.languageCode == "bo") {
+      menuFontSize = 30;
+    } else {
+      menuFontSize = 24;
+    }
     return Scaffold(
       body: Stack(
         alignment: Alignment.topRight,
@@ -112,9 +120,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'གསལ་བྱེད་སུམ་ཅུ།',
+            AppLocalizations.of(context)!.thirtyConsonant,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -128,9 +136,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'དབྱངས་བཞི།',
+            AppLocalizations.of(context)!.fourVowels,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -145,9 +153,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'སྔོན་འཇུག་ལྔ།',
+            AppLocalizations.of(context)!.fivePrefixes,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -162,9 +170,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'རྗེས་འཇུག་བཅུ།',
+            AppLocalizations.of(context)!.tenSuffixes,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -179,9 +187,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ཡང་འཇུག་གཉིས།',
+            AppLocalizations.of(context)!.twoPostFixes,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -195,9 +203,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ར་མགོ་བཅུ་གཉིས།',
+            AppLocalizations.of(context)!.ragoSurmounted,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -211,9 +219,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ལ་མགོ་བཅུ།',
+            AppLocalizations.of(context)!.lagoSurmounted,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -227,9 +235,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ས་མགོ་བཅུ་གཅིག།',
+            AppLocalizations.of(context)!.sagoSarmounted,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -243,9 +251,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ཡ་བཏགས་བདུན།',
+            AppLocalizations.of(context)!.yatakSubJoin,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -259,9 +267,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ར་བཏགས་བཅུ་གཉིས།',
+            AppLocalizations.of(context)!.ratakSubJoined,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),
@@ -275,9 +283,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
-            'ལ་བཏགས་དྲུག།',
+            AppLocalizations.of(context)!.latakSubJoined,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 30, color: Colors.white),
+            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
           ),
         ),
       ),

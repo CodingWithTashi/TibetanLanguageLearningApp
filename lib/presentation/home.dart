@@ -1,16 +1,13 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
+import 'package:tibetan_language_learning_app/presentation/widget/language_widget.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  double menuFontSize = 22;
   double _buttonOpacity = 0;
   bool isExtended = false;
   late BannerAd myBanner;
@@ -64,15 +62,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = Localizations.localeOf(context);
+    if (locale.languageCode == "bo") {
+      menuFontSize = 22;
+    } else {
+      menuFontSize = 20;
+    }
     return Scaffold(
         body: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             _getBackgroundImage(),
-            _getAppName(),
             _getButtons(),
             _getBottomSheetButton(),
             _topBannerAds(),
+            _languageSwitch(),
           ],
         ),
         floatingActionButton: _getHomeFab());
@@ -106,11 +110,13 @@ class _HomePageState extends State<HomePage> {
           duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
           opacity: _buttonOpacity,
           child: Container(
+            width: 200,
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
-              'སྐད་ཡིག་སྦྱོང།',
-              style: TextStyle(fontSize: 22, color: Colors.white),
+              AppLocalizations.of(context)!.learnLangauge,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
             ),
           ),
         ),
@@ -124,11 +130,13 @@ class _HomePageState extends State<HomePage> {
           duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
           opacity: _buttonOpacity,
           child: Container(
+            width: 200,
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
-              'སྦྱོང་བརྡར་བྱེད།',
-              style: TextStyle(fontSize: 22, color: Colors.white),
+              AppLocalizations.of(context)!.practiceLanguage,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
             ),
           ),
         ),
@@ -201,17 +209,17 @@ class _HomePageState extends State<HomePage> {
             )),
       );
 
-  _topBannerAds() => !kIsWeb
-      ? Positioned(
-          top: 40,
-          child: Container(
-            alignment: Alignment.center,
-            child: adWidget,
-            width: myBanner.size.width.toDouble(),
-            height: myBanner.size.height.toDouble(),
-          ),
-        )
-      : Container();
+  _topBannerAds() => Positioned(
+        top: 40,
+        child: !kIsWeb
+            ? Container(
+                alignment: Alignment.center,
+                child: adWidget,
+                width: myBanner.size.width.toDouble(),
+                height: myBanner.size.height.toDouble(),
+              )
+            : Container(),
+      );
 
   _useCasesButtons() => InkWell(
         onTap: () {
@@ -221,41 +229,21 @@ class _HomePageState extends State<HomePage> {
           duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
           opacity: _buttonOpacity,
           child: Container(
+            width: 200,
             padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
-              'བེད་སྤྱོད་བྱེད།',
-              style: TextStyle(fontSize: 22, color: Colors.white),
+              AppLocalizations.of(context)!.useCases,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
             ),
           ),
         ),
       );
 
-  _getAppName() => Positioned(
-        top: 10,
-        child: Container(
-          width: 290,
-          height: 290,
-          child: Stack(
-            children: [
-              FlareActor(
-                'assets/flr/circle_animation.flr',
-                animation: 'Alarm',
-                color: Theme.of(context).primaryColor.withOpacity(0.5),
-              ),
-              Center(
-                child: Text(
-                  //'Learn\nTibetan',
-                  'སྐད་ཡིག་ནི་མི་རིགས་\nཀྱི་སྲོག་རྩ་ཡིན།',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+  _languageSwitch() => Positioned(
+        top: 20,
+        right: 20,
+        child: LanguageWidget(),
       );
 }

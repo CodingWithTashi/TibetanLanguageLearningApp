@@ -34,9 +34,12 @@ dependencies:
   share_plus: 2.1.4
   animated_text_kit: 4.2.1
   google_mobile_ads: 0.13.3
-  flare_flutter: 3.0.2
   get_it: 7.2.0
   equatable: 2.0.3
+
+  flutter_localizations:
+    sdk: flutter
+  intl: 0.17.0
 
 dev_dependencies:
   flutter_test:
@@ -66,13 +69,13 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
     - assets/audio/
     - assets/audio/words/
-    - assets/flr/
     - assets/others/
     - assets/
   # An image asset can refer to one or more resolution-specific "variants", see

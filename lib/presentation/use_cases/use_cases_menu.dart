@@ -4,6 +4,7 @@ import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_lis
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UseCaseMenuPage extends StatefulWidget {
   static const routeName = "/use-cases-menu";
@@ -82,7 +83,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
                   height: 80,
                 ),
                 Text(
-                  'མིང་ཚིག།',
+                  AppLocalizations.of(context)!.verb,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
@@ -110,7 +111,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
               ),
               Text(
                 //'Pronouns',
-                'མིང་ཚབ།',
+                AppLocalizations.of(context)!.pronoun,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
@@ -139,7 +140,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
               ),
               Text(
                 //'Greetings',
-                'འཚམས་འདྲི།',
+                AppLocalizations.of(context)!.greeting,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
@@ -168,7 +169,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
               ),
               Text(
                 //'Colors',
-                'ཚོན་མདོག།',
+                AppLocalizations.of(context)!.color,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
@@ -197,7 +198,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
               ),
               Text(
                 //'Family',
-                'ནང་ཚང།',
+                AppLocalizations.of(context)!.family,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
@@ -226,7 +227,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
               ),
               Text(
                 //'Numbers',
-                'ཨང་ཀི།',
+                AppLocalizations.of(context)!.number,
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 24, color: Colors.white),
               ),
