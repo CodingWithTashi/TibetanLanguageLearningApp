@@ -2,7 +2,7 @@
      "language": "English",
       "learnLangauge": "Learn",
       "practiceLanguage": "Practice",
-      "useCases": "Use Words",
+      "useCases": "Use Cases",
       "thirtyConsonant":"Tibetan 30 consonants",
       "fourVowels":"Four Vowels",
       "fivePrefixes":"five Prefixes",
@@ -19,6 +19,7 @@
       "greeting":"Greetings",
       "color":"Colors",
       "family":"Family",
-      "number":"Numbers"
+      "number":"Numbers",
+      "playGame":"Games"
 
 }

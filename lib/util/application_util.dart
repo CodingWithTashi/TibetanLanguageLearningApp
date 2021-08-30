@@ -148,7 +148,7 @@ class ApplicationUtil {
                     ),
                   ),
                 ),
-                /* ListTile(
+                ListTile(
                   leading: new Icon(
                     Icons.email_outlined,
                     color: Theme.of(context).primaryColor,
@@ -158,7 +158,7 @@ class ApplicationUtil {
                     launchEmail(AppConstant.EMAIL, AppConstant.SUBJECT);
                     Navigator.pop(context);
                   },
-                ),*/
+                ),
                 ListTile(
                   leading: new Icon(
                     Icons.share,

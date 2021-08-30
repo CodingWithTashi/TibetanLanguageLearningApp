@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   double _buttonOpacity = 0;
   bool isExtended = false;
   late BannerAd myBanner;
+  late RewardedAd myRewarded;
   late BannerAdListener listener;
   late AdWidget adWidget;
 
@@ -30,33 +31,8 @@ class _HomePageState extends State<HomePage> {
       _buttonOpacity = 1;
       setState(() {});
     });
-
-    listener = BannerAdListener(
-      // Called when an ad is successfully received.
-      onAdLoaded: (Ad ad) => print('Ad loaded.'),
-      // Called when an ad request failed.
-      onAdFailedToLoad: (Ad ad, LoadAdError error) {
-        // Dispose the ad here to free resources.
-        ad.dispose();
-        print('Ad failed to load: $error');
-      },
-      // Called when an ad opens an overlay that covers the screen.
-      onAdOpened: (Ad ad) => print('Ad opened.'),
-      // Called when an ad removes an overlay that covers the screen.
-      onAdClosed: (Ad ad) => print('Ad closed.'),
-      // Called when an impression occurs on the ad.
-      onAdImpression: (Ad ad) => print('Ad impression.'),
-    );
-    myBanner = BannerAd(
-      adUnitId: AppConstant.TEST_UNIT_ID,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: listener,
-    );
-    if (!kIsWeb) {
-      adWidget = AdWidget(ad: myBanner);
-      myBanner.load();
-    }
+    _loadRewardedAd();
+    initBannerAds();
     super.initState();
   }
 
@@ -69,17 +45,18 @@ class _HomePageState extends State<HomePage> {
       menuFontSize = 20;
     }
     return Scaffold(
-        body: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            _getBackgroundImage(),
-            _getButtons(),
-            _getBottomSheetButton(),
-            _topBannerAds(),
-            _languageSwitch(),
-          ],
-        ),
-        floatingActionButton: _getHomeFab());
+      body: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          _getBackgroundImage(),
+          _getButtons(),
+          _getBottomSheetButton(),
+          _topBannerAds(),
+          _languageSwitch(),
+        ],
+      ),
+      //floatingActionButton: _getHomeFab(),
+    );
   }
 
   _getButtons() => Positioned(
@@ -144,8 +121,12 @@ class _HomePageState extends State<HomePage> {
 
   _getHomeFab() => FloatingActionButton.extended(
         onPressed: () {
-          isExtended = !isExtended;
-          setState(() {});
+          //isExtended = !isExtended;
+          if (!isExtended) {
+            playVideoAds();
+          }
+          playVideoAds();
+          //setState(() {});
         },
         label: AnimatedSwitcher(
           duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
@@ -167,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                       child: Icon(Icons.play_arrow),
                     ),
                     Text(
-                      "རྩེད་མོ་རྩེ།",
+                      AppLocalizations.of(context)!.playGame,
                       style: TextStyle(fontSize: 16),
                     )
                   ],
@@ -210,7 +191,7 @@ class _HomePageState extends State<HomePage> {
       );
 
   _topBannerAds() => Positioned(
-        top: 40,
+        top: MediaQuery.of(context).padding.top + 70,
         child: !kIsWeb
             ? Container(
                 alignment: Alignment.center,
@@ -242,8 +223,74 @@ class _HomePageState extends State<HomePage> {
       );
 
   _languageSwitch() => Positioned(
-        top: 20,
+        top: MediaQuery.of(context).padding.top,
         right: 20,
         child: LanguageWidget(),
       );
+
+  void playVideoAds() {
+    myRewarded.show(onUserEarnedReward: (RewardedAd ad, RewardItem rewardItem) {
+      print('user earned');
+      Navigator.pushNamed(context, LearnMenuPage.routeName);
+    }).catchError((e) => print("error in showing ad: ${e.toString()}"));
+    myRewarded.fullScreenContentCallback = FullScreenContentCallback(
+      onAdShowedFullScreenContent: (RewardedAd ad) =>
+          print('$ad onAdShowedFullScreenContent.'),
+      onAdDismissedFullScreenContent: (RewardedAd ad) {
+        print('$ad onAdDismissedFullScreenContent.');
+        ad.dispose();
+      },
+      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
+        print('$ad onAdFailedToShowFullScreenContent: $error');
+        ad.dispose();
+      },
+      onAdImpression: (RewardedAd ad) => print('$ad impression occurred.'),
+    );
+  }
+
+  void _loadRewardedAd() {
+    RewardedAd.load(
+        adUnitId: 'ca-app-pub-3940256099942544/5224354917',
+        request: AdRequest(),
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
+          onAdLoaded: (RewardedAd ad) {
+            print('$ad loaded.');
+            // Keep a reference to the ad so you can show it later.
+            this.myRewarded = ad;
+          },
+          onAdFailedToLoad: (LoadAdError error) {
+            print('RewardedAd failed to load: $error');
+            _loadRewardedAd();
+          },
+        ));
+  }
+
+  void initBannerAds() {
+    listener = BannerAdListener(
+      // Called when an ad is successfully received.
+      onAdLoaded: (Ad ad) => print('Ad loaded.'),
+      // Called when an ad request failed.
+      onAdFailedToLoad: (Ad ad, LoadAdError error) {
+        // Dispose the ad here to free resources.
+        ad.dispose();
+        print('Ad failed to load: $error');
+      },
+      // Called when an ad opens an overlay that covers the screen.
+      onAdOpened: (Ad ad) => print('Ad opened.'),
+      // Called when an ad removes an overlay that covers the screen.
+      onAdClosed: (Ad ad) => print('Ad closed.'),
+      // Called when an impression occurs on the ad.
+      onAdImpression: (Ad ad) => print('Ad impression.'),
+    );
+    myBanner = BannerAd(
+      adUnitId: AppConstant.TEST_UNIT_ID,
+      size: AdSize.banner,
+      request: AdRequest(),
+      listener: listener,
+    );
+    if (!kIsWeb) {
+      adWidget = AdWidget(ad: myBanner);
+      myBanner.load();
+    }
+  }
 }
