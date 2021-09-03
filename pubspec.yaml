@@ -36,6 +36,8 @@ dependencies:
   google_mobile_ads: 0.13.3
   get_it: 7.2.0
   equatable: 2.0.3
+  firebase_crashlytics: ^2.2.1
+  firebase_core: ^1.6.0
 
   flutter_localizations:
     sdk: flutter
