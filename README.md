@@ -2,15 +2,18 @@
 
 Tibetan Language Learning App
 
+## First released is published in play store...   
+
+Tibetan Languae learning app 
+
 ## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+| <img src="https://github.com/CodingWithTashi/TibetanLanguageLearningApp/blob/master/demo/home.jpeg?raw=true" width="300" height="600" /> | <img src="https://github.com/CodingWithTashi/TibetanLanguageLearningApp/blob/master/demo/alphabet.jpeg?raw=true" width="300" height="600" /> |
+| :------------: | :------------: |   
+| **HomeScreen** | **Alphabet Screen** |
+| <img src="https://github.com/CodingWithTashi/TibetanLanguageLearningApp/blob/master/demo/practice.jpeg?raw=true" width="300" height="600" /> | <img src="https://github.com/CodingWithTashi/TibetanLanguageLearningApp/blob/master/demo/word.jpeg?raw=true" width="300" height="600" /> |
+| **Practice Screen** | **Words Screen** |
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+[Download App](https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
