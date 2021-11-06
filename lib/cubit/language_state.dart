@@ -11,5 +11,6 @@ class LanguageLoading extends LanguageState {
 
 class LanguageLoaded extends LanguageState {
   final Locale locale;
-  LanguageLoaded({required this.locale});
+  final String familyName;
+  LanguageLoaded({required this.locale, required this.familyName});
 }

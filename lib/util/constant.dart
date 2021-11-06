@@ -29,6 +29,8 @@ class AlphabetType {
 }
 
 class AppConstant {
+  static const String JOMAHALI_FAMILY = 'jomolhari';
+  static const String TSUTUNG_FAMILY = 'tsutong';
   static const String CONTACT_US = 'Contact Us';
   static const String EMAIL = 'developer.kharag@gmail.com';
   static const String SUBJECT = 'Feedback & report';
@@ -46,6 +48,8 @@ class AppConstant {
       'http://www.digitaltibetan.org/cgi-bin/phugpa.pl';
   static const String APP_URL =
       'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
+  static const String VIEW_ON_WEB = 'Open Web App';
+  static const String WEB_URL = "https://tibetanlanguagelearningapp.web.app/#/";
 
   static List<Verb> verbsList = [
     Verb(fileName: 'apple', word: 'ཀུ་ཤུ།'),
@@ -344,36 +348,36 @@ class AppConstant {
 
   static List<Alphabet> _alphabetList() {
     return [
-      Alphabet(fileName: 'ka', alphabetName: 'ཀ'),
-      Alphabet(fileName: 'kha', alphabetName: 'ཁ'),
-      Alphabet(fileName: 'ga', alphabetName: 'ག'),
-      Alphabet(fileName: 'nga', alphabetName: 'ང'),
-      Alphabet(fileName: 'ca', alphabetName: 'ཅ'),
-      Alphabet(fileName: 'cha', alphabetName: 'ཆ'),
-      Alphabet(fileName: 'ja', alphabetName: 'ཇ'),
-      Alphabet(fileName: 'nya', alphabetName: 'ཉ'),
-      Alphabet(fileName: 'ta', alphabetName: 'ཏ'),
-      Alphabet(fileName: 'tha', alphabetName: 'ཐ'),
-      Alphabet(fileName: 'da', alphabetName: 'ད'),
-      Alphabet(fileName: 'na', alphabetName: 'ན'),
-      Alphabet(fileName: 'pa', alphabetName: 'པ'),
-      Alphabet(fileName: 'pha', alphabetName: 'ཕ'),
-      Alphabet(fileName: 'ba', alphabetName: 'བ'),
-      Alphabet(fileName: 'ma', alphabetName: 'མ'),
-      Alphabet(fileName: 'tsa', alphabetName: 'ཙ'),
-      Alphabet(fileName: 'tsha', alphabetName: 'ཚ'),
-      Alphabet(fileName: 'dza', alphabetName: 'ཛ'),
-      Alphabet(fileName: 'wa', alphabetName: 'ཝ'),
-      Alphabet(fileName: 'jha', alphabetName: 'ཞ'),
-      Alphabet(fileName: 'za', alphabetName: 'ཟ'),
-      Alphabet(fileName: 'yya', alphabetName: 'འ'),
-      Alphabet(fileName: 'ya', alphabetName: 'ཡ'),
-      Alphabet(fileName: 'ra', alphabetName: 'ར'),
-      Alphabet(fileName: 'la', alphabetName: 'ལ'),
-      Alphabet(fileName: 'sha', alphabetName: 'ཤ'),
-      Alphabet(fileName: 'sa', alphabetName: 'ས'),
-      Alphabet(fileName: 'ha', alphabetName: 'ཧ'),
-      Alphabet(fileName: 'aa', alphabetName: 'ཨ'),
+      Alphabet(fileName: 'ka', alphabetName: 'ཀ་'),
+      Alphabet(fileName: 'kha', alphabetName: 'ཁ་'),
+      Alphabet(fileName: 'ga', alphabetName: 'ག་'),
+      Alphabet(fileName: 'nga', alphabetName: 'ང་'),
+      Alphabet(fileName: 'ca', alphabetName: 'ཅ་'),
+      Alphabet(fileName: 'cha', alphabetName: 'ཆ་'),
+      Alphabet(fileName: 'ja', alphabetName: 'ཇ་'),
+      Alphabet(fileName: 'nya', alphabetName: 'ཉ་'),
+      Alphabet(fileName: 'ta', alphabetName: 'ཏ་'),
+      Alphabet(fileName: 'tha', alphabetName: 'ཐ་'),
+      Alphabet(fileName: 'da', alphabetName: 'ད་'),
+      Alphabet(fileName: 'na', alphabetName: 'ན་'),
+      Alphabet(fileName: 'pa', alphabetName: 'པ་'),
+      Alphabet(fileName: 'pha', alphabetName: 'ཕ་'),
+      Alphabet(fileName: 'ba', alphabetName: 'བ་'),
+      Alphabet(fileName: 'ma', alphabetName: 'མ་'),
+      Alphabet(fileName: 'tsa', alphabetName: 'ཙ་'),
+      Alphabet(fileName: 'tsha', alphabetName: 'ཚ་'),
+      Alphabet(fileName: 'dza', alphabetName: 'ཛ་'),
+      Alphabet(fileName: 'wa', alphabetName: 'ཝ་'),
+      Alphabet(fileName: 'jha', alphabetName: 'ཞ་'),
+      Alphabet(fileName: 'za', alphabetName: 'ཟ་'),
+      Alphabet(fileName: 'yya', alphabetName: 'འ་'),
+      Alphabet(fileName: 'ya', alphabetName: 'ཡ་'),
+      Alphabet(fileName: 'ra', alphabetName: 'ར་'),
+      Alphabet(fileName: 'la', alphabetName: 'ལ་'),
+      Alphabet(fileName: 'sha', alphabetName: 'ཤ་'),
+      Alphabet(fileName: 'sa', alphabetName: 'ས་'),
+      Alphabet(fileName: 'ha', alphabetName: 'ཧ་'),
+      Alphabet(fileName: 'aa', alphabetName: 'ཨ་'),
     ];
   }
 

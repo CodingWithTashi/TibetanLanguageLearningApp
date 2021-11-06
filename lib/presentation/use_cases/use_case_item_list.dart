@@ -46,6 +46,7 @@ class _UseCaseItemListState extends State<UseCaseItemList> {
         ),
       );
   _getAnimatedAlphabetListWidget() => Container(
+        constraints: BoxConstraints(maxWidth: 500),
         width: double.infinity,
         height: double.infinity,
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),

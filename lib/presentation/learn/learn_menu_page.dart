@@ -24,23 +24,23 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
   double menuFontSize = 30;
   @override
   void initState() {
-    listener = BannerAdListener(
-      onAdLoaded: (Ad ad) => print('Ad loaded.'),
-      onAdFailedToLoad: (Ad ad, LoadAdError error) {
-        ad.dispose();
-        print('Ad failed to load: $error');
-      },
-      onAdOpened: (Ad ad) => print('Ad opened.'),
-      onAdClosed: (Ad ad) => print('Ad closed.'),
-      onAdImpression: (Ad ad) => print('Ad impression.'),
-    );
-    myBanner = BannerAd(
-      adUnitId: AppConstant.TEST_UNIT_ID,
-      size: AdSize.banner,
-      request: AdRequest(),
-      listener: listener,
-    );
     if (!kIsWeb) {
+      listener = BannerAdListener(
+        onAdLoaded: (Ad ad) => print('Ad loaded.'),
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          ad.dispose();
+          print('Ad failed to load: $error');
+        },
+        onAdOpened: (Ad ad) => print('Ad opened.'),
+        onAdClosed: (Ad ad) => print('Ad closed.'),
+        onAdImpression: (Ad ad) => print('Ad impression.'),
+      );
+      myBanner = BannerAd(
+        adUnitId: AppConstant.TEST_UNIT_ID,
+        size: AdSize.banner,
+        request: AdRequest(),
+        listener: listener,
+      );
       adWidget = AdWidget(ad: myBanner);
       myBanner.load();
     }
@@ -72,6 +72,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
             ),
           ),
           Container(
+            constraints: BoxConstraints(maxWidth: 500),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),

@@ -35,6 +35,7 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
             ),
           ),
           Container(
+            constraints: BoxConstraints(maxWidth: 500),
             width: double.infinity,
             height: double.infinity,
             child: SingleChildScrollView(

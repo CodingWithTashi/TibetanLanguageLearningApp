@@ -38,6 +38,7 @@ dependencies:
   equatable: 2.0.3
   firebase_crashlytics: ^2.2.1
   firebase_core: ^1.6.0
+  shared_preferences: ^2.0.6
 
   flutter_localizations:
     sdk: flutter
@@ -95,6 +96,9 @@ flutter:
     - family: jomolhari
       fonts:
         - asset: assets/fonts/jomolhari-regular.ttf
+    - family: tsutong
+      fonts:
+        - asset: assets/fonts/qomolangma-tsutong.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

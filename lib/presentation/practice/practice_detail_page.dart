@@ -19,6 +19,7 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
   var controller;
   var selectedPageIndex = 0;
   var pageView;
+  double screenHeight = 0.0;
 
   List<Alphabet> alphabetList =
       AppConstant.getAlphabetList(getIt<AlphabetType>().type);
@@ -40,32 +41,33 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).padding.top,
-                ),
-                Container(
-                  height: 220,
-                  child: pageView,
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  height: 450,
-                  decoration: ApplicationUtil.getBoxDecorationOne(context),
-                  child: DrawingPage(),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-              ],
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).padding.top,
+                  ),
+                  Container(
+                    height: screenHeight / 2 - 120,
+                    child: pageView,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    height: screenHeight / 2 + 10,
+                    decoration: ApplicationUtil.getBoxDecorationOne(context),
+                    child: DrawingPage(),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

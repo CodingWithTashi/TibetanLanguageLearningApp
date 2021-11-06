@@ -41,6 +41,7 @@ class _VerbListPageState extends State<VerbListPage> {
             ),
           ),
           Container(
+            constraints: BoxConstraints(maxWidth: 500),
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top,
             ),
@@ -51,7 +52,7 @@ class _VerbListPageState extends State<VerbListPage> {
                 ),
                 crossAxisSpacing: 30,
                 mainAxisSpacing: 10,
-                crossAxisCount: kIsWeb ? 3 : 2,
+                crossAxisCount: 2,
                 children: List.generate(
                   verbsList.length,
                   (int index) {
@@ -94,15 +95,19 @@ class _VerbListPageState extends State<VerbListPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(
-                  ApplicationUtil.getImagePath(verb.fileName),
-                  height: 40,
-                  width: 40,
+                Expanded(
+                  child: Image.asset(
+                    ApplicationUtil.getImagePath(verb.fileName),
+                    height: 40,
+                    width: 40,
+                  ),
                 ),
-                Text(
-                  verb.word,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30, color: Colors.white),
+                Expanded(
+                  child: Text(
+                    verb.word,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 30, color: Colors.white),
+                  ),
                 ),
               ],
             ),

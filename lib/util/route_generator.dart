@@ -6,6 +6,7 @@ import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/model/word.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
+import 'package:tibetan_language_learning_app/presentation/language_type_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
@@ -24,6 +25,10 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
+        return MaterialPageRoute(
+          builder: (_) => LanguageTypePage(),
+        );
+      case HomePage.routeName:
         return MaterialPageRoute(
           builder: (_) => HomePage(),
         );

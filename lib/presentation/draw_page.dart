@@ -38,7 +38,7 @@ class _DrawingPageState extends State<DrawingPage> {
             ),
             Container(
                 padding: EdgeInsets.all(5),
-                height: 350,
+                height: MediaQuery.of(context).size.height / 2 - 90,
                 child: Painter(_controller))
           ],
         ),

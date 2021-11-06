@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -29,19 +30,19 @@ class ApplicationUtil {
 
   static getBoxDecorationTwo(BuildContext context) {
     return BoxDecoration(
-      color: Theme.of(context).primaryColor,
+      color: Colors.white,
       borderRadius: BorderRadius.circular(20),
       boxShadow: [
         BoxShadow(
-            color: Colors.black,
-            offset: Offset(5, 3),
-            spreadRadius: 4,
-            blurRadius: 15),
-        BoxShadow(
-            color: Theme.of(context).primaryColorLight.withOpacity(0.3),
-            offset: Offset(-5, -5),
-            spreadRadius: -3,
+            color: Colors.white70.withOpacity(0.3),
+            offset: Offset(5, 5),
+            spreadRadius: 3,
             blurRadius: 20),
+        BoxShadow(
+            color: Colors.black,
+            offset: Offset(-5, -3),
+            spreadRadius: -4,
+            blurRadius: 15),
       ],
     );
   }
@@ -111,6 +112,7 @@ class ApplicationUtil {
 
   static void showAboutUs(BuildContext ctx) {
     showModalBottomSheet(
+        isScrollControlled: true,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -148,6 +150,19 @@ class ApplicationUtil {
                     ),
                   ),
                 ),
+                !kIsWeb
+                    ? ListTile(
+                        leading: new Icon(
+                          Icons.language_outlined,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        title: new Text(AppConstant.VIEW_ON_WEB),
+                        onTap: () {
+                          ApplicationUtil.launchInBrowser(AppConstant.WEB_URL);
+                          Navigator.pop(context);
+                        },
+                      )
+                    : Container(),
                 ListTile(
                   leading: new Icon(
                     Icons.email_outlined,
@@ -196,16 +211,18 @@ class ApplicationUtil {
                     Navigator.pop(context);
                   },
                 ),
-                ListTile(
-                  leading: new Icon(
-                    Icons.close,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text('Exit'),
-                  onTap: () {
-                    SystemNavigator.pop();
-                  },
-                ),
+                !kIsWeb
+                    ? ListTile(
+                        leading: new Icon(
+                          Icons.close,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        title: new Text('Exit'),
+                        onTap: () {
+                          SystemNavigator.pop();
+                        },
+                      )
+                    : Container(),
               ],
             ),
           );

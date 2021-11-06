@@ -43,6 +43,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
             ),
           ),
           Container(
+            constraints: BoxConstraints(maxWidth: 500),
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top,
             ),
@@ -53,7 +54,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
                 ),
                 crossAxisSpacing: 30,
                 mainAxisSpacing: 10,
-                crossAxisCount: kIsWeb ? 3 : 2,
+                crossAxisCount: 2,
                 children: List.generate(
                   alphabetList.length,
                   (int index) {

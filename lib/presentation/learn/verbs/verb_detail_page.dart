@@ -41,27 +41,30 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        child: Center(
-          child: SingleChildScrollView(
-            /*physics:
-                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),*/
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  height: 500,
-                  child: pageView,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                AlphabetAudioControl(
-                    pathName: 'assets/audio/words/',
-                    fileName: verbsList[selectedPageIndex].fileName)
-              ],
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Center(
+            child: SingleChildScrollView(
+              /*physics:
+                  BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),*/
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 500,
+                    child: pageView,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  AlphabetAudioControl(
+                      pathName: 'assets/audio/words/',
+                      fileName: verbsList[selectedPageIndex].fileName)
+                ],
+              ),
             ),
           ),
         ),

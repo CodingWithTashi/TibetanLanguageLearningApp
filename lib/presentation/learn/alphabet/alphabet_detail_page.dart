@@ -43,38 +43,41 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Container(
-        child: Center(
-          child: SingleChildScrollView(
-            /*physics:
-                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),*/
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  height: 350,
-                  child: pageView,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                alphabetList[selectedPageIndex].fileName.isNotEmpty
-                    ? AlphabetAudioControl(
-                        pathName: 'assets/audio/',
-                        fileName: alphabetList[selectedPageIndex].fileName)
-                    : Container(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          'No Audio Found, We will update and let you know',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.white.withOpacity(0.5),
-                              fontSize: 20),
-                        ),
-                      )
-              ],
+      body: Center(
+        child: Container(
+          constraints: BoxConstraints(maxWidth: 500),
+          child: Center(
+            child: SingleChildScrollView(
+              /*physics:
+                  BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),*/
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 350,
+                    child: pageView,
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  alphabetList[selectedPageIndex].fileName.isNotEmpty
+                      ? AlphabetAudioControl(
+                          pathName: 'assets/audio/',
+                          fileName: alphabetList[selectedPageIndex].fileName)
+                      : Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            'No Audio Found, We will update and let you know',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white.withOpacity(0.5),
+                                fontSize: 20),
+                          ),
+                        )
+                ],
+              ),
             ),
           ),
         ),

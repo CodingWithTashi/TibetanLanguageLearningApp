@@ -10,6 +10,8 @@ import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
+  static const routeName = "/home";
+
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -31,8 +33,11 @@ class _HomePageState extends State<HomePage> {
       _buttonOpacity = 1;
       setState(() {});
     });
-    _loadRewardedAd();
-    initBannerAds();
+    if (!kIsWeb) {
+      _loadRewardedAd();
+      initBannerAds();
+    }
+
     super.initState();
   }
 
