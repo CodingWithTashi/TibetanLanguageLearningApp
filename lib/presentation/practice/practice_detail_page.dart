@@ -57,7 +57,7 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
                     height: MediaQuery.of(context).padding.top,
                   ),
                   Container(
-                    height: screenHeight / 2 - 120,
+                    height: screenHeight / 3,
                     child: pageView,
                   ),
                   Container(
@@ -96,7 +96,7 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
                     child: Text(
                       alphabetList[index].alphabetName,
-                      style: TextStyle(fontSize: 100, color: Colors.white),
+                      style: TextStyle(fontSize: 80, color: Colors.white),
                     ),
                   ),
                 ],
