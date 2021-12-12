@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/word.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
@@ -14,12 +17,29 @@ class UseCaseItemList extends StatefulWidget {
   _UseCaseItemListState createState() => _UseCaseItemListState();
 }
 
-class _UseCaseItemListState extends State<UseCaseItemList> {
+class _UseCaseItemListState extends State<UseCaseItemList>
+    with TickerProviderStateMixin {
   late List<Word> wordList;
+  late List<AnimationController> animatedIconControllerList = [];
+  late final AudioCubit cubit;
+  late final AudioPlayer player;
+  String selectedAudio = '';
+
   @override
   void initState() {
-    wordList = AppConstant.getWordList(widget.type);
+    player = AudioPlayer();
+    cubit = BlocProvider.of<AudioCubit>(context);
+    wordList = AppConstant.getWordList(widget.type, this);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    cubit.destroyAudioPlayer();
+    wordList.forEach((element) {
+      element.animationController!.dispose();
+    });
+    super.dispose();
   }
 
   @override
@@ -80,46 +100,98 @@ class _UseCaseItemListState extends State<UseCaseItemList> {
     wordList.forEach((word) {
       widgetList.add(Column(
         children: [
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              decoration: ApplicationUtil.getBoxDecorationOne(context),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            decoration: ApplicationUtil.getBoxDecorationOne(context),
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              trailing: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Container(
-                      child: Text(
-                        word.english,
-                        style: TextStyle(fontSize: 22, color: Colors.white),
-                      ),
-                    ),
-                  ),
                   Flexible(
                     child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: Text(
-                              word.tibetan,
-                              style:
-                                  TextStyle(fontSize: 28, color: Colors.white),
-                            ),
+                      height: 70,
+                      width: 70,
+                      decoration: _outerShadow(context),
+                      child: Stack(
+                        children: <Widget>[
+                          Center(
+                            child: _playerBoxShadow(context),
                           ),
-                          Container(
-                            child: Text(
-                              word.englishSound,
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
-                            ),
-                          ),
+                          Center(child: BlocBuilder<AudioCubit, AudioState>(
+                            builder: (context, state) {
+                              if (selectedAudio == word.english) {
+                                if (state is AudioPlaying) {
+                                  word.animationController!.forward();
+                                }
+                              }
+                              if (state is AudioPause ||
+                                  state is AudioStopped) {
+                                word.animationController!.reverse();
+                              }
+                              if (state is AudioLoading) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                return GestureDetector(
+                                  onTap: () async {
+                                    selectedAudio = word.english;
+                                    cubit.loadAudioByAssetPath(
+                                        assetPath: word.assetPath);
+                                    if (state is AudioLoaded ||
+                                        state is AudioStopped ||
+                                        state is AudioPause ||
+                                        state is AudioRepeatOff ||
+                                        state is AudioRepeatOn) {
+                                      cubit.playAudio();
+                                    }
+                                    if (state is AudioPlaying) {
+                                      cubit.pauseAudio();
+                                    }
+                                    /*if (player.playing) {
+                                player.stop();
+                              }
+                              await player.setAsset(word.assetPath);
+                              player.play();*/
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        shape: BoxShape.circle),
+                                    child: Center(
+                                        child: AnimatedIcon(
+                                      progress: word.animationController!,
+                                      icon: AnimatedIcons.play_pause,
+                                      size: 30,
+                                      color:
+                                          Theme.of(context).primaryColorLight,
+                                    )),
+                                  ),
+                                );
+                              }
+                            },
+                          )),
                         ],
                       ),
                     ),
                   ),
+                ],
+              ),
+              title: Text(
+                word.tibetan,
+                style:
+                    TextStyle(fontSize: 25, color: Colors.white, height: 1.2),
+              ),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    word.english,
+                    style: TextStyle(
+                        fontSize: 18, color: Colors.white, height: 1.2),
+                  )
                 ],
               ),
             ),
@@ -132,4 +204,40 @@ class _UseCaseItemListState extends State<UseCaseItemList> {
     });
     return widgetList;
   }
+
+  _playerBoxShadow(BuildContext context) => Container(
+        margin: EdgeInsets.all(6),
+        decoration: BoxDecoration(
+            color: Colors.grey,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+                  offset: Offset(5, 10),
+                  spreadRadius: 3,
+                  blurRadius: 10),
+              BoxShadow(
+                  color: Colors.black,
+                  offset: Offset(-3, -4),
+                  spreadRadius: -2,
+                  blurRadius: 20)
+            ]),
+      );
+
+  _outerShadow(BuildContext context) => BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+              color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+              offset: Offset(5, 10),
+              spreadRadius: 3,
+              blurRadius: 10),
+          BoxShadow(
+              color: Colors.black,
+              offset: Offset(-3, -4),
+              spreadRadius: -2,
+              blurRadius: 20)
+        ],
+      );
 }

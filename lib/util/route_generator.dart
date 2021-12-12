@@ -114,8 +114,12 @@ class RouteGenerator {
         {
           if (settings.arguments != null && settings.arguments is UseCaseType) {
             return MaterialPageRoute(
-              builder: (_) => UseCaseItemList(
-                type: settings.arguments as UseCaseType,
+              builder: (_) => BlocProvider<AudioCubit>(
+                create: (context) =>
+                    AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+                child: UseCaseItemList(
+                  type: settings.arguments as UseCaseType,
+                ),
               ),
             );
           }

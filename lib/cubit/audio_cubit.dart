@@ -26,6 +26,18 @@ class AudioCubit extends Cubit<AudioState> {
     }
   }
 
+  Future<void> loadAudioByAssetPath({required String assetPath}) async {
+    try {
+      emit(AudioLoading());
+      audioPlayer =
+          await audioService.loadAudioFromAssetPath(assetPath, audioPlayer);
+      emit(AudioLoaded(audioPlayer));
+      //listenToAudio();
+    } on AudioException catch (e) {
+      print(e.error());
+    }
+  }
+
   Future<void> playAudio() async {
     await audioPlayer.play();
   }

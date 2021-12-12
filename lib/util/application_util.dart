@@ -7,7 +7,7 @@ import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ApplicationUtil {
-  static const ANIMATION_DURATION = 500;
+  static const ANIMATION_DURATION = 300;
 
   static getBoxDecorationOne(BuildContext context) {
     return BoxDecoration(
@@ -127,14 +127,14 @@ class ApplicationUtil {
                   padding: EdgeInsets.all(10),
                   child: DefaultTextStyle(
                     style: TextStyle(
-                        fontSize: 20.0, color: Theme.of(context).primaryColor),
+                        fontSize: 18.0, color: Theme.of(context).primaryColor),
                     child: AnimatedTextKit(
                       animatedTexts: [
                         ColorizeAnimatedText(
                           'Made With ❤ by KharagEdition',
                           speed: Duration(milliseconds: 300),
                           textStyle: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 18.0,
                             fontFamily: 'jomolhari',
                           ),
                           colors: [
@@ -149,6 +149,19 @@ class ApplicationUtil {
                       onTap: () {},
                     ),
                   ),
+                ),
+                Divider(),
+                ListTile(
+                  leading: new Icon(
+                    Icons.apps,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text('More App from Kharag'),
+                  onTap: () {
+                    ApplicationUtil.launchInBrowser(AppConstant.MORE_URL);
+
+                    Navigator.pop(context);
+                  },
                 ),
                 !kIsWeb
                     ? ListTile(
@@ -176,19 +189,6 @@ class ApplicationUtil {
                 ),
                 ListTile(
                   leading: new Icon(
-                    Icons.share,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  title: new Text('Share'),
-                  onTap: () {
-                    Share.share(AppConstant.SHARE_URL,
-                        subject:
-                            'Check out this Tibetan Language Learning  App.');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  leading: new Icon(
                     Icons.star_rate,
                     color: Theme.of(context).primaryColor,
                   ),
@@ -201,13 +201,14 @@ class ApplicationUtil {
                 ),
                 ListTile(
                   leading: new Icon(
-                    Icons.apps,
+                    Icons.share,
                     color: Theme.of(context).primaryColor,
                   ),
-                  title: new Text('More App from Kharag'),
+                  title: new Text('Share'),
                   onTap: () {
-                    ApplicationUtil.launchInBrowser(AppConstant.MORE_URL);
-
+                    Share.share(AppConstant.SHARE_URL,
+                        subject:
+                            'Check out this Tibetan Language Learning  App.');
                     Navigator.pop(context);
                   },
                 ),

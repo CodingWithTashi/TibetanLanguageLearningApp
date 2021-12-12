@@ -13,4 +13,14 @@ class AudioService {
     }
     return audioPlayer;
   }
+
+  Future<AudioPlayer> loadAudioFromAssetPath(
+      String assetPath, AudioPlayer audioPlayer) async {
+    try {
+      await audioPlayer.setAsset(assetPath);
+    } on AudioException catch (e) {
+      print(e.error());
+    }
+    return audioPlayer;
+  }
 }
