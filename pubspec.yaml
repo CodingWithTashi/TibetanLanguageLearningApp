@@ -38,6 +38,7 @@ dependencies:
   equatable: 2.0.3
   firebase_crashlytics: ^2.2.1
   firebase_core: ^1.6.0
+  firebase_analytics: ^9.0.3
   shared_preferences: ^2.0.6
 
   flutter_localizations:
