@@ -38,6 +38,8 @@ class AppConstant {
       'ca-app-pub-8284901143739274/2994092444';
   static const String BANNER_AD_LEARN_MENU_UNIT_ID =
       'ca-app-pub-8284901143739274/6651100571';
+  static const String BANNER_AD_PRACTICE_MENU_UNIT_ID =
+      'ca-app-pub-8284901143739274/9771506718';
   static const String TEST_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111';
   static const String APP_ID = 'ca-app-pub-8284901143739274~1421990473';
   static const String SHARE_URL =
@@ -1215,7 +1217,7 @@ class AppConstant {
   static List<Alphabet> _sogoList() {
     return [
       Alphabet(fileName: 'sakadak', alphabetName: 'སྐ།'),
-      Alphabet(fileName: 'sakhatak', alphabetName: 'སྑ།'),
+      Alphabet(fileName: 'sakhatak', alphabetName: 'སྒ།'),
       Alphabet(fileName: 'sangatak', alphabetName: 'སྔ།'),
       Alphabet(fileName: 'sanyatak', alphabetName: 'སྙ།'),
       Alphabet(fileName: 'satadak', alphabetName: 'སྟ།'),

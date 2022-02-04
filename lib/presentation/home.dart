@@ -42,6 +42,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   @override
+  void dispose() {
+    myBanner.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
     if (locale.languageCode == "bo") {
