@@ -69,7 +69,7 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   String dateRangeEndDateSemanticLabel(String formattedDate) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
@@ -80,7 +80,7 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   String dateRangeStartDateSemanticLabel(String formattedDate) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
@@ -109,58 +109,58 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   String formatCompactDate(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatDecimal(int number) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatFullDate(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatHour(TimeOfDay timeOfDay, {bool alwaysUse24HourFormat = false}) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatMediumDate(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatMinute(TimeOfDay timeOfDay) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatMonthYear(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatShortDate(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatShortMonthDay(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatTimeOfDay(TimeOfDay timeOfDay,
       {bool alwaysUse24HourFormat = false}) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   String formatYear(DateTime date) {
-    throw UnimplementedError();
+    return '';
   }
 
   @override
@@ -194,7 +194,7 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   String licensesPackageDetailText(int licenseCount) {
     // TODO: implement licensesPackageDetailText
-    throw UnimplementedError();
+    return '';
   }
 
   @override
@@ -233,13 +233,13 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   String pageRowsInfoTitle(
       int firstRow, int lastRow, int rowCount, bool rowCountIsApproximate) {
     // TODO: implement pageRowsInfoTitle
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   DateTime? parseCompactDate(String? inputString) {
     // TODO: implement parseCompactDate
-    throw UnimplementedError();
+    return DateTime.now();
   }
 
   @override
@@ -269,7 +269,7 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   String remainingTextFieldCharacterCount(int remaining) {
     // TODO: implement remainingTextFieldCharacterCount
-    throw UnimplementedError();
+    return '';
   }
 
   @override
@@ -323,7 +323,7 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   String selectedRowCountTitle(int selectedRowCount) {
     // TODO: implement selectedRowCountTitle
-    throw UnimplementedError();
+    return '';
   }
 
   @override
@@ -341,25 +341,21 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   String tabLabel({required int tabIndex, required int tabCount}) {
     // TODO: implement tabLabel
-    throw UnimplementedError();
+    return '';
   }
 
   @override
   TimeOfDayFormat timeOfDayFormat({bool alwaysUse24HourFormat = false}) {
-    // TODO: implement timeOfDayFormat
-    throw UnimplementedError();
+    return TimeOfDayFormat.HH_dot_mm;
   }
 
   @override
-  // TODO: implement timePickerDialHelpText
   String get timePickerDialHelpText => "About title";
 
   @override
-  // TODO: implement timePickerHourLabel
   String get timePickerHourLabel => "About title";
 
   @override
-  // TODO: implement timePickerHourModeAnnouncement
   String get timePickerHourModeAnnouncement => "About title";
 
   @override
@@ -383,4 +379,235 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   String get viewLicensesButtonLabel => "About title";
+
+  @override
+  String get keyboardKeyAlt => '';
+
+  @override
+  // TODO: implement keyboardKeyAltGraph
+  String get keyboardKeyAltGraph => '';
+
+  @override
+  // TODO: implement keyboardKeyBackspace
+  String get keyboardKeyBackspace => '';
+
+  @override
+  // TODO: implement keyboardKeyCapsLock
+  String get keyboardKeyCapsLock => '';
+
+  @override
+  // TODO: implement keyboardKeyChannelDown
+  String get keyboardKeyChannelDown => '';
+
+  @override
+  // TODO: implement keyboardKeyChannelUp
+  String get keyboardKeyChannelUp => '';
+
+  @override
+  // TODO: implement keyboardKeyControl
+  String get keyboardKeyControl => '';
+
+  @override
+  // TODO: implement keyboardKeyDelete
+  String get keyboardKeyDelete => '';
+
+  @override
+  // TODO: implement keyboardKeyEisu
+  String get keyboardKeyEisu => '';
+
+  @override
+  // TODO: implement keyboardKeyEject
+  String get keyboardKeyEject => '';
+
+  @override
+  // TODO: implement keyboardKeyEnd
+  String get keyboardKeyEnd => '';
+
+  @override
+  // TODO: implement keyboardKeyEscape
+  String get keyboardKeyEscape => '';
+
+  @override
+  // TODO: implement keyboardKeyFn
+  String get keyboardKeyFn => '';
+
+  @override
+  // TODO: implement keyboardKeyHangulMode
+  String get keyboardKeyHangulMode => '';
+
+  @override
+  // TODO: implement keyboardKeyHanjaMode
+  String get keyboardKeyHanjaMode => '';
+
+  @override
+  // TODO: implement keyboardKeyHankaku
+  String get keyboardKeyHankaku => '';
+
+  @override
+  // TODO: implement keyboardKeyHiragana
+  String get keyboardKeyHiragana => '';
+
+  @override
+  // TODO: implement keyboardKeyHiraganaKatakana
+  String get keyboardKeyHiraganaKatakana => '';
+
+  @override
+  // TODO: implement keyboardKeyHome
+  String get keyboardKeyHome => '';
+
+  @override
+  // TODO: implement keyboardKeyInsert
+  String get keyboardKeyInsert => '';
+
+  @override
+  // TODO: implement keyboardKeyKanaMode
+  String get keyboardKeyKanaMode => '';
+
+  @override
+  // TODO: implement keyboardKeyKanjiMode
+  String get keyboardKeyKanjiMode => '';
+
+  @override
+  // TODO: implement keyboardKeyKatakana
+  String get keyboardKeyKatakana => '';
+
+  @override
+  // TODO: implement keyboardKeyMeta
+  String get keyboardKeyMeta => '';
+
+  @override
+  // TODO: implement keyboardKeyMetaMacOs
+  String get keyboardKeyMetaMacOs => '';
+
+  @override
+  // TODO: implement keyboardKeyMetaWindows
+  String get keyboardKeyMetaWindows => '';
+
+  @override
+  // TODO: implement keyboardKeyNumLock
+  String get keyboardKeyNumLock => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad0
+  String get keyboardKeyNumpad0 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad1
+  String get keyboardKeyNumpad1 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad2
+  String get keyboardKeyNumpad2 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad3
+  String get keyboardKeyNumpad3 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad4
+  String get keyboardKeyNumpad4 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad5
+  String get keyboardKeyNumpad5 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad6
+  String get keyboardKeyNumpad6 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad7
+  String get keyboardKeyNumpad7 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad8
+  String get keyboardKeyNumpad8 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpad9
+  String get keyboardKeyNumpad9 => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadAdd
+  String get keyboardKeyNumpadAdd => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadComma
+  String get keyboardKeyNumpadComma => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadDecimal
+  String get keyboardKeyNumpadDecimal => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadDivide
+  String get keyboardKeyNumpadDivide => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadEnter
+  String get keyboardKeyNumpadEnter => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadEqual
+  String get keyboardKeyNumpadEqual => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadMultiply
+  String get keyboardKeyNumpadMultiply => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadParenLeft
+  String get keyboardKeyNumpadParenLeft => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadParenRight
+  String get keyboardKeyNumpadParenRight => '';
+
+  @override
+  // TODO: implement keyboardKeyNumpadSubtract
+  String get keyboardKeyNumpadSubtract => '';
+
+  @override
+  // TODO: implement keyboardKeyPageDown
+  String get keyboardKeyPageDown => '';
+
+  @override
+  // TODO: implement keyboardKeyPageUp
+  String get keyboardKeyPageUp => '';
+
+  @override
+  // TODO: implement keyboardKeyPower
+  String get keyboardKeyPower => '';
+
+  @override
+  // TODO: implement keyboardKeyPowerOff
+  String get keyboardKeyPowerOff => '';
+
+  @override
+  // TODO: implement keyboardKeyPrintScreen
+  String get keyboardKeyPrintScreen => '';
+
+  @override
+  // TODO: implement keyboardKeyRomaji
+  String get keyboardKeyRomaji => '';
+
+  @override
+  // TODO: implement keyboardKeyScrollLock
+  String get keyboardKeyScrollLock => '';
+
+  @override
+  // TODO: implement keyboardKeySelect
+  String get keyboardKeySelect => '';
+
+  @override
+  // TODO: implement keyboardKeySpace
+  String get keyboardKeySpace => '';
+
+  @override
+  // TODO: implement keyboardKeyZenkaku
+  String get keyboardKeyZenkaku => '';
+
+  @override
+  // TODO: implement keyboardKeyZenkakuHankaku
+  String get keyboardKeyZenkakuHankaku => '';
 }

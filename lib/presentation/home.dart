@@ -23,7 +23,6 @@ class _HomePageState extends State<HomePage> {
   double _buttonOpacity = 0;
   bool isExtended = false;
   late BannerAd myBanner;
-  late RewardedAd myRewarded;
   late BannerAdListener listener;
   late AdWidget adWidget;
 
@@ -34,7 +33,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     });
     if (!kIsWeb) {
-      _loadRewardedAd();
       initBannerAds();
     }
 
@@ -130,43 +128,6 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  _getHomeFab() => FloatingActionButton.extended(
-        onPressed: () {
-          //isExtended = !isExtended;
-          if (!isExtended) {
-            playVideoAds();
-          }
-          playVideoAds();
-          //setState(() {});
-        },
-        label: AnimatedSwitcher(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          transitionBuilder: (Widget child, Animation<double> animation) =>
-              FadeTransition(
-            opacity: animation,
-            child: SizeTransition(
-              child: child,
-              sizeFactor: animation,
-              axis: Axis.horizontal,
-            ),
-          ),
-          child: isExtended
-              ? Icon(Icons.play_arrow)
-              : Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 4.0),
-                      child: Icon(Icons.play_arrow),
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.playGame,
-                      style: TextStyle(fontSize: 16),
-                    )
-                  ],
-                ),
-        ),
-      );
-
   _getBackgroundImage() => Hero(
         tag: 'image',
         child: Container(
@@ -238,43 +199,6 @@ class _HomePageState extends State<HomePage> {
         right: 20,
         child: LanguageWidget(),
       );
-
-  void playVideoAds() {
-    myRewarded.show(onUserEarnedReward: (RewardedAd ad, RewardItem rewardItem) {
-      print('user earned');
-      Navigator.pushNamed(context, LearnMenuPage.routeName);
-    }).catchError((e) => print("error in showing ad: ${e.toString()}"));
-    myRewarded.fullScreenContentCallback = FullScreenContentCallback(
-      onAdShowedFullScreenContent: (RewardedAd ad) =>
-          print('$ad onAdShowedFullScreenContent.'),
-      onAdDismissedFullScreenContent: (RewardedAd ad) {
-        print('$ad onAdDismissedFullScreenContent.');
-        ad.dispose();
-      },
-      onAdFailedToShowFullScreenContent: (RewardedAd ad, AdError error) {
-        print('$ad onAdFailedToShowFullScreenContent: $error');
-        ad.dispose();
-      },
-      onAdImpression: (RewardedAd ad) => print('$ad impression occurred.'),
-    );
-  }
-
-  void _loadRewardedAd() {
-    RewardedAd.load(
-        adUnitId: 'ca-app-pub-3940256099942544/5224354917',
-        request: AdRequest(),
-        rewardedAdLoadCallback: RewardedAdLoadCallback(
-          onAdLoaded: (RewardedAd ad) {
-            print('$ad loaded.');
-            // Keep a reference to the ad so you can show it later.
-            this.myRewarded = ad;
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('RewardedAd failed to load: $error');
-            _loadRewardedAd();
-          },
-        ));
-  }
 
   void initBannerAds() {
     listener = BannerAdListener(
