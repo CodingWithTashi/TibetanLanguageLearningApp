@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/speeling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
@@ -83,6 +84,10 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               _useCasesButtons(),
+              SizedBox(
+                height: 20,
+              ),
+              _playGameButtons(),
             ],
           ),
         ),
@@ -193,6 +198,25 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+  _playGameButtons() => InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, SpellingBeePage.routeName);
+        },
+        child: AnimatedOpacity(
+          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+          opacity: _buttonOpacity,
+          child: Container(
+            width: 200,
+            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            decoration: ApplicationUtil.getBoxDecorationOne(context),
+            child: Text(
+              AppLocalizations.of(context)!.playGame,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
+            ),
+          ),
+        ),
+      );
 
   _languageSwitch() => Positioned(
         top: MediaQuery.of(context).padding.top,
@@ -218,7 +242,7 @@ class _HomePageState extends State<HomePage> {
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
     myBanner = BannerAd(
-      adUnitId: AppConstant.BANNER_AD_HOME_UNIT_ID,
+      adUnitId: AppConstant.TEST_UNIT_ID,
       size: AdSize.banner,
       request: AdRequest(),
       listener: listener,

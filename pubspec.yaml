@@ -40,6 +40,7 @@ dependencies:
   firebase_core: ^1.17.0
   firebase_analytics: ^9.1.8
   shared_preferences: ^2.0.6
+  provider:
 
   flutter_localizations:
     sdk: flutter

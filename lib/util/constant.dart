@@ -10,6 +10,7 @@ enum UseCaseType {
   FAMILY,
   NUMBERS,
 }
+
 enum AlphabetCategoryType {
   ALPHABET,
   VOWEL,
@@ -52,6 +53,7 @@ class AppConstant {
       'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
   static const String VIEW_ON_WEB = 'Open Web App';
   static const String WEB_URL = "https://tibetanlanguagelearningapp.web.app/#/";
+  static const List<String> allWords = ["CAT", "PIG", "FOX", "LION"];
 
   static List<Verb> verbsList = [
     Verb(fileName: 'apple', word: 'ཀུ་ཤུ།'),

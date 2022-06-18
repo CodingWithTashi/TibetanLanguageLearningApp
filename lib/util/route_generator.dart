@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/model/word.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/controller.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/speeling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
 import 'package:tibetan_language_learning_app/presentation/language_type_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_detail_page.dart';
@@ -125,6 +128,13 @@ class RouteGenerator {
           }
           return _errorRoute();
         }
+      case SpellingBeePage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => ChangeNotifierProvider<Controller>(
+            create: (BuildContext context) => Controller(),
+            child: SpellingBeePage(),
+          ),
+        );
 
       default:
         return _errorRoute();
