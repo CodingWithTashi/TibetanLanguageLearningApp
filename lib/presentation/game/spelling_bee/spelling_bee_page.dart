@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/controller.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/drag.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/drop.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/fly_in_animation.dart';
@@ -28,7 +28,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Selector<Controller, bool>(
+      body: Selector<SpellingBeeProvider, bool>(
         selector: (_, controller) => controller.generateWord,
         builder: (_, generate, __) {
           if (generate) {
@@ -102,9 +102,9 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
     final s = _word.characters.toList()..shuffle();
     _word = s.join();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<Controller>(context, listen: false)
+      Provider.of<SpellingBeeProvider>(context, listen: false)
           .setUp(total: _word.length);
-      Provider.of<Controller>(context, listen: false)
+      Provider.of<SpellingBeeProvider>(context, listen: false)
           .requestWord(request: false);
     });
   }

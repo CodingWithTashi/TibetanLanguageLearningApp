@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/controller.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/speeling_bee_page.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 
-class MessageBox extends StatelessWidget {
+class MessageDialog extends StatelessWidget {
   final bool sessionCompleted;
-  const MessageBox({
+  const MessageDialog({
     Key? key,
     required this.sessionCompleted,
   }) : super(key: key);
@@ -37,11 +37,11 @@ class MessageBox extends StatelessWidget {
           ),
           onPressed: () {
             if (sessionCompleted) {
-              Provider.of<Controller>(context, listen: false).reset();
+              Provider.of<SpellingBeeProvider>(context, listen: false).reset();
               Navigator.of(context)
                   .pushReplacementNamed(SpellingBeePage.routeName);
             } else {
-              Provider.of<Controller>(context, listen: false)
+              Provider.of<SpellingBeeProvider>(context, listen: false)
                   .requestWord(request: true);
               Navigator.of(context).pop();
             }

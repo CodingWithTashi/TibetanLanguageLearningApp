@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/controller.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 
 class Drag extends StatefulWidget {
   final String letter;
@@ -15,7 +15,7 @@ class _DragState extends State<Drag> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Selector<Controller, bool>(
+    return Selector<SpellingBeeProvider, bool>(
       shouldRebuild: (previous, next) {
         return true;
       },
@@ -37,7 +37,7 @@ class _DragState extends State<Drag> {
                       if (details.wasAccepted) {
                         _accepted = true;
                         setState(() {});
-                        Provider.of<Controller>(context, listen: false)
+                        Provider.of<SpellingBeeProvider>(context, listen: false)
                             .incrementLetters(context: context);
                       }
                     },

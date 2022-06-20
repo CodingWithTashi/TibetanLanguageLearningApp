@@ -5,9 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
-import 'package:tibetan_language_learning_app/model/word.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/controller.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/speeling_bee_page.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
 import 'package:tibetan_language_learning_app/presentation/language_type_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_detail_page.dart';
@@ -130,8 +129,8 @@ class RouteGenerator {
         }
       case SpellingBeePage.routeName:
         return MaterialPageRoute(
-          builder: (_) => ChangeNotifierProvider<Controller>(
-            create: (BuildContext context) => Controller(),
+          builder: (_) => ChangeNotifierProvider<SpellingBeeProvider>(
+            create: (BuildContext context) => SpellingBeeProvider(),
             child: SpellingBeePage(),
           ),
         );
