@@ -43,13 +43,13 @@ class _DragState extends State<Drag> {
                     },
                     feedback: Text(
                       widget.letter,
-                      style: Theme.of(context).textTheme.headline1?.copyWith(
+                      style: TextStyle(
                         shadows: [
                           Shadow(
                             offset: Offset(3, 3),
                             color: Colors.black.withOpacity(0.4),
                             blurRadius: 5,
-                          ),
+                          )
                         ],
                       ),
                     ),

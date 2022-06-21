@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/drag.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/drop.dart';
@@ -17,7 +18,7 @@ class SpellingBeePage extends StatefulWidget {
 }
 
 class _SpellingBeePageState extends State<SpellingBeePage> {
-  List<String> _words = AppConstant.allWords.toList();
+  List<Verb> _words = AppConstant.verbsList;
   late String _word, _dropWord;
   @override
   void initState() {
@@ -48,12 +49,15 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
                 flex: 3,
                 child: Container(
                   color: Colors.blue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: _dropWord.characters
-                        .map((e) => FlyInAnimation(
-                            animate: true, child: Drop(letter: e)))
-                        .toList(),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: _dropWord.characters
+                          .map((e) => FlyInAnimation(
+                              animate: true, child: Drop(letter: e)))
+                          .toList(),
+                    ),
                   ),
                 ),
               ),
@@ -67,16 +71,19 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
                 flex: 3,
                 child: Container(
                   color: Colors.yellow,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: _word.characters
-                        .map((e) => FlyInAnimation(
-                              animate: true,
-                              child: Drag(
-                                letter: e,
-                              ),
-                            ))
-                        .toList(),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: _word.characters
+                          .map((e) => FlyInAnimation(
+                                animate: true,
+                                child: Drag(
+                                  letter: e,
+                                ),
+                              ))
+                          .toList(),
+                    ),
                   ),
                 ),
               ),
@@ -95,8 +102,8 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
 
   void _generateWord() {
     final r = Random().nextInt(_words.length);
-    _word = _words[r];
-    _dropWord = _words[r];
+    _word = _words[r].word;
+    _dropWord = _words[r].word;
     _words.removeAt(r);
 
     final s = _word.characters.toList()..shuffle();
