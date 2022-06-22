@@ -18,8 +18,8 @@ class SpellingBeePage extends StatefulWidget {
 }
 
 class _SpellingBeePageState extends State<SpellingBeePage> {
-  List<Verb> _words = AppConstant.verbsList;
-  late String _word, _dropWord;
+  List<Verb> _verbList = AppConstant.verbsList;
+  late List<String> _characterList, _dropCharacterList;
   @override
   void initState() {
     //_generateWord();
@@ -33,7 +33,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
         selector: (_, controller) => controller.generateWord,
         builder: (_, generate, __) {
           if (generate) {
-            if (_words.isNotEmpty) {
+            if (_verbList.isNotEmpty) {
               _generateWord();
             }
           }
@@ -53,7 +53,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: _dropWord.characters
+                      children: _dropCharacterList
                           .map((e) => FlyInAnimation(
                               animate: true, child: Drop(letter: e)))
                           .toList(),
@@ -75,7 +75,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: _word.characters
+                      children: _characterList
                           .map((e) => FlyInAnimation(
                                 animate: true,
                                 child: Drag(
@@ -101,16 +101,17 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   }
 
   void _generateWord() {
-    final r = Random().nextInt(_words.length);
-    _word = _words[r].word;
-    _dropWord = _words[r].word;
-    _words.removeAt(r);
+    final r = Random().nextInt(_verbList.length);
+    _characterList = _verbList[r].characterList;
+    _dropCharacterList = List.from(_characterList);
+    _verbList.removeAt(r);
+    if (_characterList.isNotEmpty) {
+      _characterList.shuffle();
+    }
 
-    final s = _word.characters.toList()..shuffle();
-    _word = s.join();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<SpellingBeeProvider>(context, listen: false)
-          .setUp(total: _word.length);
+          .setUp(total: _characterList.length);
       Provider.of<SpellingBeeProvider>(context, listen: false)
           .requestWord(request: false);
     });

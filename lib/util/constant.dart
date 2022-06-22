@@ -56,36 +56,142 @@ class AppConstant {
   static const List<String> allWords = ["CAT", "PIG", "FOX", "LION"];
 
   static List<Verb> verbsList = [
-    Verb(fileName: 'apple', word: 'ཀུ་ཤུ།'),
-    Verb(fileName: 'phone', word: 'ཁ་པར།'),
-    Verb(fileName: 'balloon', word: 'སྒང་ཕུག།'),
+    Verb(
+      fileName: 'phone',
+      word: 'ཁ་པར།',
+      characterList: ['ཁ་', 'པ', 'ར།'],
+    ),
+    Verb(
+        fileName: 'balloon',
+        word: 'སྒང་ཕུག།',
+        characterList: ['སྒ', 'ང་', 'ཕུ', 'ག།']),
     Verb(fileName: 'duck', word: 'ངང་པ།'),
-    Verb(fileName: 'chain', word: 'ལྕགས་ཐག།'),
-    Verb(fileName: 'water', word: 'ཆུ།'),
-    Verb(fileName: 'rainbow', word: 'འཇའ།'),
-    Verb(fileName: 'fish', word: 'ཉ།'),
-    Verb(fileName: 'horse', word: 'རྟ།'),
-    Verb(fileName: 'rope', word: 'ཐག་པ།'),
-    Verb(fileName: 'flag', word: 'དར་ཆ།'),
-    Verb(fileName: 'blackboard', word: 'ནག་པང།'),
-    Verb(fileName: 'camera', word: 'པར་ཆས།'),
-    Verb(fileName: 'pig', word: 'ཕག་པ།'),
-    Verb(fileName: 'cow', word: 'བ་ཕྱུགས།'),
-    Verb(fileName: 'fire', word: 'མེ།'),
-    Verb(fileName: 'grass', word: 'རྩ།'),
-    Verb(fileName: 'orange', word: 'ཚ་ལུ་མ།'),
-    Verb(fileName: 'earth', word: 'འཛམ་བུ་གླིང།'),
-    Verb(fileName: 'fox', word: 'ཝ་མོ།'),
-    Verb(fileName: 'hat', word: 'ཞྭ་མོ།'),
-    Verb(fileName: 'copper', word: 'ཟངས།'),
-    Verb(fileName: 'owl', word: 'འུག་པ།'),
-    Verb(fileName: 'candle', word: 'ཡང་ལཱ།'),
-    Verb(fileName: 'goat', word: 'ར།'),
-    Verb(fileName: 'hand', word: 'ལག་པ།'),
-    Verb(fileName: 'meat', word: 'ཤ།'),
-    Verb(fileName: 'map', word: 'ས་བཀྲ།'),
-    Verb(fileName: 'pot', word: 'ཧ་ཡང།'),
-    Verb(fileName: 'mango', word: 'ཨམ།'),
+    Verb(
+      fileName: 'chain',
+      word: 'ལྕགས་ཐག།',
+      characterList: ['ང', 'ང་', 'པ།'],
+    ),
+    Verb(
+      fileName: 'water',
+      word: 'ཆུ།',
+      characterList: ['ཆུ།'],
+    ),
+    Verb(
+      fileName: 'rainbow',
+      word: 'འཇའ།',
+      characterList: ['འ', 'ཇ', 'འ།'],
+    ),
+    Verb(
+      fileName: 'fish',
+      word: 'ཉ།',
+      characterList: ['ཉ།'],
+    ),
+    Verb(fileName: 'horse', word: 'རྟ།', characterList: ['རྟ།']),
+    Verb(
+      fileName: 'rope',
+      word: 'ཐག་པ།',
+      characterList: ['ཐ', 'ག་', 'པ།'],
+    ),
+    Verb(
+      fileName: 'flag',
+      word: 'དར་ཆ།',
+      characterList: ['ད', 'ར་', 'ཆ།'],
+    ),
+    Verb(
+      fileName: 'blackboard',
+      word: 'ནག་པང།',
+      characterList: ['ན', 'ག་', 'པ', 'ང།'],
+    ),
+    Verb(
+      fileName: 'camera',
+      word: 'པར་ཆས།',
+      characterList: ['པ', 'ར་', 'ཆ', 'ས།'],
+    ),
+    Verb(
+      fileName: 'pig',
+      word: 'ཕག་པ།',
+      characterList: ['ཕ', 'ག་', 'པ།'],
+    ),
+    Verb(
+      fileName: 'cow',
+      word: 'བ་ཕྱུགས།',
+      characterList: ['བ་', 'ཕྱུ', 'ག', 'ས།'],
+    ),
+    Verb(
+      fileName: 'fire',
+      word: 'མེ།',
+      characterList: ['མེ།'],
+    ),
+    Verb(
+      fileName: 'grass',
+      word: 'རྩ།',
+      characterList: ['རྩ།'],
+    ),
+    Verb(
+      fileName: 'orange',
+      word: 'ཚ་ལུ་མ།',
+      characterList: ['ཚ་', 'ལུ་', 'མ།'],
+    ),
+    Verb(
+      fileName: 'earth',
+      word: 'འཛམ་བུ་གླིང།',
+      characterList: ['འ', 'ཛ', 'མ་', 'བུ་', 'གླི', 'ང།'],
+    ),
+    Verb(
+      fileName: 'fox',
+      word: 'ཝ་མོ།',
+      characterList: ['ཝ་', 'མོ།'],
+    ),
+    Verb(
+      fileName: 'hat',
+      word: 'ཞྭ་མོ།',
+      characterList: ['ཞྭ་', 'མོ།'],
+    ),
+    Verb(
+      fileName: 'copper',
+      word: 'ཟངས།',
+      characterList: ['ཟ', 'ང', 'ས།'],
+    ),
+    Verb(
+      fileName: 'owl',
+      word: 'འུག་པ།',
+      characterList: ['འུ', 'ག་', 'པ།'],
+    ),
+    Verb(
+      fileName: 'candle',
+      word: 'ཡང་ལཱ།',
+      characterList: ['ཡ', 'ང་', 'ལཱ།'],
+    ),
+    Verb(
+      fileName: 'goat',
+      word: 'ར།',
+      characterList: ['ར།'],
+    ),
+    Verb(
+      fileName: 'hand',
+      word: 'ལག་པ།',
+      characterList: ['ལ', 'ག་', 'པ།'],
+    ),
+    Verb(
+      fileName: 'meat',
+      word: 'ཤ།',
+      characterList: ['ཤ།'],
+    ),
+    Verb(
+      fileName: 'map',
+      word: 'ས་བཀྲ།',
+      characterList: ['ས་', 'བ', 'ཀྲ།'],
+    ),
+    Verb(
+      fileName: 'pot',
+      word: 'ཧ་ཡང།',
+      characterList: ['ཧ་', 'ཡ', 'ང།'],
+    ),
+    Verb(
+      fileName: 'mango',
+      word: 'ཨམ།',
+      characterList: ['ཨ', 'མ།'],
+    ),
   ];
   static getAudioByVerb(String verb) {
     return 'assets/audio/words/' + verb + ".mp3";

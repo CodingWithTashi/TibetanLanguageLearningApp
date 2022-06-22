@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/message_dialog.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -22,9 +23,53 @@ class SpellingBeeProvider extends ChangeNotifier {
       showDialog(
           barrierDismissible: false,
           context: context,
-          builder: (_) => MessageDialog(
-                sessionCompleted: sessionCompleted,
-              ));
+          builder: (_) {
+            String title = "Well Done";
+            String buttonText = "Generate New";
+            if (sessionCompleted) {
+              title = "All word completed";
+              buttonText = "Replay";
+            }
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              backgroundColor: Colors.amber,
+              actionsAlignment: MainAxisAlignment.center,
+              title: Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              actions: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  onPressed: () {
+                    if (sessionCompleted) {
+                      reset();
+                      Navigator.of(context)
+                          .pushReplacementNamed(SpellingBeePage.routeName);
+                    } else {
+                      requestWord(request: true);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      buttonText,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontSize: 30,
+                          ),
+                    ),
+                  ),
+                )
+              ],
+            );
+          });
     }
     notifyListeners();
   }

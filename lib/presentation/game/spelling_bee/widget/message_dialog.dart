@@ -26,7 +26,7 @@ class MessageDialog extends StatelessWidget {
       actionsAlignment: MainAxisAlignment.center,
       title: Text(
         title,
-        style: Theme.of(context).textTheme.headline1,
+        style: Theme.of(context).textTheme.titleMedium,
       ),
       actions: [
         ElevatedButton(
@@ -50,7 +50,7 @@ class MessageDialog extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               buttonText,
-              style: Theme.of(context).textTheme.headline1?.copyWith(
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontSize: 30,
                   ),
             ),

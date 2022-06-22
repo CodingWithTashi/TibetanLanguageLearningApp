@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 
 class Drag extends StatefulWidget {
@@ -43,19 +45,19 @@ class _DragState extends State<Drag> {
                     },
                     feedback: Text(
                       widget.letter,
-                      style: TextStyle(
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         shadows: [
                           Shadow(
                             offset: Offset(3, 3),
                             color: Colors.black.withOpacity(0.4),
                             blurRadius: 5,
-                          )
+                          ),
                         ],
                       ),
                     ),
                     child: Text(
                       widget.letter,
-                      //style: Theme.of(context).textTheme.headline1,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
           ),
