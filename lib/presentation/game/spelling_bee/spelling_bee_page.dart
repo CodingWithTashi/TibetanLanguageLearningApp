@@ -7,6 +7,7 @@ import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/pro
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/drag.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/drop.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/fly_in_animation.dart';
+import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class SpellingBeePage extends StatefulWidget {
@@ -20,6 +21,7 @@ class SpellingBeePage extends StatefulWidget {
 class _SpellingBeePageState extends State<SpellingBeePage> {
   List<Verb> _verbList = AppConstant.verbsList;
   late List<String> _characterList, _dropCharacterList;
+  late Verb selectedVerb;
   @override
   void initState() {
     //_generateWord();
@@ -37,62 +39,18 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
               _generateWord();
             }
           }
-          return Column(
+          return Stack(
             children: [
-              Expanded(
-                flex: 2,
-                child: Container(
-                  color: Colors.red,
-                ),
+              _getBackgroundImage(),
+              Column(
+                children: [
+                  _getHeader(),
+                  _getDropContent(),
+                  _getImageForWord(),
+                  _getDragContent(),
+                  _getProgressIndicator(),
+                ],
               ),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  color: Colors.blue,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: _dropCharacterList
-                          .map((e) => FlyInAnimation(
-                              animate: true, child: Drop(letter: e)))
-                          .toList(),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  color: Colors.green,
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  color: Colors.yellow,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: _characterList
-                          .map((e) => FlyInAnimation(
-                                animate: true,
-                                child: Drag(
-                                  letter: e,
-                                ),
-                              ))
-                          .toList(),
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Container(
-                  color: Colors.orange,
-                ),
-              )
             ],
           );
         },
@@ -104,6 +62,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
     final r = Random().nextInt(_verbList.length);
     _characterList = _verbList[r].characterList;
     _dropCharacterList = List.from(_characterList);
+    selectedVerb = _verbList[r];
     _verbList.removeAt(r);
     if (_characterList.isNotEmpty) {
       _characterList.shuffle();
@@ -116,4 +75,67 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
           .requestWord(request: false);
     });
   }
+
+  _getBackgroundImage() {
+    return Image.asset(
+      'assets/images/tree.jpg',
+      fit: BoxFit.cover,
+      height: double.infinity,
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+    );
+  }
+
+  _getHeader() => Expanded(
+        flex: 1,
+        child: Container(
+          color: Colors.red,
+        ),
+      );
+
+  _getDropContent() => Expanded(
+        flex: 3,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _dropCharacterList
+                .map((e) =>
+                    FlyInAnimation(animate: true, child: Drop(letter: e)))
+                .toList(),
+          ),
+        ),
+      );
+
+  _getImageForWord() => Expanded(
+        flex: 3,
+        child: Image.asset(
+          ApplicationUtil.getImagePath(selectedVerb.fileName),
+        ),
+      );
+
+  _getDragContent() => Expanded(
+        flex: 3,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: _characterList
+                .map((e) => FlyInAnimation(
+                      animate: true,
+                      child: Drag(
+                        letter: e,
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
+      );
+
+  _getProgressIndicator() => Expanded(
+        flex: 1,
+        child: Container(
+          color: Colors.orange,
+        ),
+      );
 }

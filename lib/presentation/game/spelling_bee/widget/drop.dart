@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tibetan_language_learning_app/util/application_util.dart';
 
 class Drop extends StatelessWidget {
   final String letter;
@@ -8,9 +9,9 @@ class Drop extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     bool accepted = false;
-    return SizedBox(
-      width: size.width * 0.15,
-      height: size.height * 0.15,
+    return Container(
+      width: size.width * 0.20,
+      height: size.height * 0.20,
       child: Center(
         child: DragTarget(
           onWillAccept: (data) {
@@ -27,15 +28,27 @@ class Drop extends StatelessWidget {
           },
           builder: (context, candidateData, rejectedData) {
             if (accepted) {
-              return Text(
-                letter,
-                //style: Theme.of(context).textTheme.headline1,
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                decoration: ApplicationUtil.getBoxDecorationOne(context),
+                width: size.width * 0.15,
+                height: size.width * 0.15,
+                child: Center(
+                  child: Text(
+                    letter,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: Colors.white,
+                        ),
+                  ),
+                ),
               );
             } else {
               return Container(
-                color: Colors.amber,
-                width: 50,
-                height: 50,
+                margin: EdgeInsets.symmetric(horizontal: 5),
+                decoration: ApplicationUtil.getBoxDecorationOne(context),
+                width: size.width * 0.15,
+                height: size.width * 0.15,
               );
             }
           },
