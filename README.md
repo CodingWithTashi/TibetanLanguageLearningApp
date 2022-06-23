@@ -1,10 +1,13 @@
-# tibetan_language_learning_app
+# Tibetan Language Learning App
 
-Tibetan Language Learning App
+"Tibetan Language Learning App" let you
+1. Learn Tibetan Language
+2. Read/Write and practice language
+3. Play Spelling bee game
 
 ## First released is published in play store...   
 
-Tibetan Languae learning app 
+Download application from play store: [Tibetan Languae learning app](https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app)
 
 ## Getting Started
 
