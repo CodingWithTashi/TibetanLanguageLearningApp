@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
@@ -22,6 +23,8 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   List<Verb> _verbList = AppConstant.verbsList;
   late List<String> _characterList, _dropCharacterList;
   late Verb selectedVerb;
+  double total = 10.0;
+  double currentValue = 0.0;
   @override
   void initState() {
     //_generateWord();
@@ -89,7 +92,29 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   _getHeader() => Expanded(
         flex: 1,
         child: Container(
-          color: Colors.red,
+          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          width: double.infinity,
+          height: 80,
+          child: Center(
+            child: Text(
+              'Spelling BEE!',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  shadows: [
+                    Shadow(
+                        offset: Offset(3, 3),
+                        color: Colors.black38,
+                        blurRadius: 10),
+                    Shadow(
+                        offset: Offset(-3, -3),
+                        color: Colors.white.withOpacity(0.65),
+                        blurRadius: 10)
+                  ],
+                  color: Colors.grey.shade300),
+            ),
+          ),
         ),
       );
 
@@ -135,7 +160,20 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   _getProgressIndicator() => Expanded(
         flex: 1,
         child: Container(
-          color: Colors.orange,
+          child: LiquidLinearProgressIndicator(
+            value: 0.5, // Defaults to 0.5.
+            valueColor: AlwaysStoppedAnimation(
+              Theme.of(context).primaryColorDark,
+            ), // Defaults to the current Theme's accentColor.
+            backgroundColor: Colors
+                .white, // Defaults to the current Theme's backgroundColor.
+            borderColor: Theme.of(context).primaryColor,
+            borderWidth: 2.0,
+            //borderRadius: 10.0,
+            direction: Axis
+                .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+            center: Text("Loading..."),
+          ),
         ),
       );
 }

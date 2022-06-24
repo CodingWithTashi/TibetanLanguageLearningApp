@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/message_dialog.dart';
+import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class SpellingBeeProvider extends ChangeNotifier {
@@ -32,22 +33,30 @@ class SpellingBeeProvider extends ChangeNotifier {
             }
             return AlertDialog(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(10),
               ),
-              backgroundColor: Colors.amber,
               actionsAlignment: MainAxisAlignment.center,
               title: Text(
                 title,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               actions: [
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
+                InkWell(
+                  child: Container(
+                    width: 200,
+                    decoration: ApplicationUtil.getBoxDecorationOne(context),
+                    child: Center(
+                      child: Text(
+                        buttonText,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontSize: 24,
+                                  color: Colors.white,
+                                ),
+                      ),
                     ),
                   ),
-                  onPressed: () {
+                  onTap: () {
                     if (sessionCompleted) {
                       reset();
                       Navigator.of(context)
@@ -57,15 +66,6 @@ class SpellingBeeProvider extends ChangeNotifier {
                       Navigator.of(context).pop();
                     }
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      buttonText,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontSize: 30,
-                          ),
-                    ),
-                  ),
                 )
               ],
             );

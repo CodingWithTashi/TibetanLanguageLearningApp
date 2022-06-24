@@ -12,13 +12,13 @@ class ApplicationUtil {
   static getBoxDecorationOne(BuildContext context) {
     return BoxDecoration(
       color: Theme.of(context).primaryColor,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
             color: Theme.of(context).primaryColorLight.withOpacity(0.3),
             offset: Offset(5, 5),
             spreadRadius: 3,
-            blurRadius: 20),
+            blurRadius: 10),
         BoxShadow(
             color: Colors.black,
             offset: Offset(-5, -3),
@@ -31,13 +31,13 @@ class ApplicationUtil {
   static getBoxDecorationTwo(BuildContext context) {
     return BoxDecoration(
       color: Colors.white,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
             color: Colors.white70.withOpacity(0.3),
             offset: Offset(5, 5),
             spreadRadius: 3,
-            blurRadius: 20),
+            blurRadius: 10),
         BoxShadow(
             color: Colors.black,
             offset: Offset(-5, -3),
