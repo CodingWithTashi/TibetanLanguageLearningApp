@@ -55,6 +55,57 @@ class AppConstant {
   static const String WEB_URL = "https://tibetanlanguagelearningapp.web.app/#/";
   static const List<String> allWords = ["CAT", "PIG", "FOX", "LION"];
 
+  static String getTibetanNumberByNumber({required String number}) {
+    String finalNumber = "";
+    number.runes.forEach((element) {
+      switch (int.parse(String.fromCharCode(element))) {
+        case 0:
+          finalNumber += '༠';
+          break;
+        case 1:
+          finalNumber += '༡';
+          break;
+
+        case 2:
+          finalNumber += '༢';
+          break;
+
+        case 3:
+          finalNumber += '༣';
+          break;
+
+        case 4:
+          finalNumber += '༤';
+          break;
+
+        case 5:
+          finalNumber += '༥';
+          break;
+
+        case 6:
+          finalNumber += '༦';
+          break;
+
+        case 7:
+          finalNumber += '༧';
+          break;
+
+        case 8:
+          finalNumber += '༨';
+          break;
+
+        case 9:
+          finalNumber += '༩';
+          break;
+
+        default:
+          finalNumber += '༠';
+          break;
+      }
+    });
+    return finalNumber;
+  }
+
   static List<Verb> verbsList = [
     Verb(
       fileName: 'phone',
@@ -65,11 +116,15 @@ class AppConstant {
         fileName: 'balloon',
         word: 'སྒང་ཕུག།',
         characterList: ['སྒ', 'ང་', 'ཕུ', 'ག།']),
-    Verb(fileName: 'duck', word: 'ངང་པ།'),
+    Verb(
+      fileName: 'duck',
+      word: 'ངང་པ།',
+      characterList: ['ང', 'ང་', 'པ།'],
+    ),
     Verb(
       fileName: 'chain',
       word: 'ལྕགས་ཐག།',
-      characterList: ['ང', 'ང་', 'པ།'],
+      characterList: ['ལྕ', 'ག', 'ས་', 'ཐ', 'ག།'],
     ),
     Verb(
       fileName: 'water',

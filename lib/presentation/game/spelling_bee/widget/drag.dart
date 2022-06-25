@@ -75,16 +75,22 @@ class _DragState extends State<Drag> {
                             ),
                           ),
                         ),
-                        child: Center(
-                          child: Text(
-                            widget.letter,
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  color: Colors.white,
-                                ),
+                        child: Container(
+                          width: size.width * 0.15,
+                          height: size.width * 0.15,
+                          decoration:
+                              ApplicationUtil.getBoxDecorationOne(context),
+                          child: Center(
+                            child: Text(
+                              widget.letter,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                            ),
                           ),
                         ),
                       ),

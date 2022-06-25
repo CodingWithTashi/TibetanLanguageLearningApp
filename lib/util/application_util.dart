@@ -15,15 +15,15 @@ class ApplicationUtil {
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
+            color: Colors.black,
+            offset: Offset(-5, -3),
+            spreadRadius: -4,
+            blurRadius: 10),
+        BoxShadow(
             color: Theme.of(context).primaryColorLight.withOpacity(0.3),
             offset: Offset(5, 5),
             spreadRadius: 3,
             blurRadius: 10),
-        BoxShadow(
-            color: Colors.black,
-            offset: Offset(-5, -3),
-            spreadRadius: -4,
-            blurRadius: 15),
       ],
     );
   }
@@ -34,15 +34,15 @@ class ApplicationUtil {
       borderRadius: BorderRadius.circular(10),
       boxShadow: [
         BoxShadow(
+            color: Colors.black,
+            offset: Offset(-5, -3),
+            spreadRadius: -4,
+            blurRadius: 10),
+        BoxShadow(
             color: Colors.white70.withOpacity(0.3),
             offset: Offset(5, 5),
             spreadRadius: 3,
             blurRadius: 10),
-        BoxShadow(
-            color: Colors.black,
-            offset: Offset(-5, -3),
-            spreadRadius: -4,
-            blurRadius: 15),
       ],
     );
   }

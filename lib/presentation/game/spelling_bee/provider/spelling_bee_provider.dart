@@ -17,59 +17,53 @@ class SpellingBeeProvider extends ChangeNotifier {
     lettersAnswered++;
     if (lettersAnswered == totalLetters) {
       wordAnswered++;
-      //print("word complees");
       if (wordAnswered == AppConstant.allWords.length) {
         sessionCompleted = true;
       }
-      showDialog(
-          barrierDismissible: false,
-          context: context,
-          builder: (_) {
-            String title = "Well Done";
-            String buttonText = "Generate New";
-            if (sessionCompleted) {
-              title = "All word completed";
-              buttonText = "Replay";
-            }
-            return AlertDialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              actionsAlignment: MainAxisAlignment.center,
-              title: Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              actions: [
-                InkWell(
-                  child: Container(
-                    width: 200,
-                    decoration: ApplicationUtil.getBoxDecorationOne(context),
-                    child: Center(
-                      child: Text(
-                        buttonText,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontSize: 24,
-                                  color: Colors.white,
-                                ),
+      if (sessionCompleted) {
+        showDialog(
+            barrierDismissible: false,
+            context: context,
+            builder: (_) {
+              String title = "All word completed";
+              String buttonText = "Replay";
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                actionsAlignment: MainAxisAlignment.center,
+                title: Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                actions: [
+                  InkWell(
+                    child: Container(
+                      width: 200,
+                      decoration: ApplicationUtil.getBoxDecorationOne(context),
+                      child: Center(
+                        child: Text(
+                          buttonText,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                  ),
+                        ),
                       ),
                     ),
-                  ),
-                  onTap: () {
-                    if (sessionCompleted) {
+                    onTap: () {
                       reset();
                       Navigator.of(context)
                           .pushReplacementNamed(SpellingBeePage.routeName);
-                    } else {
-                      requestWord(request: true);
-                      Navigator.of(context).pop();
-                    }
-                  },
-                )
-              ],
-            );
-          });
+                    },
+                  )
+                ],
+              );
+            });
+      } else {
+        requestWord(request: true);
+      }
     }
     notifyListeners();
   }

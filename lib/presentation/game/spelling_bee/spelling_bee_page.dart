@@ -21,6 +21,7 @@ class SpellingBeePage extends StatefulWidget {
 
 class _SpellingBeePageState extends State<SpellingBeePage> {
   List<Verb> _verbList = AppConstant.verbsList;
+  final verbListLength = AppConstant.verbsList.length;
   late List<String> _characterList, _dropCharacterList;
   late Verb selectedVerb;
   double total = 10.0;
@@ -47,6 +48,9 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
               _getBackgroundImage(),
               Column(
                 children: [
+                  SizedBox(
+                    height: kToolbarHeight,
+                  ),
                   _getHeader(),
                   _getDropContent(),
                   _getImageForWord(),
@@ -92,24 +96,26 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   _getHeader() => Expanded(
         flex: 1,
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+          padding: EdgeInsets.all(5),
+          margin: EdgeInsets.symmetric(
+            horizontal: 10,
+          ),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           width: double.infinity,
-          height: 80,
           child: Center(
             child: Text(
-              'Spelling BEE!',
+              'དག་ཆ་། འགྲན་སྡུར།',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 30,
+                  fontSize: 28,
                   shadows: [
                     Shadow(
-                        offset: Offset(3, 3),
+                        offset: Offset(2, 2),
                         color: Colors.black38,
                         blurRadius: 10),
                     Shadow(
-                        offset: Offset(-3, -3),
-                        color: Colors.white.withOpacity(0.65),
+                        offset: Offset(-2, -2),
+                        color: Colors.white.withOpacity(0.35),
                         blurRadius: 10)
                   ],
                   color: Colors.grey.shade300),
@@ -161,19 +167,25 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
         flex: 1,
         child: Container(
           child: LiquidLinearProgressIndicator(
-            value: 0.5, // Defaults to 0.5.
+            value: _getValue(), // Defaults to 0.5.
             valueColor: AlwaysStoppedAnimation(
-              Theme.of(context).primaryColorDark,
+              Theme.of(context).primaryColor,
             ), // Defaults to the current Theme's accentColor.
             backgroundColor: Colors
                 .white, // Defaults to the current Theme's backgroundColor.
             borderColor: Theme.of(context).primaryColor,
-            borderWidth: 2.0,
-            //borderRadius: 10.0,
+            borderWidth: 4.0,
+            borderRadius: 1.0,
+
             direction: Axis
                 .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-            center: Text("Loading..."),
+            center: Text(
+              "${AppConstant.getTibetanNumberByNumber(number: (verbListLength - _verbList.length).toString())} / ${AppConstant.getTibetanNumberByNumber(number: verbListLength.toString())}",
+              style: TextStyle(fontSize: 20),
+            ),
           ),
         ),
       );
+
+  _getValue() => (verbListLength - _verbList.length) / verbListLength;
 }

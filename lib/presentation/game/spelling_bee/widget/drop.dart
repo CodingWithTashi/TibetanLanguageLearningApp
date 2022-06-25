@@ -45,10 +45,9 @@ class Drop extends StatelessWidget {
               );
             } else {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 5),
-                decoration: ApplicationUtil.getBoxDecorationOne(context),
                 width: size.width * 0.15,
                 height: size.width * 0.15,
+                decoration: ApplicationUtil.getBoxDecorationOne(context),
               );
             }
           },
