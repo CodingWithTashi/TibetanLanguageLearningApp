@@ -10,6 +10,7 @@ import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/wid
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/fly_in_animation.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SpellingBeePage extends StatefulWidget {
   static const routeName = 'spelling-bee';
@@ -105,7 +106,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
           width: double.infinity,
           child: Center(
             child: Text(
-              'དག་ཆ་། འགྲན་སྡུར།',
+              AppLocalizations.of(context)!.spellingBeeContest,
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 28,

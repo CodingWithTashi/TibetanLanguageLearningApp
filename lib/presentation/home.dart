@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
           opacity: _buttonOpacity,
           child: Container(
             width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
               AppLocalizations.of(context)!.learnLangauge,
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
           opacity: _buttonOpacity,
           child: Container(
             width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
               AppLocalizations.of(context)!.practiceLanguage,
@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
           opacity: _buttonOpacity,
           child: Container(
             width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
             decoration: ApplicationUtil.getBoxDecorationOne(context),
             child: Text(
               AppLocalizations.of(context)!.useCases,
@@ -242,7 +242,7 @@ class _HomePageState extends State<HomePage> {
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
     myBanner = BannerAd(
-      adUnitId: AppConstant.TEST_UNIT_ID,
+      adUnitId: AppConstant.BANNER_AD_HOME_UNIT_ID,
       size: AdSize.banner,
       request: AdRequest(),
       listener: listener,

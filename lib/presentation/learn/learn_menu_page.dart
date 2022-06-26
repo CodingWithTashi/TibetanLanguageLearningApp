@@ -36,7 +36,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         onAdImpression: (Ad ad) => print('Ad impression.'),
       );
       myBanner = BannerAd(
-        adUnitId: AppConstant.TEST_UNIT_ID,
+        adUnitId: AppConstant.BANNER_AD_LEARN_MENU_UNIT_ID,
         size: AdSize.banner,
         request: AdRequest(),
         listener: listener,
@@ -51,9 +51,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
   Widget build(BuildContext context) {
     final locale = Localizations.localeOf(context);
     if (locale.languageCode == "bo") {
-      menuFontSize = 30;
+      menuFontSize = 28;
     } else {
-      menuFontSize = 24;
+      menuFontSize = 22;
     }
     return Scaffold(
       body: Stack(
@@ -118,7 +118,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         },
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           child: Text(
             AppLocalizations.of(context)!.thirtyConsonant,
