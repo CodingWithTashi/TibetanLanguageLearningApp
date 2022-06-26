@@ -6,4 +6,11 @@ class Verb {
       {required this.fileName,
       required this.word,
       this.characterList = const []});
+
+  Verb.clone({required Verb verb})
+      : this(
+          fileName: verb.fileName,
+          word: verb.word,
+          characterList: verb.characterList,
+        );
 }

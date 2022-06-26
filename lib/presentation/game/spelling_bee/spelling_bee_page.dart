@@ -21,11 +21,8 @@ class SpellingBeePage extends StatefulWidget {
 
 class _SpellingBeePageState extends State<SpellingBeePage> {
   List<Verb> _verbList = AppConstant.verbsList;
-  final verbListLength = AppConstant.verbsList.length;
-  late List<String> _characterList, _dropCharacterList;
   late Verb selectedVerb;
-  double total = 10.0;
-  double currentValue = 0.0;
+  late Verb shuffledVerb;
   @override
   void initState() {
     //_generateWord();
@@ -66,18 +63,18 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   }
 
   void _generateWord() {
-    final r = Random().nextInt(_verbList.length);
-    _characterList = _verbList[r].characterList;
-    _dropCharacterList = List.from(_characterList);
-    selectedVerb = _verbList[r];
-    _verbList.removeAt(r);
-    if (_characterList.isNotEmpty) {
-      _characterList.shuffle();
+    final randomNumber = Random().nextInt(_verbList.length);
+    var copyList = List.from(_verbList);
+    selectedVerb = _verbList[randomNumber];
+    shuffledVerb = copyList[randomNumber];
+    _verbList.removeAt(randomNumber);
+    if (shuffledVerb.characterList.isNotEmpty) {
+      shuffledVerb.characterList.shuffle();
     }
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<SpellingBeeProvider>(context, listen: false)
-          .setUp(total: _characterList.length);
+          .setUp(total: shuffledVerb.characterList.length);
       Provider.of<SpellingBeeProvider>(context, listen: false)
           .requestWord(request: false);
     });
@@ -130,7 +127,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
           scrollDirection: Axis.horizontal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _dropCharacterList
+            children: selectedVerb.characterList
                 .map((e) =>
                     FlyInAnimation(animate: true, child: Drop(letter: e)))
                 .toList(),
@@ -151,7 +148,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
           scrollDirection: Axis.horizontal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: _characterList
+            children: shuffledVerb.characterList
                 .map((e) => FlyInAnimation(
                       animate: true,
                       child: Drag(
@@ -165,27 +162,35 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
 
   _getProgressIndicator() => Expanded(
         flex: 1,
-        child: Container(
-          child: LiquidLinearProgressIndicator(
-            value: _getValue(), // Defaults to 0.5.
-            valueColor: AlwaysStoppedAnimation(
-              Theme.of(context).primaryColor,
-            ), // Defaults to the current Theme's accentColor.
-            backgroundColor: Colors
-                .white, // Defaults to the current Theme's backgroundColor.
-            borderColor: Theme.of(context).primaryColor,
-            borderWidth: 4.0,
-            borderRadius: 1.0,
+        child: Row(
+          children: [
+            Expanded(
+              child: Container(
+                child: LiquidLinearProgressIndicator(
+                  value: _getValue(), // Defaults to 0.5.
+                  valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).primaryColor,
+                  ), // Defaults to the current Theme's accentColor.
+                  backgroundColor: Colors
+                      .white, // Defaults to the current Theme's backgroundColor.
+                  borderColor: Theme.of(context).primaryColor,
+                  borderWidth: 4.0,
+                  borderRadius: 1.0,
 
-            direction: Axis
-                .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-            center: Text(
-              "${AppConstant.getTibetanNumberByNumber(number: (verbListLength - _verbList.length).toString())} / ${AppConstant.getTibetanNumberByNumber(number: verbListLength.toString())}",
-              style: TextStyle(fontSize: 20),
+                  direction: Axis
+                      .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+                  center: Text(
+                    "${AppConstant.getTibetanNumberByNumber(number: (AppConstant.verbsList.length - _verbList.length).toString())} / ${AppConstant.getTibetanNumberByNumber(number: AppConstant.verbsList.length.toString())}",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       );
 
-  _getValue() => (verbListLength - _verbList.length) / verbListLength;
+  _getValue() =>
+      (AppConstant.verbsList.length - _verbList.length) /
+      AppConstant.verbsList.length;
 }
