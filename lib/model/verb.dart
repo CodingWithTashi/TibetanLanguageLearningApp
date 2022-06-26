@@ -1,7 +1,9 @@
-class Verb {
-  String fileName;
-  String word;
-  List<String> characterList;
+import 'package:equatable/equatable.dart';
+
+class Verb extends Equatable {
+  final String fileName;
+  final String word;
+  final List<String> characterList;
   Verb(
       {required this.fileName,
       required this.word,
@@ -13,4 +15,8 @@ class Verb {
           word: verb.word,
           characterList: verb.characterList,
         );
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [fileName, word, characterList];
 }

@@ -20,7 +20,7 @@ class SpellingBeePage extends StatefulWidget {
 }
 
 class _SpellingBeePageState extends State<SpellingBeePage> {
-  List<Verb> _verbList = AppConstant.verbsList;
+  List<Verb> _tempList = List.from(AppConstant.verbsList);
   late Verb selectedVerb;
   late Verb shuffledVerb;
   @override
@@ -36,7 +36,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
         selector: (_, controller) => controller.generateWord,
         builder: (_, generate, __) {
           if (generate) {
-            if (_verbList.isNotEmpty) {
+            if (_tempList.isNotEmpty) {
               _generateWord();
             }
           }
@@ -63,15 +63,19 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   }
 
   void _generateWord() {
-    final randomNumber = Random().nextInt(_verbList.length);
-    var copyList = List.from(_verbList);
-    selectedVerb = _verbList[randomNumber];
-    shuffledVerb = copyList[randomNumber];
-    _verbList.removeAt(randomNumber);
-    if (shuffledVerb.characterList.isNotEmpty) {
-      shuffledVerb.characterList.shuffle();
-    }
+    final randomNumber = Random().nextInt(_tempList.length);
+    selectedVerb = _tempList[randomNumber];
 
+    if (_tempList[randomNumber].characterList.isNotEmpty) {
+      List<String> characterList =
+          List.from(_tempList[randomNumber].characterList)..shuffle();
+
+      shuffledVerb = Verb(
+          fileName: _tempList[randomNumber].fileName,
+          word: _tempList[randomNumber].word,
+          characterList: characterList);
+    }
+    _tempList.removeAt(randomNumber);
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<SpellingBeeProvider>(context, listen: false)
           .setUp(total: shuffledVerb.characterList.length);
@@ -180,7 +184,7 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
                   direction: Axis
                       .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
                   center: Text(
-                    "${AppConstant.getTibetanNumberByNumber(number: (AppConstant.verbsList.length - _verbList.length).toString())} / ${AppConstant.getTibetanNumberByNumber(number: AppConstant.verbsList.length.toString())}",
+                    "${AppConstant.getTibetanNumberByNumber(number: (AppConstant.verbsList.length - (_tempList.length + 1)).toString())} / ${AppConstant.getTibetanNumberByNumber(number: AppConstant.verbsList.length.toString())}",
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
@@ -191,6 +195,6 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
       );
 
   _getValue() =>
-      (AppConstant.verbsList.length - _verbList.length) /
+      (AppConstant.verbsList.length - (_tempList.length + 1)) /
       AppConstant.verbsList.length;
 }

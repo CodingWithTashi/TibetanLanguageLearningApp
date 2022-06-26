@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/message_dialog.dart';
+import 'package:tibetan_language_learning_app/presentation/home.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -17,7 +18,7 @@ class SpellingBeeProvider extends ChangeNotifier {
     lettersAnswered++;
     if (lettersAnswered == totalLetters) {
       wordAnswered++;
-      if (wordAnswered == AppConstant.allWords.length) {
+      if (wordAnswered == AppConstant.verbsList.length) {
         sessionCompleted = true;
       }
       if (sessionCompleted) {
@@ -25,8 +26,9 @@ class SpellingBeeProvider extends ChangeNotifier {
             barrierDismissible: false,
             context: context,
             builder: (_) {
-              String title = "All word completed";
-              String buttonText = "Replay";
+              String title =
+                  "Congrats! You just cracked spelling bee contest ❤.";
+              String buttonText = "Exit Game";
               return AlertDialog(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -39,23 +41,25 @@ class SpellingBeeProvider extends ChangeNotifier {
                 actions: [
                   InkWell(
                     child: Container(
-                      width: 200,
+                      width: 120,
                       decoration: ApplicationUtil.getBoxDecorationOne(context),
                       child: Center(
-                        child: Text(
-                          buttonText,
-                          style:
-                              Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    fontSize: 24,
-                                    color: Colors.white,
-                                  ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Text(
+                            buttonText,
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     onTap: () {
                       reset();
-                      Navigator.of(context)
-                          .pushReplacementNamed(SpellingBeePage.routeName);
+                      Navigator.pushNamedAndRemoveUntil(
+                          context, HomePage.routeName, (route) => false);
                     },
                   )
                 ],
