@@ -31,6 +31,7 @@ dependencies:
   shared_preferences: 2.0.6
   provider:
   liquid_progress_indicator: ^0.4.0
+  confetti: ^0.7.0
 
   flutter_localizations:
     sdk: flutter

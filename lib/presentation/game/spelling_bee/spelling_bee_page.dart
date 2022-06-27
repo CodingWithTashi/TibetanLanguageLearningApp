@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:provider/provider.dart';
@@ -24,10 +25,35 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   List<Verb> _tempList = List.from(AppConstant.verbsList);
   late Verb selectedVerb;
   late Verb shuffledVerb;
+  late ConfettiController _controllerTopCenter;
+  late ConfettiController _controllerTopRight;
+  late ConfettiController _controllerTopLeft;
+  late ConfettiController _controllerBottomCenter;
+  final _gravity = 0.4;
+  final _duration = 4;
+
   @override
   void initState() {
     //_generateWord();
+    _controllerTopCenter =
+        ConfettiController(duration: Duration(seconds: _duration));
+    _controllerTopRight =
+        ConfettiController(duration: Duration(seconds: _duration));
+    _controllerTopLeft =
+        ConfettiController(duration: Duration(seconds: _duration));
+    _controllerBottomCenter =
+        ConfettiController(duration: Duration(seconds: 1));
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controllerTopCenter.dispose();
+    _controllerTopRight.dispose();
+    _controllerTopLeft.dispose();
+    _controllerBottomCenter.dispose();
+    super.dispose();
   }
 
   @override
@@ -56,6 +82,8 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
                   _getProgressIndicator(),
                 ],
               ),
+              _getFinishCelebAnimation(),
+              _getCelebAnimationOnCorrectAnswer(),
             ],
           );
         },
@@ -198,4 +226,94 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   _getValue() =>
       (AppConstant.verbsList.length - (_tempList.length + 1)) /
       AppConstant.verbsList.length;
+
+  _getTopCelebrateAnimation() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: ConfettiWidget(
+        confettiController: _controllerTopCenter,
+        blastDirection: pi / 2,
+        maxBlastForce: 5, // set a lower max blast force
+        minBlastForce: 2, // set a lower min blast force
+        emissionFrequency: 0.05,
+        numberOfParticles: 50, // a lot of particles at once
+        gravity: _gravity,
+      ),
+    );
+  }
+
+  _getTopRightCelebrateAnimation() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: ConfettiWidget(
+        confettiController: _controllerTopRight,
+        blastDirection: pi / 2,
+        maxBlastForce: 5, // set a lower max blast force
+        minBlastForce: 2, // set a lower min blast force
+        emissionFrequency: 0.05,
+        numberOfParticles: 50, // a lot of particles at once
+        gravity: _gravity,
+      ),
+    );
+  }
+
+  _getTopLeftCelebrateAnimation() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: ConfettiWidget(
+        confettiController: _controllerTopLeft,
+        blastDirection: pi / 2,
+        maxBlastForce: 5, // set a lower max blast force
+        minBlastForce: 2, // set a lower min blast force
+        emissionFrequency: 0.05,
+        numberOfParticles: 50, // a lot of particles at once
+        gravity: _gravity,
+      ),
+    );
+  }
+
+  _getFinishCelebAnimation() {
+    return Selector<SpellingBeeProvider, bool>(
+      selector: (_, controller) => controller.sessionCompleted,
+      builder: (_, sessionCompleted, __) {
+        if (sessionCompleted) {
+          _controllerTopCenter.play();
+          _controllerTopRight.play();
+          _controllerTopLeft.play();
+        }
+        return Stack(
+          children: [
+            _getTopCelebrateAnimation(),
+            _getTopRightCelebrateAnimation(),
+            _getTopLeftCelebrateAnimation(),
+          ],
+        );
+      },
+    );
+  }
+
+  _getCelebAnimationOnCorrectAnswer() {
+    return Selector<SpellingBeeProvider, bool>(
+      selector: (_, controller) => controller.generateWord,
+      builder: (_, generateWord, __) {
+        if (generateWord == true &&
+            AppConstant.verbsList.length != (_tempList.length + 1)) {
+          _controllerBottomCenter.play();
+        }
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: ConfettiWidget(
+            confettiController: _controllerBottomCenter,
+            blastDirection: -pi / 2,
+            emissionFrequency: 0.01,
+            numberOfParticles: 50,
+            maxBlastForce: 80,
+            minBlastForce: 40,
+            gravity: _gravity,
+            blastDirectionality: BlastDirectionality.explosive,
+          ),
+        );
+      },
+    );
+  }
 }
