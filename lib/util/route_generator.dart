@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
+import 'package:tibetan_language_learning_app/presentation/game/snack/snack_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
@@ -133,6 +134,10 @@ class RouteGenerator {
             create: (BuildContext context) => SpellingBeeProvider(),
             child: SpellingBeePage(),
           ),
+        );
+      case SnakeGamePage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => SnakeGamePage(),
         );
 
       default:
