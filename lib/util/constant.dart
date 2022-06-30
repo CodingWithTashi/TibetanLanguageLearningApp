@@ -1434,4 +1434,6 @@ class AppConstant {
       Alphabet(fileName: 'salatak', alphabetName: 'སླ།'),
     ];
   }
+
+  static gameList() {}
 }

@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
-import 'package:tibetan_language_learning_app/presentation/game/snack/snack_game.dart';
+import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
+import 'package:tibetan_language_learning_app/presentation/game/snake_game/snake_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
@@ -128,6 +129,10 @@ class RouteGenerator {
           }
           return _errorRoute();
         }
+      case GameHomePage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => GameHomePage(),
+        );
       case SpellingBeePage.routeName:
         return MaterialPageRoute(
           builder: (_) => ChangeNotifierProvider<SpellingBeeProvider>(

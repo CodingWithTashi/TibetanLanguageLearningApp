@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
@@ -200,7 +201,7 @@ class _HomePageState extends State<HomePage> {
       );
   _playGameButtons() => InkWell(
         onTap: () {
-          Navigator.pushNamed(context, SpellingBeePage.routeName);
+          Navigator.pushNamed(context, GameHomePage.routeName);
         },
         child: AnimatedOpacity(
           duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
