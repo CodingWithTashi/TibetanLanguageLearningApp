@@ -54,53 +54,50 @@ class _GameHomePageState extends State<GameHomePage> {
             child: Stack(
               alignment: Alignment.center,
               children: [
+                Lottie.network(
+                  item.gameIcon,
+                ),
                 ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                   child: Stack(
-                    children: <Widget>[
-                      Lottie.network(item.gameIcon),
-                      Positioned(
-                        bottom: 0.0,
-                        left: 0.0,
-                        right: 0.0,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color.fromARGB(200, 0, 0, 0),
-                                Color.fromARGB(0, 0, 0, 0)
-                              ],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
-                            ),
-                          ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          child: Text(
-                            'No. ${item.name} game',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    children: <Widget>[],
                   ),
                 ),
-                Center(
-                  child: IconButton(
-                    onPressed: () {
-                      _navigateToGameScreen(gameType: item.gameType);
-                    },
-                    icon: Icon(
-                      Icons.play_circle_fill_outlined,
-                      color: Colors.white,
-                      size: 30,
+                GestureDetector(
+                  onTap: () => _navigateToGameScreen(gameType: item.gameType),
+                  child: Icon(
+                    Icons.play_circle_fill_outlined,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                ),
+                Positioned(
+                  bottom: 0.0,
+                  left: 0.0,
+                  right: 0.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromARGB(100, 0, 0, 0),
+                          Color.fromARGB(0, 0, 0, 0)
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                    child: Text(
+                      '${item.name}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ))
@@ -116,4 +113,26 @@ class _GameHomePageState extends State<GameHomePage> {
         break;
     }
   }
+}
+
+class CardClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final Path path = Path();
+
+    path.lineTo(0.0, size.height / 2 - 4);
+    path.relativeArcToPoint(const Offset(0, 30),
+        radius: const Radius.circular(10.0), largeArc: true);
+    path.lineTo(0.0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, size.height / 2 + 26);
+    path.arcToPoint(Offset(size.width, size.height / 2 - 4),
+        radius: const Radius.circular(10.0), clockwise: true);
+    path.lineTo(size.width, 0);
+    path.lineTo(0.0, 0.0);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
