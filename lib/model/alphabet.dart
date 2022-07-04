@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class Alphabet extends Equatable {
-  String fileName;
-  String alphabetName;
+  final String fileName;
+  final String alphabetName;
   Alphabet({required this.fileName, required this.alphabetName});
 
   @override
