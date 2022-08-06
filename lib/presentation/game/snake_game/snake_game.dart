@@ -21,7 +21,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
 
   int food = rNo.nextInt(700);
 
-  var snakeSpeed = 300;
+  var snakeSpeed = 500;
 
   bool playing = false;
   var direction = 'down';

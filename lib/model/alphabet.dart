@@ -1,10 +1,19 @@
 import 'package:equatable/equatable.dart';
 
 class Alphabet extends Equatable {
-  final String fileName;
-  final String alphabetName;
-  Alphabet({required this.fileName, required this.alphabetName});
+  final String _fileName;
+  final String _alphabetName;
+
+  const Alphabet({
+    required String fileName,
+    required String alphabetName,
+  })  : _fileName = fileName,
+        _alphabetName = alphabetName;
+
+  String get fileName => _fileName;
+
+  String get alphabetName => _alphabetName;
 
   @override
-  List<Object?> get props => [fileName, alphabetName];
+  List<Object?> get props => [_fileName, _alphabetName];
 }

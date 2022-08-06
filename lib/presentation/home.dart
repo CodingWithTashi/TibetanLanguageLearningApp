@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
     myBanner = BannerAd(
-      adUnitId: AppConstant.BANNER_AD_HOME_UNIT_ID,
+      adUnitId: AppConstant.TEST_UNIT_ID,
       size: AdSize.banner,
       request: AdRequest(),
       listener: listener,
