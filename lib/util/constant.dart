@@ -43,6 +43,8 @@ class AppConstant {
       'ca-app-pub-8284901143739274/9771506718';
   static const String SPELLING_BEE_REWARD_AD_UNIT_ID =
       'ca-app-pub-8284901143739274/9784292343';
+  static const String NATIVE_AD_ID_GAME_SCREEN =
+      'ca-app-pub-8284901143739274/3727185264';
   static const String TEST_UNIT_ID = 'ca-app-pub-3940256099942544/6300978111';
   static const String APP_ID = 'ca-app-pub-8284901143739274~1421990473';
   static const String SHARE_URL =

@@ -21,7 +21,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
 
   int food = rNo.nextInt(700);
 
-  var snakeSpeed = 500;
+  var snakeSpeed = 800;
 
   bool playing = false;
   var direction = 'down';
@@ -42,7 +42,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white12,
+      backgroundColor: Theme.of(context).primaryColor,
       body: Column(
         children: [
           Expanded(
