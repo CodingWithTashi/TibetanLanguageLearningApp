@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tibetan_language_learning_app/presentation/game/snake_game/snake_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
@@ -17,88 +18,100 @@ class GameHomePage extends StatefulWidget {
 }
 
 class _GameHomePageState extends State<GameHomePage> {
-  final CarouselController _controller = CarouselController();
+  late final CarouselController _controller;
+
+  @override
+  initState() {
+    super.initState();
+    _controller = CarouselController();
+    ApplicationUtil.setScreenOrientation(disabledLandscape: true);
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    ApplicationUtil.setScreenOrientation(disabledLandscape: false);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: OrientationBuilder(builder: (context, orientation) {
-        return Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              CarouselSlider(
-                items: _getGameWidgetList(),
-                options: CarouselOptions(
-                  scrollPhysics: BouncingScrollPhysics(),
-                  enableInfiniteScroll: false,
-                  enlargeCenterPage: true,
-                  aspectRatio: orientation == Orientation.portrait ? 1.8 : 3,
-                  viewportFraction:
-                      orientation == Orientation.portrait ? 0.7 : 0.5,
-                ),
-                carouselController: _controller,
-              )
-            ],
-          ),
-        );
-      }),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CarouselSlider(
+              items: _getGameWidgetList(),
+              options: CarouselOptions(
+                scrollPhysics: BouncingScrollPhysics(),
+                enableInfiniteScroll: false,
+                enlargeCenterPage: true,
+                aspectRatio: 1.5,
+                viewportFraction: 0.7,
+              ),
+              carouselController: _controller,
+            )
+          ],
+        ),
+      ),
     );
   }
 
   _getGameWidgetList() => Game.gameList()
-      .map((item) => Container(
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            margin: EdgeInsets.all(20.0),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Lottie.network(
-                  item.gameIcon,
-                ),
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  child: Stack(
-                    children: <Widget>[],
+      .map((item) => InkResponse(
+            onTap: () => _navigateToGameScreen(gameType: item.gameType),
+            child: Container(
+              decoration: ApplicationUtil.getBoxDecorationOne(context),
+              margin: EdgeInsets.all(20.0),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Lottie.network(
+                    item.gameIcon,
                   ),
-                ),
-                GestureDetector(
-                  onTap: () => _navigateToGameScreen(gameType: item.gameType),
-                  child: Icon(
+                  ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(
+                      children: <Widget>[],
+                    ),
+                  ),
+                  Icon(
                     Icons.play_circle_fill_outlined,
                     color: Colors.white,
                     size: 40,
                   ),
-                ),
-                Positioned(
-                  bottom: 0.0,
-                  left: 0.0,
-                  right: 0.0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromARGB(100, 0, 0, 0),
-                          Color.fromARGB(0, 0, 0, 0)
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
+                  Positioned(
+                    bottom: 0.0,
+                    left: 0.0,
+                    right: 0.0,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(80, 0, 0, 0),
+                            Color.fromARGB(0, 0, 0, 0)
+                          ],
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                        ),
                       ),
-                    ),
-                    padding:
-                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                    child: Text(
-                      '${item.name}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
+                      child: Text(
+                        '${item.name}',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ))
       .toList();

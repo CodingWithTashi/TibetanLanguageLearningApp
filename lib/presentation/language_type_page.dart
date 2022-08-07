@@ -46,7 +46,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
                     color: Theme.of(context).primaryColor,
                   ),
                   child: Center(
-                    child: _getVochenUI(),
+                    child: _getUchenUI(),
                   ),
                 ),
               ],
@@ -65,7 +65,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
                     color: Colors.white,
                   ),
                   child: Center(
-                    child: _getVomeyUI(),
+                    child: _getUmeUI(),
                   ),
                 ),
               ],
@@ -76,7 +76,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
     );
   }
 
-  _getVomeyUI() => Container(
+  _getUmeUI() => Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -131,7 +131,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
         ),
       );
 
-  _getVochenUI() => Container(
+  _getUchenUI() => Container(
         margin: EdgeInsets.symmetric(horizontal: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

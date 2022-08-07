@@ -245,4 +245,15 @@ class ApplicationUtil {
     );
     launch(emailLaunchUri.toString());
   }
+
+  static void setScreenOrientation({required bool disabledLandscape}) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      if (!disabledLandscape) ...[
+        DeviceOrientation.landscapeRight,
+        DeviceOrientation.landscapeLeft,
+      ],
+    ]);
+  }
 }

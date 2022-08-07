@@ -58,35 +58,38 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Selector<SpellingBeeProvider, bool>(
-        selector: (_, controller) => controller.generateWord,
-        builder: (_, generate, __) {
-          if (generate) {
-            if (_tempList.isNotEmpty) {
-              _generateWord();
+    return WillPopScope(
+      onWillPop: () => _showWarningDialog(),
+      child: Scaffold(
+        body: Selector<SpellingBeeProvider, bool>(
+          selector: (_, controller) => controller.generateWord,
+          builder: (_, generate, __) {
+            if (generate) {
+              if (_tempList.isNotEmpty) {
+                _generateWord();
+              }
             }
-          }
-          return Stack(
-            children: [
-              _getBackgroundImage(),
-              Column(
-                children: [
-                  SizedBox(
-                    height: kToolbarHeight,
-                  ),
-                  _getHeader(),
-                  _getDropContent(),
-                  _getImageForWord(),
-                  _getDragContent(),
-                  _getProgressIndicator(),
-                ],
-              ),
-              _getFinishCelebAnimation(),
-              _getCelebAnimationOnCorrectAnswer(),
-            ],
-          );
-        },
+            return Stack(
+              children: [
+                _getBackgroundImage(),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: kToolbarHeight,
+                    ),
+                    _getHeader(),
+                    _getDropContent(),
+                    _getImageForWord(),
+                    _getDragContent(),
+                    _getProgressIndicator(),
+                  ],
+                ),
+                _getFinishCelebAnimation(),
+                _getCelebAnimationOnCorrectAnswer(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -315,5 +318,31 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
         );
       },
     );
+  }
+
+  _showWarningDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Alert'),
+            content: Text('Do you really want to exit?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              )
+            ],
+          );
+        });
   }
 }
