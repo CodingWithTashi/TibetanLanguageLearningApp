@@ -2,9 +2,12 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:in_app_feedback/flutter_feedback.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '.env.dart';
 
 class ApplicationUtil {
   static const ANIMATION_DURATION = 300;
@@ -94,16 +97,24 @@ class ApplicationUtil {
     return '$pathName$audioName.mp3';
   }
 
-  static getImagePath(String verb) {
-    return 'assets/images/' + verb + ".png";
+  static getImagePath(UseCaseType type,String verb) {
+    switch(type){
+      case UseCaseType.FRUIT:
+        return 'assets/images/fruits/' + verb + ".png";
+      case UseCaseType.VEGETABLE:
+        return 'assets/images/vegetables/' + verb + ".png";
+      case UseCaseType.VERB:
+        return 'assets/images/' + verb + ".png";
+      default:
+        return 'assets/images/' + verb + ".png";
+    }
+
   }
 
   static Future<void> launchInBrowser(url) async {
-    if (await canLaunch(url)) {
-      await launch(
+    if (await canLaunchUrl(url)) {
+      await launchUrl(
         url,
-        forceSafariVC: false,
-        forceWebView: false,
       );
     } else {
       throw 'Could not launch $url';
@@ -163,6 +174,33 @@ class ApplicationUtil {
                     Navigator.pop(context);
                   },
                 ),
+                ListTile(
+                  leading: new Icon(
+                    Icons.message,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                  title: new Text('Issue and feedback'),
+                  onTap: () {
+                    FlutterFeedback.showFeedbackBottomSheet(
+                      context: context,
+                      emailConfig: EmailConfig(
+                        toMailList: ['khakontas33@gmail.com', 'developer.kharag@gmai.com'],
+                        sendGridToken: kSendGridKey,
+                        fromMail: 'developer.kharag@gmail.com',
+                        emailSubject: 'Feedback on Tibetan Language Learning App',
+                      ),
+                      feedbackCallback: (FeedbackData feedbackData) {
+                        if (feedbackData.error == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Feedback sent successfully")));
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(SnackBar(content: Text(feedbackData.error!)));
+                        }
+                      },
+                    );
+                  },
+                ),
                 !kIsWeb
                     ? ListTile(
                         leading: new Icon(
@@ -212,6 +250,7 @@ class ApplicationUtil {
                     Navigator.pop(context);
                   },
                 ),
+
                 !kIsWeb
                     ? ListTile(
                         leading: new Icon(

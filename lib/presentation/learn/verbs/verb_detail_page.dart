@@ -5,9 +5,12 @@ import 'package:tibetan_language_learning_app/presentation/widget/alphabet_audio
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
+import '../../../util/route_generator.dart';
+
 class VerbDetailPage extends StatefulWidget {
-  final Verb verb;
-  VerbDetailPage({required this.verb});
+  final RouteParam routeParam;
+
+  VerbDetailPage({required this.routeParam});
 
   static const routeName = "/verbs-detail";
   @override
@@ -18,7 +21,7 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
   var controller;
   var selectedPageIndex = 0;
   var pageView;
-  List<Verb> verbsList = AppConstant.verbsList;
+  List<Verb> itemList = [];
 
   @override
   void dispose() {
@@ -28,7 +31,8 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
 
   @override
   void initState() {
-    selectedPageIndex = verbsList.indexOf(widget.verb);
+    itemList =  AppConstant.gridItemList(widget.routeParam.type);
+    selectedPageIndex = itemList.indexOf(widget.routeParam.verb);
     controller = PageController(
       initialPage: selectedPageIndex,
     );
@@ -60,9 +64,9 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
                   SizedBox(
                     height: 20,
                   ),
-                  AlphabetAudioControl(
+                  widget.routeParam.type==UseCaseType.VERB?AlphabetAudioControl(
                       pathName: 'assets/audio/words/',
-                      fileName: verbsList[selectedPageIndex].fileName)
+                      fileName: itemList[selectedPageIndex].fileName):Container()
                 ],
               ),
             ),
@@ -76,12 +80,12 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
   void initPageView() {
     pageView = PageView.builder(
       physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      itemCount: verbsList.length,
+      itemCount: itemList.length,
       controller: controller,
       scrollDirection: Axis.horizontal,
       itemBuilder: (context, index) {
         return Hero(
-          tag: verbsList[index].word,
+          tag: itemList[index].word,
           //center and scrollview is for hero animation
           child: Center(
             child: SingleChildScrollView(
@@ -98,8 +102,8 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
                         decoration:
                             ApplicationUtil.getBoxDecorationOne(context),
                         child: Image.asset(
-                          ApplicationUtil.getImagePath(
-                              verbsList[index].fileName),
+                          ApplicationUtil.getImagePath(widget.routeParam.type,
+                              itemList[index].fileName),
                           height: 200,
                           width: 200,
                         ),
@@ -137,7 +141,7 @@ class _VerbDetailPageState extends State<VerbDetailPage> {
                     width: double.infinity,
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
                     child: Text(
-                      verbsList[index].word,
+                      itemList[index].word,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 50, color: Colors.white),
                     ),

@@ -4,6 +4,9 @@ import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/model/word.dart';
 
 enum UseCaseType {
+  FRUIT,
+  VEGETABLE,
+  VERB,
   PRONOUN,
   GREETING,
   COLORS,
@@ -252,6 +255,262 @@ class AppConstant {
       characterList: ['ཨ', 'མ།'],
     ),
   ];
+
+  static List<Verb> fruitList = [
+  Verb(
+  fileName: 'apple',
+  word: 'ཀུ་ཤུ།',
+  characterList: [],
+  ),
+    Verb(
+      fileName: 'apricot',
+      word: 'ཁམ་བུ།།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'banana',
+      word: 'ངང་ལག།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'cherry',
+      word: 'སེའུ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'coconut',
+      word: 'བེ་ཏ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'grape',
+      word: 'རྒུན་འབྲུམ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'guava',
+      word: 'བལ་པོའི་སེའུ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'plum',
+      word: 'རྒུན་སྐྱུར་ཆེ་བ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'orange',
+      word: 'ཚ་ལུ་མ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'papaya',
+      word: 'སེ་ཡབ། ',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'pear',
+      word: 'ལི།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'pomegranate',
+      word: 'སེ་འབྲུ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'pineapple',
+      word: 'ཐང་འབྲས།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'strawberry',
+      word: 'དམར་ལུམ་ ལུམ་འབྲས་དམར་པོ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'dragon',
+      word: 'འབྲུག་སིལ།་',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'passion',
+      word: 'འཕན་སིལ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'musk_melon',
+      word: 'ཀུབ་མངར།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'custard_apple',
+      word: 'སི་ཏ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'date',
+      word: 'ཁ་སུར།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'raspberry',
+      word: 'ས་སེའུ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'dried',
+      word: 'སེལ་སྐམ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'kiwi',
+      word: 'སྤྲེལ་ཁམ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'mango',
+      word: 'ཨ་མྲ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'almond',
+      word: 'ཕམ་ལེབ།',
+      characterList: [],
+    ),
+
+  ];
+  static List<Verb> vegetableList = [
+    Verb(
+      fileName: 'carrot',
+      word: 'ལབ་སེར། གུང་ལ་ཕུག།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'potato',
+      word: 'ཞོག་ཁོག།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'tomato',
+      word: 'ལྡུམ་སྒོང།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'cucumber',
+      word: 'རྡོ་ཀུབ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'onion',
+      word: 'ཙོང།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'mushroom',
+      word: 'ཤྭ་མོ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'lotus_root',
+      word: 'པད་ཙ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'cabbage',
+      word: 'པད་ལོག།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'broccoli',
+      word: 'མད་ཚལ་ལྗང་ཁུ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'cauli_flower',
+      word: 'མད་ཚལ་པད་ཚལ། ཆུར་ཚལ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'peas',
+      word: 'བོད་སྲན། སྲན་ལྗང།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'coriander',
+      word: 'བསོད་ནམས་དཔལ་འཛོམས།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'radish',
+      word: 'ལ་ཕུག།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'garlic',
+      word: 'སྒོག་ལོག། སྒོག་པ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'ginger',
+      word: 'བཅའ་ལྒ་ སྒ་སྨུག།',
+      characterList: [],
+    ),Verb(
+      fileName: 'sweet_potato',
+      word: 'ཞོག་མངར།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'egg_plant',
+      word: 'རྡོ་ལུ་མ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'pumpkin',
+      word: 'ལྷོ་ཀུབ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'capsicum',
+      word: 'སུར་སྔོན།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'bitter_melon',
+      word: 'ཁ་ཀུབ། ཀུ་བ་ཁ་མོ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'turnip',
+      word: 'ཡུང་མ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'white_radish',
+      word: 'ལབ་དཀར།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'ladies_finger',
+      word: 'སྟོན་ལྕམ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'kohlrabi',
+      word: 'སྐེ་ཚེ།',
+      characterList: [],
+    ),
+    Verb(
+      fileName: 'corn',
+      word: 'ཨ་ཤོམ། མ་རྨས་ལོ་ཏོག།',
+      characterList: [],
+    ),
+
+    Verb(
+      fileName: 'chilli',
+      word: 'སུ་པན། དམར་ཚ།',
+      characterList: [],
+    ),
+  ];
   static getAudioByVerb(String verb) {
     return 'assets/audio/words/' + verb + ".mp3";
   }
@@ -309,6 +568,14 @@ class AppConstant {
 
   static List<Word> getWordList(UseCaseType type, _useCaseItemListState) {
     switch (type) {
+      case UseCaseType.FRUIT:
+        {
+          return _getFruitList(_useCaseItemListState);
+        }
+      case UseCaseType.VEGETABLE:
+        {
+          return _colorList(_useCaseItemListState);
+        }
       case UseCaseType.COLORS:
         {
           return _colorList(_useCaseItemListState);
@@ -1438,4 +1705,39 @@ class AppConstant {
   }
 
   static gameList() {}
+
+  static List<Word> _getFruitList(useCaseItemListState) {
+    return [
+      Word(
+        english: 'Apple',
+        tibetan: 'ཀ་ཤུ།།',
+        englishSound: 'apple',
+        assetPath: '',
+        animationController: AnimationController(
+          vsync: useCaseItemListState,
+          duration: Duration(milliseconds: 100),
+          reverseDuration: Duration(milliseconds: 100),
+        ),
+      ),
+    ];
+  }
+
+  static List<Verb> gridItemList(UseCaseType type) {
+    switch (type) {
+      case UseCaseType.FRUIT:
+        {
+          return fruitList;
+        }
+      case UseCaseType.VEGETABLE:
+        {
+          return vegetableList;
+        }
+      case UseCaseType.VERB:
+        {
+          return verbsList;
+        }
+      default:
+        return [];
+    }
+  }
 }

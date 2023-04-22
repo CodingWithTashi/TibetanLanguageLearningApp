@@ -88,7 +88,7 @@ class _GameHomePageState extends State<GameHomePage> {
                     right: 0.0,
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                          EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: LinearGradient(

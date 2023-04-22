@@ -610,4 +610,8 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   // TODO: implement keyboardKeyZenkakuHankaku
   String get keyboardKeyZenkakuHankaku => '';
+
+  @override
+  // TODO: implement menuBarMenuLabel
+  String get menuBarMenuLabel => throw UnimplementedError();
 }

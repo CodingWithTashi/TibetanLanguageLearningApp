@@ -71,7 +71,66 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
         height: MediaQuery.of(context).padding.top + 20,
       ),
       InkWell(
-          onTap: () => Navigator.pushNamed(context, VerbListPage.routeName),
+        onTap: () {
+          Navigator.pushNamed(context, VerbListPage.routeName,
+              arguments: UseCaseType.FRUIT);
+        },
+        child: Container(
+          width: 220,
+          padding: EdgeInsets.symmetric(vertical: 30),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/fruits/fruits.png',
+                width: 80,
+                height: 80,
+              ),
+              Text(
+                //'Pronouns',
+                AppLocalizations.of(context)!.fruit,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+        onTap: () {
+          Navigator.pushNamed(context, VerbListPage.routeName,
+              arguments: UseCaseType.VEGETABLE);
+        },
+        child: Container(
+          width: 220,
+          padding: EdgeInsets.symmetric(vertical: 30),
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/images/vegetables/vegetables.png',
+                width: 80,
+                height: 80,
+              ),
+              Text(
+                //'Pronouns',
+                AppLocalizations.of(context)!.vegetable,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      InkWell(
+          onTap: () => Navigator.pushNamed(context, VerbListPage.routeName,
+              arguments: UseCaseType.VERB),
           child: Container(
             width: 220,
             padding: EdgeInsets.symmetric(vertical: 30),

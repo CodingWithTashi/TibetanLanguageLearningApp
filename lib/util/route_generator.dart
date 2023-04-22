@@ -93,17 +93,17 @@ class RouteGenerator {
 
       case VerbListPage.routeName:
         return MaterialPageRoute(
-          builder: (_) => VerbListPage(),
+          builder: (_) => VerbListPage(type: settings.arguments as UseCaseType,),
         );
       case VerbDetailPage.routeName:
         {
-          if (settings.arguments != null && settings.arguments is Verb) {
+          if (settings.arguments != null && settings.arguments is RouteParam) {
             return MaterialPageRoute(
               builder: (_) => BlocProvider<AudioCubit>(
                 create: (context) =>
                     AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
                 child: VerbDetailPage(
-                  verb: settings.arguments as Verb,
+                  routeParam: settings.arguments as RouteParam,
                 ),
               ),
             );
@@ -162,4 +162,10 @@ class RouteGenerator {
       );
     });
   }
+
+}
+class RouteParam{
+  final Verb verb;
+  final UseCaseType type;
+  RouteParam({required this.type, required this.verb});
 }

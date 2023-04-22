@@ -21,7 +21,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
 
   int food = rNo.nextInt(700);
 
-  var snakeSpeed = 800;
+  var snakeSpeed = 300;
 
   bool playing = false;
   var direction = 'down';
@@ -131,19 +131,35 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
                   height: 50,
                   color: Colors.white12,
                   child: Center(
-                      child: OutlinedButton(
-                          onPressed: () {
-                            setState(() {
-                              endGame = true;
-                            });
-                          },
-                          child: Text(
-                            "Quit!",
-                            style: Theme.of(context)
-                                .textTheme
-                                .subtitle2!
-                                .copyWith(color: Colors.white),
-                          ))))
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          OutlinedButton(
+                              onPressed: () {
+                                setState(() {
+                                  endGame = true;
+                                });
+                              },
+                              child: Text(
+                                "Quit!",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(color: Colors.white),
+                              )),
+                          OutlinedButton(
+                              onPressed: () {
+                               Navigator.pop(context);
+                              },
+                              child: Text(
+                                "Exit game!",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(color: Colors.white),
+                              )),
+                        ],
+                      )))
         ],
       ),
     );
@@ -234,6 +250,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   showGameOverDialog() {
     showDialog(
         context: context,
+        barrierDismissible: false,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Game Over'),

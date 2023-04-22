@@ -6,18 +6,23 @@ import 'package:tibetan_language_learning_app/presentation/learn/verbs/verb_deta
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
+import '../../../util/route_generator.dart';
+
 class VerbListPage extends StatefulWidget {
   static const routeName = "/verbs-list";
+  final UseCaseType type;
+  const VerbListPage({Key? key, required this.type}) : super(key: key);
 
   @override
   _VerbListPageState createState() => _VerbListPageState();
 }
 
 class _VerbListPageState extends State<VerbListPage> {
-  List<Verb> verbsList = [];
+  List<Verb> itemList = [];
   @override
   void initState() {
-    verbsList = AppConstant.verbsList;
+    itemList = AppConstant.gridItemList(widget.type);
+
     super.initState();
   }
 
@@ -54,7 +59,7 @@ class _VerbListPageState extends State<VerbListPage> {
                 mainAxisSpacing: 10,
                 crossAxisCount: 2,
                 children: List.generate(
-                  verbsList.length,
+                  itemList.length,
                   (int index) {
                     return AnimationConfiguration.staggeredGrid(
                       position: index,
@@ -63,7 +68,7 @@ class _VerbListPageState extends State<VerbListPage> {
                       columnCount: 2,
                       child: ScaleAnimation(
                         child: FadeInAnimation(
-                          child: _getGridViewItem(verbsList[index]),
+                          child: _getGridViewItem(itemList[index]),
                         ),
                       ),
                     );
@@ -81,7 +86,7 @@ class _VerbListPageState extends State<VerbListPage> {
   _getGridViewItem(Verb verb) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, VerbDetailPage.routeName, arguments: verb);
+        Navigator.pushNamed(context, VerbDetailPage.routeName, arguments: RouteParam(type: widget.type,verb: verb));
       },
       child: Hero(
         flightShuttleBuilder: ApplicationUtil.flightShuttleBuilder,
@@ -97,7 +102,7 @@ class _VerbListPageState extends State<VerbListPage> {
               children: [
                 Expanded(
                   child: Image.asset(
-                    ApplicationUtil.getImagePath(verb.fileName),
+                    ApplicationUtil.getImagePath(widget.type,verb.fileName),
                     height: 40,
                     width: 40,
                   ),
@@ -106,6 +111,7 @@ class _VerbListPageState extends State<VerbListPage> {
                   child: Text(
                     verb.word,
                     textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(fontSize: 30, color: Colors.white),
                   ),
                 ),
