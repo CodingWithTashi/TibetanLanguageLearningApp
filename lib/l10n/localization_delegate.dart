@@ -614,4 +614,26 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   // TODO: implement menuBarMenuLabel
   String get menuBarMenuLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement bottomSheetLabel
+  String get bottomSheetLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement currentDateLabel
+  String get currentDateLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement keyboardKeyShift
+  String get keyboardKeyShift => throw UnimplementedError();
+
+  @override
+  // TODO: implement scrimLabel
+  String get scrimLabel => throw UnimplementedError();
+
+  @override
+  String scrimOnTapHint(String modalRouteContentName) {
+    // TODO: implement scrimOnTapHint
+    throw UnimplementedError();
+  }
 }

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<LanguageCubit>(
       create: (context) => LanguageCubit(
-          Locale.fromSubtags(languageCode: "bo"), AppConstant.JOMAHALI_FAMILY),
+          Locale.fromSubtags(languageCode: "en"), AppConstant.JOMAHALI_FAMILY),
       child: StartPage(),
     );
   }
