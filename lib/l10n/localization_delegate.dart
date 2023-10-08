@@ -636,4 +636,8 @@ class MaterialLocalizationTb extends MaterialLocalizations {
     // TODO: implement scrimOnTapHint
     throw UnimplementedError();
   }
+
+  @override
+  // TODO: implement scanTextButtonLabel
+  String get scanTextButtonLabel => throw UnimplementedError();
 }
