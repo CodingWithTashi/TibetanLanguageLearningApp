@@ -613,19 +613,19 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   // TODO: implement menuBarMenuLabel
-  String get menuBarMenuLabel => throw UnimplementedError();
+  String get menuBarMenuLabel => "";
 
   @override
   // TODO: implement bottomSheetLabel
-  String get bottomSheetLabel => throw UnimplementedError();
+  String get bottomSheetLabel => "";
 
   @override
   // TODO: implement currentDateLabel
-  String get currentDateLabel => throw UnimplementedError();
+  String get currentDateLabel => "";
 
   @override
   // TODO: implement keyboardKeyShift
-  String get keyboardKeyShift => throw UnimplementedError();
+  String get keyboardKeyShift => "";
 
   @override
   // TODO: implement scrimLabel
@@ -640,4 +640,28 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   // TODO: implement scanTextButtonLabel
   String get scanTextButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement lookUpButtonLabel
+  String get lookUpButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement menuDismissLabel
+  String get menuDismissLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement searchWebButtonLabel
+  String get searchWebButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement shareButtonLabel
+  String get shareButtonLabel => throw UnimplementedError();
+
+  @override
+  // TODO: implement clearButtonTooltip
+  String get clearButtonTooltip => throw UnimplementedError();
+
+  @override
+  // TODO: implement selectedDateLabel
+  String get selectedDateLabel => throw UnimplementedError();
 }
