@@ -141,7 +141,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
                             "Quit!",
                             style: Theme.of(context)
                                 .textTheme
-                                .subtitle2!
+                                .titleSmall!
                                 .copyWith(color: Colors.white),
                           ))))
         ],

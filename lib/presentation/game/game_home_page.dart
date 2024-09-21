@@ -18,12 +18,12 @@ class GameHomePage extends StatefulWidget {
 }
 
 class _GameHomePageState extends State<GameHomePage> {
-  late final CarouselController _controller;
+  late final CarouselSliderController _controller;
 
   @override
   initState() {
     super.initState();
-    _controller = CarouselController();
+    _controller = CarouselSliderController();
     ApplicationUtil.setScreenOrientation(disabledLandscape: true);
   }
 
