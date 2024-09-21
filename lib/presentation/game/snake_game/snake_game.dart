@@ -156,6 +156,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   }
 
   updateSnake() {
+
     setState(() {
       switch (direction) {
         case 'down':
@@ -204,7 +205,10 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
     pos = [42, 62, 82, 102];
     var duration = Duration(milliseconds: snakeSpeed);
     Timer.periodic(duration, (Timer timer) {
-      updateSnake();
+      if (mounted) {
+        updateSnake();
+      }
+
       if (gameOver() || endGame) {
         timer.cancel();
         showGameOverDialog();

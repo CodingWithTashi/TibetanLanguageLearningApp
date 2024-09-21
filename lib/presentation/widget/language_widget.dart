@@ -33,9 +33,9 @@ class _LanguageWidgetState extends State<LanguageWidget> {
             if (state is LanguageLoaded) {
               return Switch(
                 value: state.locale.languageCode == "bo",
-                onChanged: (value) {
+                onChanged: (value) async {
                   String? languageType =
-                      getIt<SharedPreferences>().getString('familyName');
+                     await  getIt<SharedPreferences>().getString('familyName');
 
                   if (value) {
                     cubit.updateLocale(L10n.all[1],

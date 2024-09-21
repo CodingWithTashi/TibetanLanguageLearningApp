@@ -3,7 +3,7 @@
     "learnLangauge": "སྐད་ཡིག་སྦྱོང།",
     "practiceLanguage": "སྦྱོང་བརྡར་བྱེད།",
     "useCases": "བེད་སྤྱོད་བྱེད།",
-    "playGame": "རྩེད་མོ།",
+    "playGame": "རྩེད་མོ། (ཚོད་ལྟ།)",
     "thirtyConsonant":"གསལ་བྱེད་སུམ་ཅུ།",
     "fourVowels":"དབྱངས་བཞི།",
     "fivePrefixes":"སྔོན་འཇུག་ལྔ།",
@@ -21,6 +21,6 @@
     "color":"ཚོན་མདོག།",
     "family":"ནང་ཚང།",
     "number":"ཨང་ཀི།",
-    "playGame":"རྩེད་མོ་རྩེ།",
+    "playGame":"རྩེད་མོ་ (ཚོད་ལྟ།)",
     "spellingBeeContest":"དག་ཆ་། འགྲན་སྡུར།"
 }

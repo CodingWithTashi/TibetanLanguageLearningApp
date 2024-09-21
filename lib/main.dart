@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<LanguageCubit>(
       create: (context) => LanguageCubit(
-          Locale.fromSubtags(languageCode: "bo"), AppConstant.JOMAHALI_FAMILY),
+          Locale.fromSubtags(languageCode: "en"), AppConstant.JOMAHALI_FAMILY),
       child: StartPage(),
     );
   }
@@ -49,21 +49,23 @@ class StartPage extends StatelessWidget {
     return BlocBuilder<LanguageCubit, LanguageState>(
       builder: (context, state) {
         return MaterialApp(
+
           locale: BlocProvider.of<LanguageCubit>(context).locale,
           debugShowCheckedModeBanner: false,
           title: 'Tibetan Language Learning App',
           localizationsDelegates: [
             MaterialLocalizationTbDelegate(),
             AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate
           ],
           supportedLocales: L10n.all,
           theme: ThemeData(
             fontFamily: BlocProvider.of<LanguageCubit>(context).familyName,
-            primarySwatch:
-                ApplicationUtil.createMaterialColor(Color(0xff57612F)),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Color(0xff57612F),
+            ),
             pageTransitionsTheme: PageTransitionsTheme(builders: {
               TargetPlatform.android: CupertinoPageTransitionsBuilder(),
             }),

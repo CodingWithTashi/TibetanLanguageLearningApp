@@ -3,7 +3,7 @@
       "learnLangauge": "Learn",
       "practiceLanguage": "Practice",
       "useCases": "Use Cases",
-      "playGame": "Play Game",
+      "playGame": "Play Game (Beta)",
       "thirtyConsonant":"Tibetan 30 consonants",
       "fourVowels":"Four Vowels",
       "fivePrefixes":"five Prefixes",
@@ -21,7 +21,7 @@
       "color":"Colors",
       "family":"Family",
       "number":"Numbers",
-      "playGame":"Play Game",
+      "playGame":"Game (Beta)",
       "spellingBeeContest":"Spelling Contest"
 
 }
