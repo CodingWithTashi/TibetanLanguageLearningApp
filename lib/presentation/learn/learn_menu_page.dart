@@ -71,37 +71,46 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
               ),
             ),
           ),
-          Container(
-            constraints: BoxConstraints(maxWidth: 500),
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-              child: AnimationLimiter(
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      right: 40,
-                      left: 50,
-                      top: MediaQuery.of(context).padding.top + 20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: AnimationConfiguration.toStaggeredList(
-                      duration: const Duration(
-                          milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                      childAnimationBuilder: (widget) => SlideAnimation(
-                        horizontalOffset: 50.0,
-                        child: FadeInAnimation(
-                          child: widget,
+
+          Column(
+            children: [
+              SizedBox(
+                  height: MediaQuery.of(context).padding.top
+              ),
+              _getBannerAds(),
+              Container(
+                constraints: BoxConstraints(maxWidth: 500),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  child: AnimationLimiter(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: 40,
+                          left: 50,
+                          top: MediaQuery.of(context).padding.top + 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: AnimationConfiguration.toStaggeredList(
+                          duration: const Duration(
+                              milliseconds: ApplicationUtil.ANIMATION_DURATION),
+                          childAnimationBuilder: (widget) => SlideAnimation(
+                            horizontalOffset: 50.0,
+                            child: FadeInAnimation(
+                              child: widget,
+                            ),
+                          ),
+                          children: _getWidgetList(),
                         ),
                       ),
-                      children: _getWidgetList(),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
-          _getBannerAds()
+
         ],
       ),
       floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
@@ -298,18 +307,12 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
   }
 
   _getBannerAds() => !kIsWeb
-      ? Positioned.fill(
-          bottom: 80,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              alignment: Alignment.center,
-              child: adWidget,
-              width: myBanner.size.width.toDouble(),
-              height: myBanner.size.height.toDouble(),
-            ),
-          ),
-        )
+      ? Container(
+    alignment: Alignment.center,
+    child: adWidget,
+    width: myBanner.size.width.toDouble(),
+    height: myBanner.size.height.toDouble(),
+  )
       : Container();
 
   _navigateToAlphabetDetailPage(AlphabetCategoryType type) {

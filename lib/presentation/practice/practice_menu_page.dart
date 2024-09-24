@@ -67,39 +67,48 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
               ),
             ),
           ),
-          Container(
-            constraints: BoxConstraints(maxWidth: 500),
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top,
-            ),
-            child: AnimationLimiter(
-              child: GridView.count(
-                physics: BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                crossAxisSpacing: 30,
-                mainAxisSpacing: 10,
-                crossAxisCount: 2,
-                children: List.generate(
-                  alphabetList.length,
-                  (int index) {
-                    return AnimationConfiguration.staggeredGrid(
-                      position: index,
-                      duration: const Duration(
-                          milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                      columnCount: 2,
-                      child: ScaleAnimation(
-                        child: FadeInAnimation(
-                          child: _getGridViewItem(alphabetList[index]),
-                        ),
+          Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).padding.top
+              ),
+              _getBannerAds(),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  constraints: BoxConstraints(maxWidth: 500),
+
+                  child: AnimationLimiter(
+                    child: GridView.count(
+                      physics: BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics(),
                       ),
-                    );
-                  },
+                      crossAxisSpacing: 30,
+                      mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      children: List.generate(
+                        alphabetList.length,
+                        (int index) {
+                          return AnimationConfiguration.staggeredGrid(
+                            position: index,
+                            duration: const Duration(
+                                milliseconds: ApplicationUtil.ANIMATION_DURATION),
+                            columnCount: 2,
+                            child: ScaleAnimation(
+                              child: FadeInAnimation(
+                                child: _getGridViewItem(alphabetList[index]),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
-          _getBannerAds()
+          
         ],
       ),
       floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
@@ -116,7 +125,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
         flightShuttleBuilder: ApplicationUtil.flightShuttleBuilder,
         tag: alphabet,
         child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           decoration: ApplicationUtil.getBoxDecorationOne(context),
           width: 50,
           height: 50,
@@ -132,17 +141,11 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
   }
 
   _getBannerAds() => !kIsWeb
-      ? Positioned.fill(
-          bottom: 80,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              alignment: Alignment.center,
-              child: adWidget,
-              width: myBanner.size.width.toDouble(),
-              height: myBanner.size.height.toDouble(),
-            ),
-          ),
-        )
+      ? Container(
+    alignment: Alignment.center,
+    child: adWidget,
+    width: myBanner.size.width.toDouble(),
+    height: myBanner.size.height.toDouble(),
+  )
       : Container();
 }
