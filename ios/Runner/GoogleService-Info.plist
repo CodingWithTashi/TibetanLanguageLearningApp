@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>792145898981-vnvlki066b23phs1o5jiki1l420a7bte.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.792145898981-vnvlki066b23phs1o5jiki1l420a7bte</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBfWOdb3nblgxi9UCxy8aRpOrbmTe7iXHw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>792145898981</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.kharagedition.tibetanLanguageLearningApp</string>
+	<key>PROJECT_ID</key>
+	<string>tibetanlanguagelearningapp</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tibetanlanguagelearningapp.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:792145898981:ios:dd93542776983fa7e5930c</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-8284901143739274~7646186925</string>
+</dict>
+</plist>
