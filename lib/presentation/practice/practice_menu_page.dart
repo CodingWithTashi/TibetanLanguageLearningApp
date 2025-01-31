@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -35,8 +37,13 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
         onAdClosed: (Ad ad) => print('Ad closed.'),
         onAdImpression: (Ad ad) => print('Ad impression.'),
       );
+      final adUnitId = kReleaseMode
+          ? Platform.isAndroid
+              ? AppConstant.BANNER_AD_PRACTICE_MENU_UNIT_ID
+              : AppConstant.BANNER_AD_PRACTICE_MENU_UNIT_ID_IOS
+          : AppConstant.TEST_UNIT_ID;
       myBanner = BannerAd(
-        adUnitId: AppConstant.BANNER_AD_PRACTICE_MENU_UNIT_ID,
+        adUnitId: adUnitId,
         size: AdSize.banner,
         request: AdRequest(),
         listener: listener,
@@ -69,15 +76,12 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
           ),
           Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).padding.top
-              ),
+              SizedBox(height: MediaQuery.of(context).padding.top),
               _getBannerAds(),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   constraints: BoxConstraints(maxWidth: 500),
-
                   child: AnimationLimiter(
                     child: GridView.count(
                       physics: BouncingScrollPhysics(
@@ -92,7 +96,8 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
                           return AnimationConfiguration.staggeredGrid(
                             position: index,
                             duration: const Duration(
-                                milliseconds: ApplicationUtil.ANIMATION_DURATION),
+                                milliseconds:
+                                    ApplicationUtil.ANIMATION_DURATION),
                             columnCount: 2,
                             child: ScaleAnimation(
                               child: FadeInAnimation(
@@ -108,7 +113,6 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
               ),
             ],
           ),
-          
         ],
       ),
       floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
@@ -142,10 +146,10 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
 
   _getBannerAds() => !kIsWeb
       ? Container(
-    alignment: Alignment.center,
-    child: adWidget,
-    width: myBanner.size.width.toDouble(),
-    height: myBanner.size.height.toDouble(),
-  )
+          alignment: Alignment.center,
+          child: adWidget,
+          width: myBanner.size.width.toDouble(),
+          height: myBanner.size.height.toDouble(),
+        )
       : Container();
 }

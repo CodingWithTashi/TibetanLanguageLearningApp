@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,8 +36,13 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         onAdClosed: (Ad ad) => print('Ad closed.'),
         onAdImpression: (Ad ad) => print('Ad impression.'),
       );
+      final adUnitId = kReleaseMode
+          ? Platform.isAndroid
+              ? AppConstant.BANNER_AD_LEARN_MENU_UNIT_ID
+              : AppConstant.BANNER_AD_LEARN_MENU_UNIT_ID_IOS
+          : AppConstant.TEST_UNIT_ID;
       myBanner = BannerAd(
-        adUnitId: AppConstant.BANNER_AD_LEARN_MENU_UNIT_ID,
+        adUnitId: adUnitId,
         size: AdSize.banner,
         request: AdRequest(),
         listener: listener,

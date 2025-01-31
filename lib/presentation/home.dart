@@ -1,15 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/presentation/widget/language_widget.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -242,8 +243,13 @@ class _HomePageState extends State<HomePage> {
       // Called when an impression occurs on the ad.
       onAdImpression: (Ad ad) => print('Ad impression.'),
     );
+    final adUnitId = kReleaseMode
+        ? Platform.isAndroid
+            ? AppConstant.BANNER_AD_HOME_UNIT_ID
+            : AppConstant.BANNER_AD_HOME_UNIT_ID_IOS
+        : AppConstant.TEST_UNIT_ID;
     myBanner = BannerAd(
-      adUnitId: AppConstant.BANNER_AD_HOME_UNIT_ID,
+      adUnitId: adUnitId,
       size: AdSize.banner,
       request: AdRequest(),
       listener: listener,
