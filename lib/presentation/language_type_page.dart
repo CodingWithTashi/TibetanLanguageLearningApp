@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
-import 'package:tibetan_language_learning_app/l10n/l10n.dart';
 import 'package:tibetan_language_learning_app/presentation/home.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
@@ -110,8 +108,9 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
                   String lan = state.locale.languageCode;
                   return InkWell(
                     onTap: () {
-                      getIt<SharedPreferences>().setString('familyName', AppConstant.TSUTUNG_FAMILY);
-                     /* cubit.updateLocale(
+                      getIt<SharedPreferences>()
+                          .setString('familyName', AppConstant.TSUTUNG_FAMILY);
+                      /* cubit.updateLocale(
                           L10n.all[1], AppConstant.TSUTUNG_FAMILY);*/
                       Navigator.popAndPushNamed(context, HomePage.routeName);
                     },
@@ -163,8 +162,11 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
                   String lan = state.locale.languageCode;
                   return InkWell(
                     onTap: () {
-
-                      getIt<SharedPreferences>().setString('familyName', AppConstant.JOMAHALI_FAMILY);
+                      getIt<SharedPreferences>().setString(
+                          'familyName',
+                          lan == "en"
+                              ? AppConstant.ROBOTO_FAMILY
+                              : AppConstant.JOMAHALI_FAMILY);
 
                       // cubit.updateLocale(
                       //     L10n.all[1], AppConstant.JOMAHALI_FAMILY);

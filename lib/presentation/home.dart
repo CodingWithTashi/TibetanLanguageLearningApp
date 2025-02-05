@@ -149,7 +149,7 @@ class _HomePageState extends State<HomePage> {
       );
 
   _getBottomSheetButton() => Positioned(
-        bottom: 10,
+        bottom: 20,
         child: GestureDetector(
             onPanUpdate: (details) {
               if (details.delta.dy < 0) {
@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
               quarterTurns: -1,
               child: Icon(
                 Icons.arrow_forward_ios_outlined,
-                size: 40,
+                size: 30,
                 color: Theme.of(context).primaryColorLight,
               ),
             )),

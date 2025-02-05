@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter/services.dart';
+
+import 'package:flutter/material.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -129,6 +129,7 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
                 )
               : Container(
                   height: 50,
+                  margin: EdgeInsets.only(bottom: 10),
                   color: Colors.white12,
                   child: Center(
                       child: OutlinedButton(
@@ -156,7 +157,6 @@ class _SnakeGamePageState extends State<SnakeGamePage> {
   }
 
   updateSnake() {
-
     setState(() {
       switch (direction) {
         case 'down':

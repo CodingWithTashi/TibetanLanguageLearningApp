@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,19 +49,23 @@ class ApplicationUtil {
     );
   }
 
-  static getFloatingActionButton(BuildContext context) {
-    return FloatingActionButton(
-      backgroundColor:
-          Theme.of(context).colorScheme.inversePrimary.withValues(alpha: 0.4),
-      child: Container(
-          padding: EdgeInsets.only(left: 8),
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: Colors.white60,
-          )),
-      onPressed: () {
-        Navigator.pop(context);
-      },
+  static getFloatingActionButton(BuildContext context,
+      {double floatingPosition = 0}) {
+    return Container(
+      padding: EdgeInsets.only(bottom: floatingPosition),
+      child: FloatingActionButton(
+        backgroundColor:
+            Theme.of(context).colorScheme.inversePrimary.withValues(alpha: 0.4),
+        child: Container(
+            padding: EdgeInsets.only(left: 8),
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white60,
+            )),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 
@@ -164,7 +170,9 @@ class ApplicationUtil {
                   ),
                   title: new Text('More App from Kharag'),
                   onTap: () {
-                    ApplicationUtil.launchInBrowser(AppConstant.MORE_URL);
+                    ApplicationUtil.launchInBrowser(Platform.isIOS
+                        ? AppConstant.MORE_FROM_IOS
+                        : AppConstant.MORE_URL);
 
                     Navigator.pop(context);
                   },
@@ -200,7 +208,9 @@ class ApplicationUtil {
                   ),
                   title: new Text('Rate Us'),
                   onTap: () {
-                    ApplicationUtil.launchInBrowser(AppConstant.APP_URL);
+                    ApplicationUtil.launchInBrowser(Platform.isIOS
+                        ? AppConstant.IOS_APP_URL
+                        : AppConstant.APP_URL);
 
                     Navigator.pop(context);
                   },
@@ -212,13 +222,16 @@ class ApplicationUtil {
                   ),
                   title: new Text('Share'),
                   onTap: () {
-                    Share.share(AppConstant.SHARE_URL,
+                    Share.share(
+                        Platform.isIOS
+                            ? AppConstant.IOS_APP_URL
+                            : AppConstant.SHARE_URL,
                         subject:
                             'Check out this Tibetan Language Learning  App.');
                     Navigator.pop(context);
                   },
                 ),
-                !kIsWeb
+                !(kIsWeb || Platform.isIOS)
                     ? ListTile(
                         leading: new Icon(
                           Icons.close,

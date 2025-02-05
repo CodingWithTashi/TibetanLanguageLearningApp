@@ -66,10 +66,14 @@ class AppConstant {
       'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
   static const String MORE_URL =
       'https://play.google.com/store/apps/dev?id=5910382695653514663';
+  static const String MORE_FROM_IOS =
+      'https://apps.apple.com/us/developer/kunchok-tashi/id1793456908';
   static const String CALENDER_URL =
       'http://www.digitaltibetan.org/cgi-bin/phugpa.pl';
   static const String APP_URL =
       'https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app';
+  static const String IOS_APP_URL =
+      "https://apps.apple.com/us/app/tibetan-language-learning-app/id6741183899";
   static const String VIEW_ON_WEB = 'Open Web App';
   static const String WEB_URL = "https://tibetanlanguagelearningapp.web.app/#/";
   static const List<String> allWords = ["CAT", "PIG", "FOX", "LION"];

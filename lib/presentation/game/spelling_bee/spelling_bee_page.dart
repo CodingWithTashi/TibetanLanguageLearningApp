@@ -90,6 +90,8 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
             );
           },
         ),
+        floatingActionButton: ApplicationUtil.getFloatingActionButton(context,
+            floatingPosition: 30),
       ),
     );
   }

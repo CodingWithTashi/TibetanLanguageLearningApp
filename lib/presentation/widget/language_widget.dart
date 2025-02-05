@@ -35,14 +35,14 @@ class _LanguageWidgetState extends State<LanguageWidget> {
                 value: state.locale.languageCode == "bo",
                 onChanged: (value) async {
                   String? languageType =
-                     await  getIt<SharedPreferences>().getString('familyName');
+                      await getIt<SharedPreferences>().getString('familyName');
 
                   if (value) {
                     cubit.updateLocale(L10n.all[1],
                         languageType ?? AppConstant.JOMAHALI_FAMILY);
                   } else {
-                    cubit.updateLocale(L10n.all[0],
-                        languageType ?? AppConstant.JOMAHALI_FAMILY);
+                    cubit.updateLocale(
+                        L10n.all[0], languageType ?? AppConstant.ROBOTO_FAMILY);
                   }
                 },
               );
