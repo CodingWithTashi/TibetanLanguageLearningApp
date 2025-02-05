@@ -32,6 +32,7 @@ class AlphabetType {
 class AppConstant {
   static const String JOMAHALI_FAMILY = 'jomolhari';
   static const String TSUTUNG_FAMILY = 'tsutong';
+  static const String ROBOTO_FAMILY = 'Roboto';
   static const String CONTACT_US = 'Contact Us';
   static const String EMAIL = 'developer.kharag@gmail.com';
   static const String SUBJECT = 'Feedback & report';

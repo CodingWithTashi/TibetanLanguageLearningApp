@@ -2,21 +2,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
 import 'package:tibetan_language_learning_app/l10n/l10n.dart';
 import 'package:tibetan_language_learning_app/l10n/localization_delegate.dart';
-import 'package:tibetan_language_learning_app/presentation/home.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
-import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:tibetan_language_learning_app/util/route_generator.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<LanguageCubit>(
       create: (context) => LanguageCubit(
-          Locale.fromSubtags(languageCode: "en"), AppConstant.JOMAHALI_FAMILY),
+          Locale.fromSubtags(languageCode: "en"), AppConstant.ROBOTO_FAMILY),
       child: StartPage(),
     );
   }
@@ -49,7 +45,6 @@ class StartPage extends StatelessWidget {
     return BlocBuilder<LanguageCubit, LanguageState>(
       builder: (context, state) {
         return MaterialApp(
-
           locale: BlocProvider.of<LanguageCubit>(context).locale,
           debugShowCheckedModeBanner: false,
           title: 'Tibetan Language Learning App',

@@ -1,3 +1,6 @@
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class Game {
   String _name;
   String _description;
@@ -21,16 +24,16 @@ class Game {
   String get description => _description;
 
   String get name => _name;
-  static List<Game> gameList() {
+  static List<Game> gameList(BuildContext context) {
     return [
       Game(
-          name: 'Spelling Bee',
-          description: 'Spelling Bee',
+          name: AppLocalizations.of(context)!.spellingBee,
+          description: AppLocalizations.of(context)!.spellingBee,
           gameIcon: 'https://assets6.lottiefiles.com/packages/lf20_yU09RI.json',
           gameType: GameType.spellingBeeGame),
       Game(
-          name: 'Snake Game',
-          description: 'Snake Game',
+          name: AppLocalizations.of(context)!.snakeGame,
+          description: AppLocalizations.of(context)!.snakeGame,
           gameIcon:
               'https://assets6.lottiefiles.com/packages/lf20_qoo3cyxi.json',
           gameType: GameType.snakeGame),

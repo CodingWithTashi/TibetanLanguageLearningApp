@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
+import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class Drag extends StatefulWidget {
   final String letter;
@@ -64,6 +65,7 @@ class _DragState extends State<Drag> {
                                   .titleMedium
                                   ?.copyWith(
                                 color: Colors.white,
+                                fontFamily: AppConstant.JOMAHALI_FAMILY,
                                 shadows: [
                                   Shadow(
                                     offset: Offset(3, 3),

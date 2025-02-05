@@ -49,8 +49,14 @@ class ApplicationUtil {
 
   static getFloatingActionButton(BuildContext context) {
     return FloatingActionButton(
+      backgroundColor:
+          Theme.of(context).colorScheme.inversePrimary.withValues(alpha: 0.4),
       child: Container(
-          padding: EdgeInsets.only(left: 8), child: Icon(Icons.arrow_back_ios)),
+          padding: EdgeInsets.only(left: 8),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white60,
+          )),
       onPressed: () {
         Navigator.pop(context);
       },

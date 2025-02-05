@@ -62,9 +62,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           _getBackgroundImage(),
           _getButtons(),
-          _getBottomSheetButton(),
           _topBannerAds(),
           _languageSwitch(),
+          _getBottomSheetButton(),
         ],
       ),
       //floatingActionButton: _getHomeFab(),

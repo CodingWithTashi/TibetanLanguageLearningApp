@@ -1,12 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:tibetan_language_learning_app/presentation/game/snake_game/snake_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/util/game_model.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
-import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class GameHomePage extends StatefulWidget {
   static const routeName = 'game-home';
@@ -56,10 +54,11 @@ class _GameHomePageState extends State<GameHomePage> {
           ],
         ),
       ),
+      floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
     );
   }
 
-  _getGameWidgetList() => Game.gameList()
+  _getGameWidgetList() => Game.gameList(context)
       .map((item) => InkResponse(
             onTap: () => _navigateToGameScreen(gameType: item.gameType),
             child: Container(
@@ -68,8 +67,11 @@ class _GameHomePageState extends State<GameHomePage> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Lottie.network(
-                    item.gameIcon,
+                  Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Lottie.network(
+                      item.gameIcon,
+                    ),
                   ),
                   ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5.0)),
@@ -87,8 +89,8 @@ class _GameHomePageState extends State<GameHomePage> {
                     left: 0.0,
                     right: 0.0,
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                      padding: EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         gradient: LinearGradient(
@@ -105,8 +107,9 @@ class _GameHomePageState extends State<GameHomePage> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.w500,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   ),
