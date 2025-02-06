@@ -1,261 +1,268 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:tibetan_language_learning_app/model/alphabet.dart';
-import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SnakeGamePage extends StatefulWidget {
+import '../../../bloc/snake_game/snake_game_bloc.dart';
+import '../../../game_bloc/game_bloc.dart';
+import '../util/game_model.dart';
+
+class SnakeGamePage extends StatelessWidget {
   static const routeName = 'snake-game';
+
   const SnakeGamePage({Key? key}) : super(key: key);
+
   @override
-  _SnakeGamePageState createState() => _SnakeGamePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => SnakeGameBloc(),
+      child: const SnakeGameView(),
+    );
+  }
 }
 
-class _SnakeGamePageState extends State<SnakeGamePage> {
-  List<int> pos = [42, 62, 82, 182];
-
-  int noSquares = 760;
-
-  static var rNo = Random();
-
-  int food = rNo.nextInt(700);
-
-  var snakeSpeed = 800;
-
-  bool playing = false;
-  var direction = 'down';
-
-  bool endGame = false;
-  List<Alphabet> foodList = [];
-  late Alphabet currentFood;
-
-  @override
-  void initState() {
-    foodList =
-        List.from(AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET));
-    _generateRandomAlphabet();
-    super.initState();
-    startGame();
-  }
+class SnakeGameView extends StatelessWidget {
+  const SnakeGameView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Column(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onVerticalDragUpdate: (details) {
-                if (direction != 'up' && details.delta.dy > 0) {
-                  direction = 'down';
-                } else if (direction != 'down' && details.delta.dy < 0) {
-                  direction = 'up';
-                }
-              },
-              onHorizontalDragUpdate: (details) {
-                if (direction != 'left' && details.delta.dx > 0) {
-                  direction = 'right';
-                } else if (direction != 'right' && details.delta.dx < 0) {
-                  direction = 'left';
-                }
-              },
-              child: Stack(
-                children: [
-                  /* Center(
-                    child: Image.asset(
-                      'assets/images/snake.png',
-                      fit: BoxFit.contain,
-                    ),
-                  ),*/
-                  GridView.builder(
-                    itemCount: noSquares,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 20),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (pos.contains(index)) {
-                        return Center(
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Container(
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      if (index == food) {
-                        return Container(
-                          padding: const EdgeInsets.all(2),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(5),
-                            child: Text(
-                              currentFood.alphabetName,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        );
-                      } else {
-                        return Container(
-                          padding: const EdgeInsets.all(2),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(5),
-                              child: Container(
-                                color: Colors.transparent,
-                              )),
-                        );
+      backgroundColor: Colors.black,
+      body: BlocConsumer<SnakeGameBloc, SnakeGameState>(
+        listener: (context, state) {
+          if (state.isGameOver) {
+            _showGameOverDialog(context, state.score);
+          } else if (state.score > 10) {
+            context.read<GameBloc>().add(UpdateGameScore(
+                  gameType: GameType.snakeGame,
+                  score: 10,
+                ));
+          }
+        },
+        builder: (context, state) {
+          return SafeArea(
+            child: Column(
+              children: [
+                _buildScoreBoard(state.score, state.speed),
+                Expanded(
+                  child: GestureDetector(
+                    onVerticalDragUpdate: (details) {
+                      if (state.direction != 'up' && details.delta.dy > 0) {
+                        context
+                            .read<SnakeGameBloc>()
+                            .add(ChangeDirection('down'));
+                      } else if (state.direction != 'down' &&
+                          details.delta.dy < 0) {
+                        context
+                            .read<SnakeGameBloc>()
+                            .add(ChangeDirection('up'));
                       }
                     },
+                    onHorizontalDragUpdate: (details) {
+                      if (state.direction != 'left' && details.delta.dx > 0) {
+                        context
+                            .read<SnakeGameBloc>()
+                            .add(ChangeDirection('right'));
+                      } else if (state.direction != 'right' &&
+                          details.delta.dx < 0) {
+                        context
+                            .read<SnakeGameBloc>()
+                            .add(ChangeDirection('left'));
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white30),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      margin: const EdgeInsets.all(10),
+                      child: GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 20,
+                        ),
+                        itemCount: 760,
+                        itemBuilder: (context, index) {
+                          if (state.snakePosition.contains(index)) {
+                            return _buildSnakeBody(
+                                index == state.snakePosition.last);
+                          }
+                          if (index == state.food) {
+                            return _buildFood(state.currentLetter);
+                          }
+                          return const SizedBox();
+                        },
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                ),
+                _buildControlButton(context, state),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildScoreBoard(int score, int speed) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text(
+            'Score: $score',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          !playing
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      height: 20,
-                      width: 1,
-                      color: Colors.white70,
-                    ),
-                  ],
-                )
-              : Container(
-                  height: 50,
-                  margin: EdgeInsets.only(bottom: 10),
-                  color: Colors.white12,
-                  child: Center(
-                      child: OutlinedButton(
-                          onPressed: () {
-                            setState(() {
-                              endGame = true;
-                            });
-                          },
-                          child: Text(
-                            "Quit!",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall!
-                                .copyWith(color: Colors.white),
-                          ))))
+          Text(
+            'Speed: ${((300 - speed) / 250 * 100).toStringAsFixed(0)}%',
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontSize: 18,
+            ),
+          ),
         ],
       ),
     );
   }
 
-  //Function Declarations!
-  generateNewFood() {
-    food = rNo.nextInt(700);
-    _generateRandomAlphabet();
+  Widget _buildSnakeBody(bool isHead) {
+    return Container(
+      margin: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        color: isHead ? Colors.greenAccent : Colors.green,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: [
+          BoxShadow(
+            color: isHead
+                ? Colors.greenAccent.withOpacity(0.3)
+                : Colors.transparent,
+            blurRadius: 8,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+    );
   }
 
-  updateSnake() {
-    setState(() {
-      switch (direction) {
-        case 'down':
-          if (pos.last > 740) {
-            pos.add(pos.last + 20 - 760);
-          } else {
-            pos.add(pos.last + 20);
-          }
-          break;
-        case 'up':
-          if (pos.last < 20) {
-            pos.add(pos.last - 20 + 760);
-          } else {
-            pos.add(pos.last - 20);
-          }
-          break;
-        case 'left':
-          if (pos.last % 20 == 0) {
-            pos.add(pos.last - 1 + 20);
-          } else {
-            pos.add(pos.last - 1);
-          }
-          break;
-        case 'right':
-          if ((pos.last + 1) % 20 == 0) {
-            pos.add(pos.last + 1 - 20);
-          } else {
-            pos.add(pos.last + 1);
-          }
-          break;
-        default:
-      }
-      if (pos.last == food) {
-        generateNewFood();
-      } else {
-        pos.removeAt(0);
-      }
-    });
+  Widget _buildFood(String letter) {
+    return Container(
+      margin: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(5),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.redAccent,
+            blurRadius: 8,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          letter,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
   }
 
-  startGame() {
-    setState(() {
-      playing = true;
-    });
-    endGame = false;
-    pos = [42, 62, 82, 102];
-    var duration = Duration(milliseconds: snakeSpeed);
-    Timer.periodic(duration, (Timer timer) {
-      if (mounted) {
-        updateSnake();
-      }
-
-      if (gameOver() || endGame) {
-        timer.cancel();
-        showGameOverDialog();
-        playing = false;
-      }
-    });
+  Widget _buildControlButton(BuildContext context, SnakeGameState state) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.green,
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        onPressed: () {
+          if (!state.isPlaying) {
+            context.read<SnakeGameBloc>().add(StartGame());
+          } else {
+            context.read<SnakeGameBloc>().add(EndGame());
+          }
+        },
+        child: Text(
+          state.isPlaying ? 'End Game' : 'Start Game',
+          style: const TextStyle(fontSize: 18),
+        ),
+      ),
+    );
   }
 
-  gameOver() {
-    for (int i = 0; i < pos.length; i++) {
-      int count = 0;
-      for (int j = 0; j < pos.length; j++) {
-        if (pos[i] == pos[j]) {
-          count += 1;
-        }
-        if (count == 2) {
-          setState(() {
-            playing = false;
-          });
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
-  showGameOverDialog() {
+  void _showGameOverDialog(BuildContext context, int score) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Game Over'),
-            content: Text('Score: ' + pos.length.toString() + '!'),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                    startGame();
-                  },
-                  child: const Text('Play Again'))
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: Colors.black87,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+            side: const BorderSide(color: Colors.green, width: 2),
+          ),
+          title: const Text(
+            'Game Over',
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.sentiment_dissatisfied,
+                color: Colors.red,
+                size: 50,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'Score: $score',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ],
-          );
-        });
-  }
-
-  void _generateRandomAlphabet() {
-    currentFood = foodList[Random().nextInt(foodList.length)];
-    foodList.remove(currentFood);
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.of(
+                    dialogContext,
+                  ).pop();
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'Exit',
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                )),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+                context.read<SnakeGameBloc>().add(StartGame());
+              },
+              child: Text(
+                'Play Again',
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

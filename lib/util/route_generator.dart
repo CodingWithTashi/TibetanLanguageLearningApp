@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:tibetan_language_learning_app/bloc/snake_game/snake_game_bloc.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
@@ -142,7 +143,10 @@ class RouteGenerator {
         );
       case SnakeGamePage.routeName:
         return MaterialPageRoute(
-          builder: (_) => SnakeGamePage(),
+          builder: (_) => BlocProvider(
+            create: (context) => SnakeGameBloc(),
+            child: SnakeGamePage(),
+          ),
         );
 
       default:

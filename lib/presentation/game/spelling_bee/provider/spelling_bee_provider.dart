@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
-import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/message_dialog.dart';
-import 'package:tibetan_language_learning_app/presentation/home.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+
+import '../../../../game_bloc/game_bloc.dart';
+import '../../util/game_model.dart';
 
 class SpellingBeeProvider extends ChangeNotifier {
   int totalLetters = 0, lettersAnswered = 0, wordAnswered = 0;
@@ -22,10 +23,14 @@ class SpellingBeeProvider extends ChangeNotifier {
         sessionCompleted = true;
       }
       if (sessionCompleted) {
+        context.read<GameBloc>().add(UpdateGameScore(
+              gameType: GameType.spellingBeeGame,
+              score: 1,
+            ));
         showDialog(
             barrierDismissible: false,
             context: context,
-            builder: (_) {
+            builder: (dialogContext) {
               String title =
                   "Congrats! You just cracked spelling bee contest ❤.";
               String buttonText = "Exit Game";
@@ -58,8 +63,8 @@ class SpellingBeeProvider extends ChangeNotifier {
                     ),
                     onTap: () {
                       reset();
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, HomePage.routeName, (route) => false);
+                      Navigator.pop(dialogContext);
+                      Navigator.pop(context);
                     },
                   )
                 ],

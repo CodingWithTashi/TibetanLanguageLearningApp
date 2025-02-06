@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
+import 'package:tibetan_language_learning_app/game_bloc/game_bloc.dart';
 import 'package:tibetan_language_learning_app/l10n/l10n.dart';
 import 'package:tibetan_language_learning_app/l10n/localization_delegate.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
@@ -29,9 +30,18 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<LanguageCubit>(
-      create: (context) => LanguageCubit(
-          Locale.fromSubtags(languageCode: "en"), AppConstant.ROBOTO_FAMILY),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<GameBloc>(
+          create: (context) => GameBloc()..add(LoadGames()),
+        ),
+        BlocProvider<LanguageCubit>(
+          create: (context) => LanguageCubit(
+            Locale.fromSubtags(languageCode: "en"),
+            AppConstant.ROBOTO_FAMILY,
+          ),
+        ),
+      ],
       child: StartPage(),
     );
   }
