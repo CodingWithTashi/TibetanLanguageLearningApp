@@ -613,7 +613,7 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   // TODO: implement bottomSheetLabel
-  String get bottomSheetLabel => throw UnimplementedError();
+  String get bottomSheetLabel => "About title";
 
   @override
   // TODO: implement clearButtonTooltip
@@ -645,12 +645,11 @@ class MaterialLocalizationTb extends MaterialLocalizations {
 
   @override
   // TODO: implement scrimLabel
-  String get scrimLabel => throw UnimplementedError();
+  String get scrimLabel => "About title";
 
   @override
   String scrimOnTapHint(String modalRouteContentName) {
-    // TODO: implement scrimOnTapHint
-    throw UnimplementedError();
+    return '';
   }
 
   @override

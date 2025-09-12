@@ -1458,3 +1458,5 @@ class AppConstant {
 
   static gameList() {}
 }
+
+const int kLevelOneScoreLimit = 2;

@@ -8,6 +8,7 @@ import 'package:tibetan_language_learning_app/presentation/game/util/game_model.
 
 import '../../game_bloc/game_bloc.dart';
 import '../../util/application_util.dart';
+import 'memory_match/memory_match_screen.dart';
 
 class GameHomePage extends StatelessWidget {
   static const routeName = 'game-home';
@@ -238,8 +239,8 @@ class GameHomePage extends StatelessWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Lottie.network(
-              'https://assets9.lottiefiles.com/packages/lf20_ybeqpj5r.json',
+            Lottie.asset(
+              'assets/json/unlock.json',
               height: 100,
               repeat: true,
             ),
@@ -268,6 +269,9 @@ class GameHomePage extends StatelessWidget {
         break;
       case GameType.snakeGame:
         Navigator.pushNamed(context, SnakeGamePage.routeName);
+        break;
+      case GameType.memoryGame:
+        Navigator.pushNamed(context, MemoryMatchGameScreen.routeName);
         break;
     }
   }

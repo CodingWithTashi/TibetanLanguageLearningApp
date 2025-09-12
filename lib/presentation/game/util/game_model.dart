@@ -52,4 +52,4 @@ class Game extends Equatable {
       ];
 }
 
-enum GameType { snakeGame, spellingBeeGame, hangManGame }
+enum GameType { snakeGame, spellingBeeGame, memoryGame }

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../presentation/game/util/game_model.dart';
+import '../util/constant.dart';
 
 part 'game_event.dart';
 part 'game_state.dart';
@@ -129,11 +130,12 @@ class GameBloc extends Bloc<GameEvent, GameState> {
         currentScore: 0,
       ),
       Game(
-        name: 'Hang Man Game',
+        name: 'Memory Match',
         description: 'Collect Tibetan letters while growing your snake!',
-        gameIcon: 'https://assets6.lottiefiles.com/packages/lf20_qoo3cyxi.json',
-        gameType: GameType.hangManGame,
-        requiredScoreInPreviousLevelToUnlock: 10,
+        gameIcon:
+            'https://lottie.host/embed/e878b150-a736-48c1-a865-35b03bc19920/7zmeLDaVtf.json',
+        gameType: GameType.memoryGame,
+        requiredScoreInPreviousLevelToUnlock: kLevelOneScoreLimit,
         level: 3,
         currentScore: 0,
       ),

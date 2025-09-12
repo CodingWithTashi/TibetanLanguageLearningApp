@@ -7,6 +7,7 @@ import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
+import 'package:tibetan_language_learning_app/presentation/game/memory_match/memory_match_screen.dart';
 import 'package:tibetan_language_learning_app/presentation/game/snake_game/snake_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
@@ -147,6 +148,10 @@ class RouteGenerator {
             create: (context) => SnakeGameBloc(),
             child: SnakeGamePage(),
           ),
+        );
+      case MemoryMatchGameScreen.routeName:
+        return MaterialPageRoute(
+          builder: (_) => MemoryMatchGameScreen(),
         );
 
       default:

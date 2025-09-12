@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../bloc/snake_game/snake_game_bloc.dart';
 import '../../../game_bloc/game_bloc.dart';
+import '../../../util/constant.dart';
 import '../util/game_model.dart';
 
 class SnakeGamePage extends StatelessWidget {
@@ -30,10 +31,10 @@ class SnakeGameView extends StatelessWidget {
         listener: (context, state) {
           if (state.isGameOver) {
             _showGameOverDialog(context, state.score);
-          } else if (state.score > 10) {
+          } else if (state.score > kLevelOneScoreLimit) {
             context.read<GameBloc>().add(UpdateGameScore(
                   gameType: GameType.snakeGame,
-                  score: 10,
+                  score: kLevelOneScoreLimit,
                 ));
           }
         },

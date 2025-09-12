@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
@@ -12,6 +11,8 @@ import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/wid
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/fly_in_animation.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+
+import '../../../l10n/app_localizations.dart';
 
 class SpellingBeePage extends StatefulWidget {
   static const routeName = 'spelling-bee';

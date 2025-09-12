@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';

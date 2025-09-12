@@ -20,3 +20,5 @@ Download application from play store: [Tibetan Languae learning app](https://pla
 
 [Download App](https://play.google.com/store/apps/details?id=com.kharagedition.tibetan_language_learning_app)
 
+
+flutter build appbundle --target-platform android-arm,android-arm64,android-x64
