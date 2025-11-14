@@ -17,4 +17,19 @@ class UpdateGameScore extends GameEvent {
   List<Object?> get props => [gameType, score];
 }
 
+class UpdateGameStars extends GameEvent {
+  final GameType gameType;
+  final int stars;
+  final int coinsEarned;
+
+  UpdateGameStars({
+    required this.gameType,
+    required this.stars,
+    required this.coinsEarned,
+  });
+
+  @override
+  List<Object?> get props => [gameType, stars, coinsEarned];
+}
+
 class CheckGameUnlock extends GameEvent {}

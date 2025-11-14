@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
+import 'package:tibetan_language_learning_app/cubit/reward/reward_cubit.dart';
 import 'package:tibetan_language_learning_app/game_bloc/game_bloc.dart';
 import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/l10n/l10n.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
             Locale.fromSubtags(languageCode: "en"),
             AppConstant.ROBOTO_FAMILY,
           ),
+        ),
+        BlocProvider<RewardCubit>(
+          create: (context) => RewardCubit()..loadProgress(),
         ),
       ],
       child: StartPage(),

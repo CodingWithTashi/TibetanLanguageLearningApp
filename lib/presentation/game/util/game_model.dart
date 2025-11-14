@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-// Updated Game model
+// Enhanced Game model with stars and coins
 class Game extends Equatable {
   final String name;
   final String description;
@@ -10,6 +10,9 @@ class Game extends Equatable {
   final bool isUnlocked;
   final int currentScore;
   final int level;
+  final int stars; // 0-3 stars earned
+  final int coinsEarned; // Total coins earned from this game
+  final int requiredStarsToUnlock; // Stars needed to unlock
 
   const Game({
     required this.name,
@@ -20,22 +23,29 @@ class Game extends Equatable {
     required this.level,
     this.isUnlocked = false,
     this.currentScore = 0,
+    this.stars = 0,
+    this.coinsEarned = 0,
+    this.requiredStarsToUnlock = 0,
   });
 
   Game copyWith({
     bool? isUnlocked,
     int? currentScore,
+    int? stars,
+    int? coinsEarned,
   }) {
     return Game(
-      name: this.name,
-      description: this.description,
-      gameIcon: this.gameIcon,
-      gameType: this.gameType,
-      requiredScoreInPreviousLevelToUnlock:
-          this.requiredScoreInPreviousLevelToUnlock,
-      level: this.level,
+      name: name,
+      description: description,
+      gameIcon: gameIcon,
+      gameType: gameType,
+      requiredScoreInPreviousLevelToUnlock: requiredScoreInPreviousLevelToUnlock,
+      level: level,
       isUnlocked: isUnlocked ?? this.isUnlocked,
       currentScore: currentScore ?? this.currentScore,
+      stars: stars ?? this.stars,
+      coinsEarned: coinsEarned ?? this.coinsEarned,
+      requiredStarsToUnlock: requiredStarsToUnlock,
     );
   }
 
@@ -49,7 +59,22 @@ class Game extends Equatable {
         isUnlocked,
         currentScore,
         level,
+        stars,
+        coinsEarned,
+        requiredStarsToUnlock,
       ];
 }
 
-enum GameType { snakeGame, spellingBeeGame, memoryGame }
+enum GameType {
+  // Existing games
+  spellingBeeGame,
+  snakeGame,
+  memoryGame,
+
+  // New games
+  alphabetMatchGame,
+  characterTraceGame,
+  soundQuizGame,
+  wordBuilderGame,
+  speedChallengeGame,
+}
