@@ -8,6 +8,7 @@ import 'package:tibetan_language_learning_app/presentation/game/util/game_model.
 
 import '../../game_bloc/game_bloc.dart';
 import '../../util/application_util.dart';
+import '../../util/app_theme.dart';
 import 'memory_match/memory_match_screen.dart';
 
 class GameHomePage extends StatelessWidget {
@@ -73,91 +74,11 @@ class GameHomePage extends StatelessWidget {
   }
 
   Widget _buildGameCard(BuildContext context, Game game) {
-    return InkResponse(
+    return _EnhancedGameCard(
+      game: game,
       onTap: () => game.isUnlocked
           ? _navigateToGameScreen(context, game.gameType)
           : _showUnlockRequirements(context, game),
-      child: Opacity(
-        opacity: game.isUnlocked ? 1.0 : 0.7,
-        child: Container(
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          margin: EdgeInsets.all(20.0),
-          child: Stack(
-            children: [
-              Opacity(
-                opacity: game.isUnlocked ? 1.0 : 0.6,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: Lottie.network(
-                        game.gameIcon,
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      child: Stack(
-                        children: <Widget>[],
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(80, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              '${game.name}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            _buildLevelBadge(game),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  top: 0,
-                  child: game.isUnlocked
-                      ? Icon(
-                          Icons.play_circle_fill_outlined,
-                          color: Colors.white,
-                          size: 40,
-                        )
-                      : Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                          size: 50,
-                        ))
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -274,5 +195,197 @@ class GameHomePage extends StatelessWidget {
         Navigator.pushNamed(context, MemoryMatchGameScreen.routeName);
         break;
     }
+  }
+}
+
+/// Enhanced game card with modern design and smooth interactions
+class _EnhancedGameCard extends StatefulWidget {
+  final Game game;
+  final VoidCallback onTap;
+
+  const _EnhancedGameCard({
+    required this.game,
+    required this.onTap,
+  });
+
+  @override
+  State<_EnhancedGameCard> createState() => _EnhancedGameCardState();
+}
+
+class _EnhancedGameCardState extends State<_EnhancedGameCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+  bool _isPressed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: AppTheme.animationFast,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.96).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() => _isPressed = true);
+        _controller.forward();
+      },
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        _controller.reverse();
+        widget.onTap();
+      },
+      onTapCancel: () {
+        setState(() => _isPressed = false);
+        _controller.reverse();
+      },
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          margin: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceM,
+            vertical: AppTheme.spaceS,
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: widget.game.isUnlocked
+                  ? [
+                      Theme.of(context).primaryColor,
+                      Theme.of(context).primaryColorDark,
+                    ]
+                  : [
+                      Theme.of(context).primaryColor.withOpacity(0.6),
+                      Theme.of(context).primaryColorDark.withOpacity(0.6),
+                    ],
+            ),
+            borderRadius: BorderRadius.circular(AppTheme.radiusL),
+            boxShadow: _isPressed ? AppTheme.shadowSmall : AppTheme.shadowLarge,
+          ),
+          child: Stack(
+            children: [
+              // Lottie Animation
+              Center(
+                child: Opacity(
+                  opacity: widget.game.isUnlocked ? 1.0 : 0.5,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppTheme.spaceXL),
+                    child: Lottie.network(
+                      widget.game.gameIcon,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ),
+
+              // Game info overlay
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(AppTheme.spaceM),
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(AppTheme.radiusL),
+                      bottomRight: Radius.circular(AppTheme.radiusL),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        widget.game.name,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: AppTheme.spaceS),
+                      _buildLevelBadge(widget.game),
+                      if (widget.game.currentScore > 0) ...[
+                        const SizedBox(height: AppTheme.spaceS),
+                        Text(
+                          'Best: ${widget.game.currentScore}',
+                          style: TextStyle(
+                            color: AppTheme.accentColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
+
+              // Lock/Play icon
+              Center(
+                child: Icon(
+                  widget.game.isUnlocked
+                      ? Icons.play_circle_fill_rounded
+                      : Icons.lock_rounded,
+                  color: Colors.white.withOpacity(widget.game.isUnlocked ? 0.9 : 1.0),
+                  size: widget.game.isUnlocked ? 60 : 70,
+                  shadows: const [
+                    Shadow(
+                      color: Colors.black54,
+                      blurRadius: 8,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLevelBadge(Game game) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppTheme.spaceM,
+        vertical: AppTheme.spaceS,
+      ),
+      decoration: BoxDecoration(
+        color: AppTheme.accentColor,
+        borderRadius: BorderRadius.circular(AppTheme.radiusFull),
+        boxShadow: AppTheme.shadowSmall,
+      ),
+      child: Text(
+        'Level ${game.level}',
+        style: const TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 13,
+        ),
+      ),
+    );
   }
 }

@@ -11,6 +11,7 @@ import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_m
 import 'package:tibetan_language_learning_app/presentation/widget/language_widget.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:tibetan_language_learning_app/util/app_theme.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";
@@ -21,30 +22,68 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   double menuFontSize = 22;
-  double _buttonOpacity = 0;
-  bool isExtended = false;
   late BannerAd myBanner;
   late BannerAdListener listener;
   late AdWidget adWidget;
+  late AnimationController _animationController;
+  late List<Animation<double>> _buttonAnimations;
+  late List<Animation<Offset>> _slideAnimations;
 
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 500), () {
-      _buttonOpacity = 1;
-      setState(() {});
-    });
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+
+    // Create staggered animations for each button
+    _buttonAnimations = List.generate(
+      4,
+      (index) => Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: Interval(
+            0.2 + (index * 0.15),
+            0.5 + (index * 0.15),
+            curve: Curves.easeOutCubic,
+          ),
+        ),
+      ),
+    );
+
+    _slideAnimations = List.generate(
+      4,
+      (index) => Tween<Offset>(
+        begin: const Offset(0.3, 0),
+        end: Offset.zero,
+      ).animate(
+        CurvedAnimation(
+          parent: _animationController,
+          curve: Interval(
+            0.2 + (index * 0.15),
+            0.5 + (index * 0.15),
+            curve: Curves.easeOutCubic,
+          ),
+        ),
+      ),
+    );
+
+    _animationController.forward();
+
     if (!kIsWeb) {
       initBannerAds();
     }
-
-    super.initState();
   }
 
   @override
   void dispose() {
-    myBanner.dispose();
+    _animationController.dispose();
+    if (!kIsWeb) {
+      myBanner.dispose();
+    }
     super.dispose();
   }
 
@@ -74,70 +113,86 @@ class _HomePageState extends State<HomePage> {
   _getButtons() => Positioned(
         bottom: 90,
         child: Container(
+          constraints: const BoxConstraints(maxWidth: 400),
+          padding: const EdgeInsets.symmetric(horizontal: AppTheme.spaceM),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _getLearnButtons(),
-              SizedBox(
-                height: 20,
+              _buildAnimatedButton(
+                index: 0,
+                label: AppLocalizations.of(context)!.learnLangauge,
+                icon: Icons.school_rounded,
+                onTap: () => Navigator.pushNamed(context, LearnMenuPage.routeName),
               ),
-              _getPracticeButtons(),
-              SizedBox(
-                height: 20,
+              const SizedBox(height: AppTheme.spaceM),
+              _buildAnimatedButton(
+                index: 1,
+                label: AppLocalizations.of(context)!.practiceLanguage,
+                icon: Icons.edit_note_rounded,
+                onTap: () => Navigator.pushNamed(context, PracticeMenuPage.routeName),
               ),
-              _useCasesButtons(),
-              SizedBox(
-                height: 20,
+              const SizedBox(height: AppTheme.spaceM),
+              _buildAnimatedButton(
+                index: 2,
+                label: AppLocalizations.of(context)!.useCases,
+                icon: Icons.category_rounded,
+                onTap: () => Navigator.pushNamed(context, UseCaseMenuPage.routeName),
               ),
-              _playGameButtons(),
+              const SizedBox(height: AppTheme.spaceM),
+              _buildAnimatedButton(
+                index: 3,
+                label: AppLocalizations.of(context)!.playGame,
+                icon: Icons.videogame_asset_rounded,
+                onTap: () => Navigator.pushNamed(context, GameHomePage.routeName),
+                gradient: LinearGradient(
+                  colors: [
+                    AppTheme.accentDark,
+                    AppTheme.accentColor,
+                  ],
+                ),
+              ),
             ],
           ),
         ),
       );
 
-  _getLearnButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, LearnMenuPage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.learnLangauge,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
+  Widget _buildAnimatedButton({
+    required int index,
+    required String label,
+    required IconData icon,
+    required VoidCallback onTap,
+    Gradient? gradient,
+  }) {
+    return SlideTransition(
+      position: _slideAnimations[index],
+      child: FadeTransition(
+        opacity: _buttonAnimations[index],
+        child: _EnhancedMenuButton(
+          label: label,
+          icon: icon,
+          onTap: onTap,
+          fontSize: menuFontSize,
+          gradient: gradient,
         ),
-      );
+      ),
+    );
+  }
 
-  _getPracticeButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, PracticeMenuPage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.practiceLanguage,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
-        ),
-      );
 
-  _getBackgroundImage() => Hero(
+  Widget _getBackgroundImage() => Hero(
         tag: 'image',
-        child: Container(
+        child: ShaderMask(
+          shaderCallback: (rect) {
+            return LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(0.3),
+              ],
+            ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+          },
+          blendMode: BlendMode.darken,
           child: Image.asset(
             'assets/images/tree.jpg',
             fit: BoxFit.cover,
@@ -181,49 +236,14 @@ class _HomePageState extends State<HomePage> {
             : Container(),
       );
 
-  _useCasesButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, UseCaseMenuPage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.useCases,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
-        ),
-      );
-  _playGameButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, GameHomePage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.playGame,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
-        ),
-      );
 
-  _languageSwitch() => Positioned(
-        top: MediaQuery.of(context).padding.top,
+  Widget _languageSwitch() => Positioned(
+        top: MediaQuery.of(context).padding.top + 8,
         right: 20,
-        child: LanguageWidget(),
+        child: FadeTransition(
+          opacity: _buttonAnimations[0],
+          child: const LanguageWidget(),
+        ),
       );
 
   void initBannerAds() {
@@ -258,5 +278,121 @@ class _HomePageState extends State<HomePage> {
       adWidget = AdWidget(ad: myBanner);
       myBanner.load();
     }
+  }
+}
+
+/// Enhanced menu button with modern design and smooth animations
+class _EnhancedMenuButton extends StatefulWidget {
+  final String label;
+  final IconData icon;
+  final VoidCallback onTap;
+  final double fontSize;
+  final Gradient? gradient;
+
+  const _EnhancedMenuButton({
+    required this.label,
+    required this.icon,
+    required this.onTap,
+    this.fontSize = 20,
+    this.gradient,
+  });
+
+  @override
+  State<_EnhancedMenuButton> createState() => _EnhancedMenuButtonState();
+}
+
+class _EnhancedMenuButtonState extends State<_EnhancedMenuButton>
+    with SingleTickerProviderStateMixin {
+  bool _isPressed = false;
+  late AnimationController _scaleController;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _scaleController = AnimationController(
+      vsync: this,
+      duration: AppTheme.animationFast,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _scaleController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scaleController.dispose();
+    super.dispose();
+  }
+
+  void _handleTapDown(TapDownDetails details) {
+    setState(() => _isPressed = true);
+    _scaleController.forward();
+  }
+
+  void _handleTapUp(TapUpDetails details) {
+    setState(() => _isPressed = false);
+    _scaleController.reverse();
+  }
+
+  void _handleTapCancel() {
+    setState(() => _isPressed = false);
+    _scaleController.reverse();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ScaleTransition(
+      scale: _scaleAnimation,
+      child: GestureDetector(
+        onTapDown: _handleTapDown,
+        onTapUp: _handleTapUp,
+        onTapCancel: _handleTapCancel,
+        onTap: widget.onTap,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceL,
+            vertical: AppTheme.spaceM,
+          ),
+          decoration: BoxDecoration(
+            gradient: widget.gradient ??
+                LinearGradient(
+                  colors: [
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).primaryColorDark,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+            borderRadius: BorderRadius.circular(AppTheme.radiusM),
+            boxShadow: _isPressed ? AppTheme.shadowSmall : AppTheme.shadowMedium,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                widget.icon,
+                color: Colors.white,
+                size: 24,
+              ),
+              const SizedBox(width: AppTheme.spaceS),
+              Flexible(
+                child: Text(
+                  widget.label,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: widget.fontSize,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.3,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
