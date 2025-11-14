@@ -9,6 +9,7 @@ import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphab
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:tibetan_language_learning_app/util/app_theme.dart';
 
 class LearnMenuPage extends StatefulWidget {
   static const routeName = "/learn-menu-page";
@@ -123,192 +124,39 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
   }
 
   List<Widget> _getWidgetList() {
-    List<Widget> widgetList = [
-      InkWell(
-        onTap: () {
-          getIt<AlphabetType>().type = AlphabetCategoryType.ALPHABET;
-
-          Navigator.pushNamed(context, AlphabetListPage.routeName);
-        },
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.thirtyConsonant,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.VOWEL),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.fourVowels,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () =>
-            _navigateToAlphabetDetailPage(AlphabetCategoryType.FIVE_PREFIX),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.fivePrefixes,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () =>
-            _navigateToAlphabetDetailPage(AlphabetCategoryType.TEN_SUFFIX),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.tenSuffixes,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () =>
-            _navigateToAlphabetDetailPage(AlphabetCategoryType.TWO_POSTFIX),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.twoPostFixes,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.RAGO),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.ragoSurmounted,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.LAGO),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.lagoSurmounted,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.SAGO),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.sagoSarmounted,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.YATAK),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.yatakSubJoin,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.RATAK),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.ratakSubJoined,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
-      InkWell(
-        onTap: () => _navigateToAlphabetDetailPage(AlphabetCategoryType.LATAK),
-        child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          child: Text(
-            AppLocalizations.of(context)!.latakSubJoined,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-          ),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
+    final menuItems = [
+      (AlphabetCategoryType.ALPHABET, AppLocalizations.of(context)!.thirtyConsonant, Icons.abc_rounded),
+      (AlphabetCategoryType.VOWEL, AppLocalizations.of(context)!.fourVowels, Icons.text_fields_rounded),
+      (AlphabetCategoryType.FIVE_PREFIX, AppLocalizations.of(context)!.fivePrefixes, Icons.format_color_text_rounded),
+      (AlphabetCategoryType.TEN_SUFFIX, AppLocalizations.of(context)!.tenSuffixes, Icons.format_underlined_rounded),
+      (AlphabetCategoryType.TWO_POSTFIX, AppLocalizations.of(context)!.twoPostFixes, Icons.format_size_rounded),
+      (AlphabetCategoryType.RAGO, AppLocalizations.of(context)!.ragoSurmounted, Icons.superscript_rounded),
+      (AlphabetCategoryType.LAGO, AppLocalizations.of(context)!.lagoSurmounted, Icons.subscript_rounded),
+      (AlphabetCategoryType.SAGO, AppLocalizations.of(context)!.sagoSarmounted, Icons.format_italic_rounded),
+      (AlphabetCategoryType.YATAK, AppLocalizations.of(context)!.yatakSubJoin, Icons.format_bold_rounded),
+      (AlphabetCategoryType.RATAK, AppLocalizations.of(context)!.ratakSubJoined, Icons.title_rounded),
+      (AlphabetCategoryType.LATAK, AppLocalizations.of(context)!.latakSubJoined, Icons.font_download_rounded),
     ];
-    return widgetList;
+
+    return menuItems.map((item) {
+      final (type, label, icon) = item;
+      return Padding(
+        padding: const EdgeInsets.only(bottom: AppTheme.spaceM),
+        child: _EnhancedLearnMenuItem(
+          label: label,
+          icon: icon,
+          fontSize: menuFontSize,
+          onTap: () {
+            if (type == AlphabetCategoryType.ALPHABET) {
+              getIt<AlphabetType>().type = type;
+              Navigator.pushNamed(context, AlphabetListPage.routeName);
+            } else {
+              _navigateToAlphabetDetailPage(type);
+            }
+          },
+        ),
+      );
+    }).toList();
   }
 
   _getBannerAds() => !kIsWeb
@@ -322,7 +170,124 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
 
   _navigateToAlphabetDetailPage(AlphabetCategoryType type) {
     getIt<AlphabetType>().type = type;
-
     Navigator.pushNamed(context, AlphabetListPage.routeName);
+  }
+}
+
+/// Enhanced learn menu item with modern design
+class _EnhancedLearnMenuItem extends StatefulWidget {
+  final String label;
+  final IconData icon;
+  final double fontSize;
+  final VoidCallback onTap;
+
+  const _EnhancedLearnMenuItem({
+    required this.label,
+    required this.icon,
+    required this.fontSize,
+    required this.onTap,
+  });
+
+  @override
+  State<_EnhancedLearnMenuItem> createState() => _EnhancedLearnMenuItemState();
+}
+
+class _EnhancedLearnMenuItemState extends State<_EnhancedLearnMenuItem>
+    with SingleTickerProviderStateMixin {
+  bool _isPressed = false;
+  late AnimationController _controller;
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: AppTheme.animationFast,
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.97).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) {
+        setState(() => _isPressed = true);
+        _controller.forward();
+      },
+      onTapUp: (_) {
+        setState(() => _isPressed = false);
+        _controller.reverse();
+        widget.onTap();
+      },
+      onTapCancel: () {
+        setState(() => _isPressed = false);
+        _controller.reverse();
+      },
+      child: ScaleTransition(
+        scale: _scaleAnimation,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppTheme.spaceL,
+            vertical: 14,
+          ),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).primaryColor,
+                Theme.of(context).primaryColorDark,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(AppTheme.radiusM),
+            boxShadow: _isPressed ? AppTheme.shadowSmall : AppTheme.shadowMedium,
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppTheme.spaceS),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(AppTheme.radiusS),
+                ),
+                child: Icon(
+                  widget.icon,
+                  color: Colors.white,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: AppTheme.spaceM),
+              Expanded(
+                child: Text(
+                  widget.label,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: widget.fontSize,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 0.2,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: Colors.white.withOpacity(0.7),
+                size: 16,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

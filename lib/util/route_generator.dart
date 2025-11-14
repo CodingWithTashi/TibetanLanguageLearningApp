@@ -24,6 +24,7 @@ import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_it
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/service/audio_service.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:tibetan_language_learning_app/util/page_transitions.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -31,127 +32,126 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(
-          builder: (_) => LanguageTypePage(),
+        return PageTransitions.fadeTransition(
+          const LanguageTypePage(),
+          settings: settings,
         );
       case HomePage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => HomePage(),
+        return PageTransitions.fadeScaleTransition(
+          const HomePage(),
+          settings: settings,
         );
       case LearnMenuPage.routeName:
-        /*return PageRouteBuilder(
-            opaque: true,
-            transitionDuration: const Duration(seconds: 4),
-            pageBuilder: (BuildContext context, _, __) {
-              return new LearnMenuPage();
-            },
-            transitionsBuilder:
-                (_, Animation<double> animation, __, Widget child) {
-              return new SlideTransition(
-                child: child,
-                position: new Tween<Offset>(
-                  begin: const Offset(1, 0),
-                  end: Offset.zero,
-                ).animate(animation),
-              );
-            });*/
-        return MaterialPageRoute(
-          builder: (_) => LearnMenuPage(),
+        return PageTransitions.slideTransition(
+          const LearnMenuPage(),
+          settings: settings,
         );
       case AlphabetListPage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => AlphabetListPage(),
+        return PageTransitions.slideTransition(
+          const AlphabetListPage(),
+          settings: settings,
         );
       case AlphabetDetailPage.routeName:
         {
           if (settings.arguments != null && settings.arguments is Alphabet) {
-            return MaterialPageRoute(
-              builder: (_) => BlocProvider<AudioCubit>(
+            return PageTransitions.fadeScaleTransition(
+              BlocProvider<AudioCubit>(
                 create: (context) =>
                     AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
                 child: AlphabetDetailPage(
                   alphabet: settings.arguments as Alphabet,
                 ),
               ),
+              settings: settings,
             );
           }
           return _errorRoute();
         }
       case PracticeMenuPage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => PracticeMenuPage(),
+        return PageTransitions.slideTransition(
+          const PracticeMenuPage(),
+          settings: settings,
         );
       case PracticeDetailPage.routeName:
         {
           if (settings.arguments != null && settings.arguments is Alphabet) {
-            return MaterialPageRoute(
-              builder: (_) => PracticeDetailPage(
+            return PageTransitions.fadeScaleTransition(
+              PracticeDetailPage(
                 alphabet: settings.arguments as Alphabet,
               ),
+              settings: settings,
             );
           }
           return _errorRoute();
         }
 
       case VerbListPage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => VerbListPage(),
+        return PageTransitions.slideTransition(
+          const VerbListPage(),
+          settings: settings,
         );
       case VerbDetailPage.routeName:
         {
           if (settings.arguments != null && settings.arguments is Verb) {
-            return MaterialPageRoute(
-              builder: (_) => BlocProvider<AudioCubit>(
+            return PageTransitions.fadeScaleTransition(
+              BlocProvider<AudioCubit>(
                 create: (context) =>
                     AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
                 child: VerbDetailPage(
                   verb: settings.arguments as Verb,
                 ),
               ),
+              settings: settings,
             );
           }
           return _errorRoute();
         }
       case UseCaseMenuPage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => UseCaseMenuPage(),
+        return PageTransitions.slideTransition(
+          const UseCaseMenuPage(),
+          settings: settings,
         );
       case UseCaseItemList.routeName:
         {
           if (settings.arguments != null && settings.arguments is UseCaseType) {
-            return MaterialPageRoute(
-              builder: (_) => BlocProvider<AudioCubit>(
+            return PageTransitions.fadeScaleTransition(
+              BlocProvider<AudioCubit>(
                 create: (context) =>
                     AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
                 child: UseCaseItemList(
                   type: settings.arguments as UseCaseType,
                 ),
               ),
+              settings: settings,
             );
           }
           return _errorRoute();
         }
       case GameHomePage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => GameHomePage(),
+        return PageTransitions.heroTransition(
+          GameHomePage(),
+          settings: settings,
         );
       case SpellingBeePage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => ChangeNotifierProvider<SpellingBeeProvider>(
+        return PageTransitions.fadeScaleTransition(
+          ChangeNotifierProvider<SpellingBeeProvider>(
             create: (BuildContext context) => SpellingBeeProvider(),
-            child: SpellingBeePage(),
+            child: const SpellingBeePage(),
           ),
+          settings: settings,
         );
       case SnakeGamePage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
+        return PageTransitions.fadeScaleTransition(
+          BlocProvider(
             create: (context) => SnakeGameBloc(),
-            child: SnakeGamePage(),
+            child: const SnakeGamePage(),
           ),
+          settings: settings,
         );
       case MemoryMatchGameScreen.routeName:
-        return MaterialPageRoute(
-          builder: (_) => MemoryMatchGameScreen(),
+        return PageTransitions.fadeScaleTransition(
+          const MemoryMatchGameScreen(),
+          settings: settings,
         );
 
       default:
