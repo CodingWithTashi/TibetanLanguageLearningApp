@@ -60,60 +60,66 @@ class SnakeGameView extends StatelessWidget {
           gameContent: Column(
             children: [
               Expanded(
-                child: GestureDetector(
-                  onVerticalDragUpdate: (details) {
-                    if (state.direction != 'up' && details.delta.dy > 0) {
-                      context.read<SnakeGameBloc>().add(ChangeDirection('down'));
-                    } else if (state.direction != 'down' && details.delta.dy < 0) {
-                      context.read<SnakeGameBloc>().add(ChangeDirection('up'));
-                    }
-                  },
-                  onHorizontalDragUpdate: (details) {
-                    if (state.direction != 'left' && details.delta.dx > 0) {
-                      context.read<SnakeGameBloc>().add(ChangeDirection('right'));
-                    } else if (state.direction != 'right' && details.delta.dx < 0) {
-                      context.read<SnakeGameBloc>().add(ChangeDirection('left'));
-                    }
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: Theme.of(context).primaryColorLight,
-                        width: 3,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          offset: const Offset(-5, -5),
-                          blurRadius: 10,
+                child: Center(
+                  child: AspectRatio(
+                    aspectRatio: 20 / 35, // 20 columns, 35 rows - ensures perfect fit
+                    child: GestureDetector(
+                      onVerticalDragUpdate: (details) {
+                        if (state.direction != 'up' && details.delta.dy > 0) {
+                          context.read<SnakeGameBloc>().add(ChangeDirection('down'));
+                        } else if (state.direction != 'down' && details.delta.dy < 0) {
+                          context.read<SnakeGameBloc>().add(ChangeDirection('up'));
+                        }
+                      },
+                      onHorizontalDragUpdate: (details) {
+                        if (state.direction != 'left' && details.delta.dx > 0) {
+                          context.read<SnakeGameBloc>().add(ChangeDirection('right'));
+                        } else if (state.direction != 'right' && details.delta.dx < 0) {
+                          context.read<SnakeGameBloc>().add(ChangeDirection('left'));
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: Theme.of(context).primaryColorLight,
+                            width: 3,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.3),
+                              offset: const Offset(-5, -5),
+                              blurRadius: 10,
+                            ),
+                            BoxShadow(
+                              color: Colors.white.withOpacity(0.1),
+                              offset: const Offset(5, 5),
+                              blurRadius: 10,
+                            ),
+                          ],
                         ),
-                        BoxShadow(
-                          color: Colors.white.withOpacity(0.1),
-                          offset: const Offset(5, 5),
-                          blurRadius: 10,
+                        margin: const EdgeInsets.all(20),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 20,
+                              childAspectRatio: 1.0, // Square cells
+                            ),
+                            itemCount: 700, // Match playableGridSize (35 rows × 20 columns)
+                            itemBuilder: (context, index) {
+                              if (state.snakePosition.contains(index)) {
+                                return _buildSnakeBody(index == state.snakePosition.last);
+                              }
+                              if (index == state.food) {
+                                return _buildFood(state.currentLetter);
+                              }
+                              return const SizedBox();
+                            },
+                          ),
                         ),
-                      ],
-                    ),
-                    margin: const EdgeInsets.all(20),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 20,
-                        ),
-                        itemCount: 700, // Match playableGridSize (35 rows × 20 columns)
-                        itemBuilder: (context, index) {
-                          if (state.snakePosition.contains(index)) {
-                            return _buildSnakeBody(index == state.snakePosition.last);
-                          }
-                          if (index == state.food) {
-                            return _buildFood(state.currentLetter);
-                          }
-                          return const SizedBox();
-                        },
                       ),
                     ),
                   ),
