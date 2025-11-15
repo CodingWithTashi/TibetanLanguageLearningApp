@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:confetti/confetti.dart';
+import 'package:just_audio/just_audio.dart';
 import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
 import '../../../model/alphabet.dart';
