@@ -10,6 +10,7 @@ import '../../../util/constant.dart';
 import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
+import '../widgets/game_score_card.dart';
 
 class SoundQuizGame extends StatefulWidget {
   const SoundQuizGame({Key? key}) : super(key: key);
@@ -214,16 +215,12 @@ class _SoundQuizGameState extends State<SoundQuizGame>
                   const SizedBox(height: 20),
 
                   // Score cards
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildScoreCard('Score', score.toString(), Icons.star),
-                        _buildScoreCard('Correct', correctAnswers.toString(), Icons.check_circle),
-                        _buildScoreCard('Wrong', wrongAnswers.toString(), Icons.cancel),
-                      ],
-                    ),
+                  GameScoreRow(
+                    cards: [
+                      GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star, compact: true),
+                      GameScoreCard(label: 'Correct', value: correctAnswers.toString(), icon: Icons.check_circle, compact: true),
+                      GameScoreCard(label: 'Wrong', value: wrongAnswers.toString(), icon: Icons.cancel, compact: true),
+                    ],
                   ),
 
                   const SizedBox(height: 40),
@@ -288,28 +285,6 @@ class _SoundQuizGameState extends State<SoundQuizGame>
               numberOfParticles: 15,
               gravity: 0.1,
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildScoreCard(String label, String value, IconData icon) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: ApplicationUtil.getBoxDecorationOne(context),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500)),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: Colors.white, size: 16),
-              const SizedBox(width: 6),
-              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
-            ],
           ),
         ],
       ),

@@ -9,6 +9,7 @@ import '../../../util/constant.dart';
 import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
+import '../widgets/game_score_card.dart';
 
 class AlphabetMatchGame extends StatefulWidget {
   const AlphabetMatchGame({Key? key}) : super(key: key);
@@ -173,16 +174,12 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
                   ),
                 ),
                 const SizedBox(height: 25),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      _buildNeomorphicStat('Moves', moves.toString()),
-                      _buildNeomorphicStat('Pairs', '$matches/$totalPairs'),
-                      _buildNeomorphicStat('Score', score.toString()),
-                    ],
-                  ),
+                GameScoreRow(
+                  cards: [
+                    GameScoreCard(label: 'Moves', value: moves.toString(), icon: Icons.touch_app),
+                    GameScoreCard(label: 'Pairs', value: '$matches/$totalPairs', icon: Icons.check_circle),
+                    GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star),
+                  ],
                 ),
                 const SizedBox(height: 30),
                 Expanded(
@@ -219,21 +216,6 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
               gravity: 0.1,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildNeomorphicStat(String label, String value) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: ApplicationUtil.getBoxDecorationOne(context),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500)),
-          const SizedBox(height: 4),
-          Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white)),
         ],
       ),
     );
