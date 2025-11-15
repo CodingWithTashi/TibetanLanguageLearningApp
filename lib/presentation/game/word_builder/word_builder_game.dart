@@ -11,6 +11,7 @@ import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 import '../widgets/game_score_card.dart';
+import '../widgets/game_layout.dart';
 
 class WordBuilderGame extends StatefulWidget {
   const WordBuilderGame({Key? key}) : super(key: key);
@@ -241,197 +242,166 @@ class _WordBuilderGameState extends State<WordBuilderGame>
       );
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: const Text('Word Builder'),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                'Word ${currentWordIndex + 1}/$totalWords',
-                style: const TextStyle(fontSize: 16, color: Colors.white),
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          SafeArea(
-              child: Column(
+    return Stack(
+      children: [
+        GameLayout(
+          title: 'Word Builder (${currentWordIndex + 1}/$totalWords)',
+          scoreCards: [
+            GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star),
+            GameScoreCard(label: 'Correct', value: correctWords.toString(), icon: Icons.check),
+            GameScoreCard(label: 'Hints', value: hints.toString(), icon: Icons.lightbulb),
+          ],
+          topWidget: GestureDetector(
+            onTap: _playWordAudio,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              decoration: ApplicationUtil.getBoxDecorationOne(context),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  const SizedBox(height: 20),
-
-                  // Score display
-                  GameScoreRow(
-                    cards: [
-                      GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star, compact: true),
-                      GameScoreCard(label: 'Correct', value: correctWords.toString(), icon: Icons.check, compact: true),
-                      GameScoreCard(label: 'Hints', value: hints.toString(), icon: Icons.lightbulb, compact: true),
-                    ],
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // Listen button
-                  GestureDetector(
-                    onTap: _playWordAudio,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      decoration: ApplicationUtil.getBoxDecorationOne(context),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.volume_up, color: Colors.white, size: 28),
-                          SizedBox(width: 8),
-                          Text(
-                            'Listen to Word',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // Selected characters (word being built)
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.all(20),
-                    constraints: const BoxConstraints(minHeight: 100),
-                    decoration: ApplicationUtil.getBoxDecorationTwo(context),
-                    child: selectedCharacters.isEmpty
-                        ? const Center(
-                            child: Text(
-                              'Build the word here',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.black54,
-                              ),
-                            ),
-                          )
-                        : Wrap(
-                            alignment: WrapAlignment.center,
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: List.generate(
-                              selectedCharacters.length,
-                              (index) => GestureDetector(
-                                onTap: () => _removeCharacter(index),
-                                child: _buildCharacterChip(
-                                  selectedCharacters[index],
-                                  true,
-                                ),
-                              ),
-                            ),
-                          ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  const Text(
-                    'Available Characters:',
+                  Icon(Icons.volume_up, color: Colors.white, size: 28),
+                  SizedBox(width: 8),
+                  Text(
+                    'Listen to Word',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                    ),
-                  ),
-
-                  const SizedBox(height: 15),
-
-                  // Available characters
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 12,
-                        runSpacing: 12,
-                        children: List.generate(
-                          availableCharacters.length,
-                          (index) => GestureDetector(
-                            onTap: () => _selectCharacter(index),
-                            child: _buildCharacterChip(
-                              availableCharacters[index],
-                              false,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // Action buttons
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: hints > 0 ? _useHint : null,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              decoration: hints > 0 ? ApplicationUtil.getBoxDecorationOne(context) : ApplicationUtil.getBoxDecorationTwo(context),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.lightbulb_outline, color: hints > 0 ? Colors.white : Colors.grey),
-                                  const SizedBox(width: 8),
-                                  Text('Hint ($hints)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: hints > 0 ? Colors.white : Colors.grey)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: _skip,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              decoration: ApplicationUtil.getBoxDecorationOne(context),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.skip_next, color: Colors.white),
-                                  SizedBox(width: 8),
-                                  Text('Skip', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
                   ),
                 ],
               ),
             ),
-
-          Align(
-            alignment: Alignment.topCenter,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              particleDrag: 0.05,
-              emissionFrequency: 0.05,
-              numberOfParticles: 15,
-              gravity: 0.1,
-            ),
           ),
-        ],
-      ),
+          gameContent: Column(
+            children: [
+              // Selected characters (word being built)
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(20),
+                constraints: const BoxConstraints(minHeight: 100),
+                decoration: ApplicationUtil.getBoxDecorationTwo(context),
+                child: selectedCharacters.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'Build the word here',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      )
+                    : Wrap(
+                        alignment: WrapAlignment.center,
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: List.generate(
+                          selectedCharacters.length,
+                          (index) => GestureDetector(
+                            onTap: () => _removeCharacter(index),
+                            child: _buildCharacterChip(
+                              selectedCharacters[index],
+                              true,
+                            ),
+                          ),
+                        ),
+                      ),
+              ),
+
+              const SizedBox(height: 30),
+
+              const Text(
+                'Available Characters:',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+
+              const SizedBox(height: 15),
+
+              // Available characters
+              Expanded(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 12,
+                    runSpacing: 12,
+                    children: List.generate(
+                      availableCharacters.length,
+                      (index) => GestureDetector(
+                        onTap: () => _selectCharacter(index),
+                        child: _buildCharacterChip(
+                          availableCharacters[index],
+                          false,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Action buttons
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: hints > 0 ? _useHint : null,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: hints > 0 ? ApplicationUtil.getBoxDecorationOne(context) : ApplicationUtil.getBoxDecorationTwo(context),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.lightbulb_outline, color: hints > 0 ? Colors.white : Colors.grey),
+                              const SizedBox(width: 8),
+                              Text('Hint ($hints)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: hints > 0 ? Colors.white : Colors.grey)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _skip,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          decoration: ApplicationUtil.getBoxDecorationOne(context),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.skip_next, color: Colors.white),
+                              SizedBox(width: 8),
+                              Text('Skip', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        Align(
+          alignment: Alignment.topCenter,
+          child: ConfettiWidget(
+            confettiController: _confettiController,
+            blastDirectionality: BlastDirectionality.explosive,
+            particleDrag: 0.05,
+            emissionFrequency: 0.05,
+            numberOfParticles: 15,
+            gravity: 0.1,
+          ),
+        ),
+      ],
     );
   }
 

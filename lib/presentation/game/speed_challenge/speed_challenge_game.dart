@@ -11,6 +11,7 @@ import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 import '../widgets/game_score_card.dart';
+import '../widgets/game_layout.dart';
 
 class SpeedChallengeGame extends StatefulWidget {
   const SpeedChallengeGame({Key? key}) : super(key: key);
@@ -284,143 +285,123 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
       );
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: const Text('Speed Challenge'),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: Stack(
-        children: [
-          SafeArea(
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-
-                  // Timer bar
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Time: ${timeRemaining}s',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              'Streak: $streak 🔥',
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          decoration: ApplicationUtil.getBoxDecorationTwo(context),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: LinearProgressIndicator(
-                              value: timeRemaining / timeLimit,
-                              backgroundColor: Colors.white24,
-                              valueColor: AlwaysStoppedAnimation<Color>(
-                                timeRemaining <= 10 ? Colors.red.shade400 : Theme.of(context).primaryColorLight,
-                              ),
-                              minHeight: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  // Score cards
-                  GameScoreRow(
-                    cards: [
-                      GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star, compact: true),
-                      GameScoreCard(label: 'Correct', value: correctAnswers.toString(), icon: Icons.check, compact: true),
-                      GameScoreCard(label: 'Wrong', value: wrongAnswers.toString(), icon: Icons.close, compact: true),
-                    ],
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // Question - Listen to character
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      shape: BoxShape.circle,
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black,
-                          offset: Offset(-5, -3),
-                          spreadRadius: -4,
-                          blurRadius: 10,
-                        ),
-                        BoxShadow(
-                          color: Colors.white24,
-                          offset: Offset(5, 5),
-                          spreadRadius: 3,
-                          blurRadius: 10,
-                        ),
-                      ],
-                    ),
-                    child: const Icon(
-                      Icons.headphones,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  // Options grid
-                  Expanded(
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(20),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
-                        childAspectRatio: 1,
+    return Stack(
+      children: [
+        GameLayout(
+          title: 'Speed Challenge',
+          scoreCards: [
+            GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star),
+            GameScoreCard(label: 'Correct', value: correctAnswers.toString(), icon: Icons.check),
+            GameScoreCard(label: 'Wrong', value: wrongAnswers.toString(), icon: Icons.close),
+          ],
+          topWidget: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Time: ${timeRemaining}s',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                      itemCount: options.length,
-                      itemBuilder: (context, index) {
-                        return _buildOptionCard(index);
-                      },
+                    ),
+                    Text(
+                      'Streak: $streak 🔥',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  decoration: ApplicationUtil.getBoxDecorationTwo(context),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: LinearProgressIndicator(
+                      value: timeRemaining / timeLimit,
+                      backgroundColor: Colors.white24,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        timeRemaining <= 10 ? Colors.red.shade400 : Theme.of(context).primaryColorLight,
+                      ),
+                      minHeight: 12,
                     ),
                   ),
-                ],
-              ),
-            ),
-
-          Align(
-            alignment: Alignment.center,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              particleDrag: 0.05,
-              emissionFrequency: 0.05,
-              numberOfParticles: 10,
-              gravity: 0.2,
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+          gameContent: Column(
+            children: [
+              // Question - Listen to character
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  shape: BoxShape.circle,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black,
+                      offset: Offset(-5, -3),
+                      spreadRadius: -4,
+                      blurRadius: 10,
+                    ),
+                    BoxShadow(
+                      color: Colors.white24,
+                      offset: Offset(5, 5),
+                      spreadRadius: 3,
+                      blurRadius: 10,
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.headphones,
+                  size: 50,
+                  color: Colors.white,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // Options grid
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.all(20),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15,
+                    mainAxisSpacing: 15,
+                    childAspectRatio: 1,
+                  ),
+                  itemCount: options.length,
+                  itemBuilder: (context, index) {
+                    return _buildOptionCard(index);
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        Align(
+          alignment: Alignment.center,
+          child: ConfettiWidget(
+            confettiController: _confettiController,
+            blastDirectionality: BlastDirectionality.explosive,
+            particleDrag: 0.05,
+            emissionFrequency: 0.05,
+            numberOfParticles: 10,
+            gravity: 0.2,
+          ),
+        ),
+      ],
     );
   }
 

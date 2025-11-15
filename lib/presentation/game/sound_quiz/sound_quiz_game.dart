@@ -11,6 +11,7 @@ import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 import '../widgets/game_score_card.dart';
+import '../widgets/game_layout.dart';
 
 class SoundQuizGame extends StatefulWidget {
   const SoundQuizGame({Key? key}) : super(key: key);
@@ -188,123 +189,86 @@ class _SoundQuizGameState extends State<SoundQuizGame>
       );
     }
 
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: const Text('Sound Quiz'),
-        backgroundColor: Theme.of(context).primaryColor,
-        foregroundColor: Colors.white,
-        elevation: 0,
-        actions: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Text(
-                'Question ${currentQuestionIndex + 1}/$totalQuestions',
-                style: const TextStyle(fontSize: 16, color: Colors.white),
+    return Stack(
+      children: [
+        GameLayout(
+          title: 'Sound Quiz (${currentQuestionIndex + 1}/$totalQuestions)',
+          scoreCards: [
+            GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star),
+            GameScoreCard(label: 'Correct', value: correctAnswers.toString(), icon: Icons.check_circle),
+            GameScoreCard(label: 'Wrong', value: wrongAnswers.toString(), icon: Icons.cancel),
+          ],
+          topWidget: Column(
+            children: [
+              const Text(
+                'Listen carefully and select the character',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
-          ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          SafeArea(
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-
-                  // Score cards
-                  GameScoreRow(
-                    cards: [
-                      GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star, compact: true),
-                      GameScoreCard(label: 'Correct', value: correctAnswers.toString(), icon: Icons.check_circle, compact: true),
-                      GameScoreCard(label: 'Wrong', value: wrongAnswers.toString(), icon: Icons.cancel, compact: true),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: _playSound,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    shape: BoxShape.circle,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black,
+                        offset: Offset(-5, -3),
+                        spreadRadius: -4,
+                        blurRadius: 10,
+                      ),
+                      BoxShadow(
+                        color: Colors.white24,
+                        offset: Offset(5, 5),
+                        spreadRadius: 3,
+                        blurRadius: 10,
+                      ),
                     ],
                   ),
-
-                  const SizedBox(height: 40),
-
-                  // Listen instruction
-                  const Text(
-                    'Listen carefully and select the character',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
+                  child: const Icon(
+                    Icons.volume_up,
+                    size: 60,
+                    color: Colors.white,
                   ),
-
-                  const SizedBox(height: 30),
-
-                  // Play sound button
-                  GestureDetector(
-                    onTap: _playSound,
-                    child: Container(
-                      width: 120,
-                      height: 120,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        shape: BoxShape.circle,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black,
-                            offset: Offset(-5, -3),
-                            spreadRadius: -4,
-                            blurRadius: 10,
-                          ),
-                          BoxShadow(
-                            color: Colors.white24,
-                            offset: Offset(5, 5),
-                            spreadRadius: 3,
-                            blurRadius: 10,
-                          ),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.volume_up,
-                        size: 60,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
-                  // Options
-                  Expanded(
-                    child: GridView.builder(
-                      padding: const EdgeInsets.all(20),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 15,
-                        mainAxisSpacing: 15,
-                        childAspectRatio: 1,
-                      ),
-                      itemCount: options.length,
-                      itemBuilder: (context, index) {
-                        return _buildOptionCard(index);
-                      },
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-
-          Align(
-            alignment: Alignment.topCenter,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              particleDrag: 0.05,
-              emissionFrequency: 0.05,
-              numberOfParticles: 15,
-              gravity: 0.1,
-            ),
+            ],
           ),
-        ],
-      ),
+          gameContent: GridView.builder(
+            padding: const EdgeInsets.all(20),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+              childAspectRatio: 1,
+            ),
+            itemCount: options.length,
+            itemBuilder: (context, index) {
+              return _buildOptionCard(index);
+            },
+          ),
+        ),
+
+        Align(
+          alignment: Alignment.topCenter,
+          child: ConfettiWidget(
+            confettiController: _confettiController,
+            blastDirectionality: BlastDirectionality.explosive,
+            particleDrag: 0.05,
+            emissionFrequency: 0.05,
+            numberOfParticles: 15,
+            gravity: 0.1,
+          ),
+        ),
+      ],
     );
   }
 
