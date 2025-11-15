@@ -25,6 +25,7 @@ class _WordBuilderGameState extends State<WordBuilderGame>
   late AnimationController _pulseController;
 
   List<Verb> allVerbs = [];
+  List<Verb> shuffledVerbs = [];
   Verb? currentWord;
   List<String> availableCharacters = [];
   List<String> selectedCharacters = [];
@@ -56,21 +57,22 @@ class _WordBuilderGameState extends State<WordBuilderGame>
   void _initializeGame() {
     allVerbs = AppConstant.verbsList;
     if (allVerbs.isNotEmpty) {
+      final random = Random();
+      shuffledVerbs = List<Verb>.from(allVerbs)..shuffle(random);
       _loadNextWord();
     }
   }
 
   void _loadNextWord() {
-    if (currentWordIndex >= totalWords) {
+    if (currentWordIndex >= totalWords || currentWordIndex >= shuffledVerbs.length) {
       _gameComplete();
       return;
     }
 
     final random = Random();
-    final shuffledVerbs = List<Verb>.from(allVerbs)..shuffle(random);
 
     setState(() {
-      currentWord = shuffledVerbs[0];
+      currentWord = shuffledVerbs[currentWordIndex];
       availableCharacters = List<String>.from(currentWord!.characterList);
       availableCharacters.shuffle(random);
       selectedCharacters = [];
