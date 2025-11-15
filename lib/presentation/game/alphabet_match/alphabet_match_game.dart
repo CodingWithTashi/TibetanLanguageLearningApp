@@ -10,6 +10,7 @@ import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 import '../widgets/game_score_card.dart';
+import '../widgets/game_layout.dart';
 
 class AlphabetMatchGame extends StatefulWidget {
   const AlphabetMatchGame({Key? key}) : super(key: key);
@@ -154,70 +155,47 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: Stack(
-        children: [
-          SafeArea(
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(onPressed: () => Navigator.pop(context), icon: const Icon(Icons.arrow_back_ios, color: Colors.white)),
-                      const Text('Alphabet Match', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
-                      const SizedBox(width: 40),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 25),
-                GameScoreRow(
-                  cards: [
-                    GameScoreCard(label: 'Moves', value: moves.toString(), icon: Icons.touch_app),
-                    GameScoreCard(label: 'Pairs', value: '$matches/$totalPairs', icon: Icons.check_circle),
-                    GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star),
-                  ],
-                ),
-                const SizedBox(height: 30),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 0.75,
-                      ),
-                      itemCount: cards.length,
-                      itemBuilder: (context, index) {
-                        final isSelected = selectedIndices.contains(index);
-                        final isMatched = matchedIndices.contains(index);
-                        return _buildCard(cards[index], isSelected, isMatched, index);
-                      },
-                    ),
-                  ),
-                ),
-              ],
+    return Stack(
+      children: [
+        GameLayout(
+          title: 'Alphabet Match',
+          scoreCards: [
+            GameScoreCard(label: 'Moves', value: moves.toString(), icon: Icons.touch_app),
+            GameScoreCard(label: 'Pairs', value: '$matches/$totalPairs', icon: Icons.check_circle),
+            GameScoreCard(label: 'Score', value: score.toString(), icon: Icons.star),
+          ],
+          gameContent: Padding(
+            padding: const EdgeInsets.all(20),
+            child: GridView.builder(
+              physics: const BouncingScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 0.75,
+              ),
+              itemCount: cards.length,
+              itemBuilder: (context, index) {
+                final isSelected = selectedIndices.contains(index);
+                final isMatched = matchedIndices.contains(index);
+                return _buildCard(cards[index], isSelected, isMatched, index);
+              },
             ),
           ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: ConfettiWidget(
-              confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
-              particleDrag: 0.05,
-              emissionFrequency: 0.05,
-              numberOfParticles: 25,
-              gravity: 0.1,
-            ),
+        ),
+
+        Align(
+          alignment: Alignment.topCenter,
+          child: ConfettiWidget(
+            confettiController: _confettiController,
+            blastDirectionality: BlastDirectionality.explosive,
+            particleDrag: 0.05,
+            emissionFrequency: 0.05,
+            numberOfParticles: 25,
+            gravity: 0.1,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
