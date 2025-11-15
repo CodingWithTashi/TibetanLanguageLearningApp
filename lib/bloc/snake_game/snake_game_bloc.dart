@@ -49,7 +49,7 @@ class SnakeGameBloc extends Bloc<SnakeGameEvent, SnakeGameState> {
     final initialState = SnakeGameState.initial();
     emit(initialState.copyWith(
       isPlaying: true,
-      food: _random.nextInt(700),
+      food: _random.nextInt(gridSize),
       currentLetter: _alphabet[_random.nextInt(_alphabet.length)],
     ));
 
@@ -125,7 +125,16 @@ class SnakeGameBloc extends Bloc<SnakeGameEvent, SnakeGameState> {
   }
 
   void _onGenerateFood(GenerateFood event, Emitter<SnakeGameState> emit) {
-    final newFood = _random.nextInt(700);
+    // Generate food position within grid bounds, avoiding snake body
+    int newFood;
+    int attempts = 0;
+    do {
+      newFood = _random.nextInt(gridSize);
+      attempts++;
+      // Prevent infinite loop if grid is nearly full
+      if (attempts > 100) break;
+    } while (state.snakePosition.contains(newFood));
+
     final newLetter = _alphabet[_random.nextInt(_alphabet.length)];
     emit(state.copyWith(
       food: newFood,
