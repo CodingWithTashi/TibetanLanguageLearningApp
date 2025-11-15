@@ -104,7 +104,7 @@ class SnakeGameView extends StatelessWidget {
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 20,
                         ),
-                        itemCount: 760,
+                        itemCount: 700, // Match playableGridSize (35 rows × 20 columns)
                         itemBuilder: (context, index) {
                           if (state.snakePosition.contains(index)) {
                             return _buildSnakeBody(index == state.snakePosition.last);
