@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'game_score_card.dart';
+import 'game_back_button.dart';
 
 /// Unified game layout component for consistent UI across all games
 /// Ensures all games have the same structure and element positioning
@@ -27,36 +29,43 @@ class GameLayout extends StatelessWidget {
         child: Column(
           children: [
             // Standard spacing from top
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
 
-            // Header with back button and title
+            // Neomorphism App Bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Back button - always in same position
-                  IconButton(
-                    onPressed: onBack ?? () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 22),
-                  ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: ApplicationUtil.getBoxDecorationOne(context).copyWith(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Neomorphism back button - always in same position
+                    GameBackButton(onPressed: onBack),
 
-                  // Title - always centered
-                  Expanded(
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    // Title - always centered
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          title,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.5,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
 
-                  // Spacer to balance the back button
-                  const SizedBox(width: 48),
-                ],
+                    // Spacer to balance the back button
+                    const SizedBox(width: 48),
+                  ],
+                ),
               ),
             ),
 
