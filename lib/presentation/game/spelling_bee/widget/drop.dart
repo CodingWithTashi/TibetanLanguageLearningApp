@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
-import '../provider/spelling_bee_provider.dart';
 
 class Drop extends StatefulWidget {
   final String letter;
@@ -36,8 +34,6 @@ class _DropState extends State<Drop> {
             setState(() {
               accepted = true;
             });
-            Provider.of<SpellingBeeProvider>(context, listen: false)
-                .incrementLetters(context: context);
           },
           builder: (context, candidateData, rejectedData) {
             return Container(

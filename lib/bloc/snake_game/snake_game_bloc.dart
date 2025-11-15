@@ -13,6 +13,7 @@ part 'snake_game_state.dart';
 class SnakeGameBloc extends Bloc<SnakeGameEvent, SnakeGameState> {
   Timer? _gameTimer;
   static const int gridSize = 760;
+  static const int playableGridSize = 700; // Limit food to visible area (35 rows)
   static const int initialSpeed = 300; // Initial speed in milliseconds
   static const int minSpeed = 50; // Minimum speed (maximum difficulty)
   static const int speedDecrement = 5; // How much to decrease speed per score
@@ -49,7 +50,7 @@ class SnakeGameBloc extends Bloc<SnakeGameEvent, SnakeGameState> {
     final initialState = SnakeGameState.initial();
     emit(initialState.copyWith(
       isPlaying: true,
-      food: _random.nextInt(gridSize),
+      food: _random.nextInt(playableGridSize),
       currentLetter: _alphabet[_random.nextInt(_alphabet.length)],
     ));
 
@@ -125,11 +126,11 @@ class SnakeGameBloc extends Bloc<SnakeGameEvent, SnakeGameState> {
   }
 
   void _onGenerateFood(GenerateFood event, Emitter<SnakeGameState> emit) {
-    // Generate food position within grid bounds, avoiding snake body
+    // Generate food position within playable grid bounds, avoiding snake body
     int newFood;
     int attempts = 0;
     do {
-      newFood = _random.nextInt(gridSize);
+      newFood = _random.nextInt(playableGridSize);
       attempts++;
       // Prevent infinite loop if grid is nearly full
       if (attempts > 100) break;

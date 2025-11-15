@@ -46,6 +46,8 @@ class _DragState extends State<Drag> {
                             setState(() {
                               _accepted = true;
                             });
+                            Provider.of<SpellingBeeProvider>(context, listen: false)
+                                .incrementLetters(context: context);
                           }
                         },
                         feedback: Container(
