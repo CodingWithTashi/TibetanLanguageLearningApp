@@ -240,29 +240,39 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
   }
 
   Widget _buildCard(MatchCard card, bool isSelected, bool isMatched, int index) {
+    BoxDecoration decoration;
+    Color textColor;
+
+    if (isMatched) {
+      decoration = BoxDecoration(
+        color: Colors.green.shade400,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
+          BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
+        ],
+      );
+      textColor = Colors.white;
+    } else if (isSelected) {
+      decoration = ApplicationUtil.getBoxDecorationTwo(context);
+      textColor = Colors.black87;
+    } else {
+      decoration = ApplicationUtil.getBoxDecorationOne(context);
+      textColor = Colors.white;
+    }
+
     return GestureDetector(
       onTap: () => _onCardTap(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        decoration: isMatched
-            ? BoxDecoration(
-                color: Colors.green.shade400,
-                borderRadius: BorderRadius.circular(10),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
-                  BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
-                ],
-              )
-            : isSelected
-                ? ApplicationUtil.getBoxDecorationTwo(context)
-                : ApplicationUtil.getBoxDecorationOne(context),
+        decoration: decoration,
         child: Center(
           child: Text(
             card.displayText,
             style: TextStyle(
               fontSize: card.isCharacter ? 42 : 18,
               fontWeight: FontWeight.bold,
-              color: isMatched ? Colors.white : (isSelected ? Colors.black87 : Colors.white),
+              color: textColor,
               fontFamily: card.isCharacter ? 'jomolhari' : null,
             ),
             textAlign: TextAlign.center,

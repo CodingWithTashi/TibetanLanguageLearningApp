@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:lottie/lottie.dart';
 import '../../game_bloc/game_bloc.dart';
 import '../../cubit/reward/reward_cubit.dart';
+import '../../cubit/audio_cubit.dart';
+import '../../util/application_util.dart';
+import '../../service/audio_service.dart';
 import '../game/util/game_model.dart';
 import 'alphabet_match/alphabet_match_game.dart';
 import 'character_trace/character_trace_game.dart';
@@ -23,172 +27,99 @@ class GameHomePageNew extends StatefulWidget {
   State<GameHomePageNew> createState() => _GameHomePageNewState();
 }
 
-class _GameHomePageNewState extends State<GameHomePageNew>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _headerAnimController;
-
+class _GameHomePageNewState extends State<GameHomePageNew> {
   @override
   void initState() {
     super.initState();
-    _headerAnimController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1500),
-    )..forward();
-
-    // Load reward progress
     context.read<RewardCubit>().loadProgress();
-  }
-
-  @override
-  void dispose() {
-    _headerAnimController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.deepPurple.shade400,
-              Colors.blue.shade300,
-              Colors.teal.shade200,
-            ],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              _buildHeader(),
-              Expanded(
-                child: BlocConsumer<GameBloc, GameState>(
-                  listener: (context, state) {
-                    if (state.error != null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(state.error!)),
-                      );
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state.isLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: Colors.white,
-                        ),
-                      );
-                    }
-
-                    return _buildGameGrid(state.games);
-                  },
-                ),
+      backgroundColor: Theme.of(context).primaryColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            _buildHeader(),
+            const SizedBox(height: 20),
+            Expanded(
+              child: BlocConsumer<GameBloc, GameState>(
+                listener: (context, state) {
+                  if (state.error != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text(state.error!)),
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state.isLoading) {
+                    return const Center(child: CircularProgressIndicator(color: Colors.white));
+                  }
+                  return _buildGameGrid(state.games);
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildHeader() {
-    return FadeTransition(
-      opacity: _headerAnimController,
-      child: SlideTransition(
-        position: Tween<Offset>(
-          begin: const Offset(0, -1),
-          end: Offset.zero,
-        ).animate(CurvedAnimation(
-          parent: _headerAnimController,
-          curve: Curves.easeOutBack,
-        )),
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          child: Column(
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
-                  ),
-                  const Text(
-                    'Games',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: _showAchievements,
-                    icon: const Icon(Icons.emoji_events, color: Colors.amber, size: 28),
-                  ),
-                ],
+              IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 24),
               ),
-              const SizedBox(height: 16),
-              BlocBuilder<RewardCubit, RewardState>(
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildStatBadge(
-                        '${state.progress.totalCoins}',
-                        Icons.monetization_on,
-                        Colors.amber,
-                      ),
-                      const SizedBox(width: 16),
-                      _buildStatBadge(
-                        '${state.progress.totalStars}',
-                        Icons.star,
-                        Colors.yellow,
-                      ),
-                      const SizedBox(width: 16),
-                      _buildStatBadge(
-                        '${state.progress.currentStreak}',
-                        Icons.local_fire_department,
-                        Colors.orange,
-                      ),
-                    ],
-                  );
-                },
+              const Text(
+                'Games',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              IconButton(
+                onPressed: _showAchievements,
+                icon: const Icon(Icons.emoji_events, color: Colors.amberAccent, size: 26),
               ),
             ],
           ),
         ),
-      ),
+        const SizedBox(height: 16),
+        BlocBuilder<RewardCubit, RewardState>(
+          builder: (context, state) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildStatBadge('${state.progress.totalCoins}', Icons.monetization_on),
+                  _buildStatBadge('${state.progress.totalStars}', Icons.star),
+                  _buildStatBadge('${state.progress.currentStreak}', Icons.local_fire_department),
+                ],
+              ),
+            );
+          },
+        ),
+      ],
     );
   }
 
-  Widget _buildStatBadge(String value, IconData icon, Color color) {
+  Widget _buildStatBadge(String value, IconData icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.95),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.4),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 24),
-          const SizedBox(width: 8),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
+          Icon(icon, color: Colors.white, size: 20),
+          const SizedBox(width: 6),
+          Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
         ],
       ),
     );
@@ -197,24 +128,23 @@ class _GameHomePageNewState extends State<GameHomePageNew>
   Widget _buildGameGrid(List<Game> games) {
     return AnimationLimiter(
       child: GridView.builder(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
+        physics: const BouncingScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
-          childAspectRatio: 0.75,
+          childAspectRatio: 0.78,
         ),
         itemCount: games.length,
         itemBuilder: (context, index) {
           return AnimationConfiguration.staggeredGrid(
             position: index,
             columnCount: 2,
-            duration: const Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 400),
             child: SlideAnimation(
               verticalOffset: 50,
-              child: FadeInAnimation(
-                child: _buildGameCard(games[index]),
-              ),
+              child: FadeInAnimation(child: _buildGameCard(games[index])),
             ),
           );
         },
@@ -233,203 +163,90 @@ class _GameHomePageNewState extends State<GameHomePageNew>
           _navigateToGame(game.gameType);
         }
       },
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: isLocked
-                ? [Colors.grey.shade300, Colors.grey.shade400]
-                : [Colors.white, Colors.blue.shade50],
-          ),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: isLocked
-                  ? Colors.black.withOpacity(0.1)
-                  : Colors.blue.withOpacity(0.3),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                const SizedBox(height: 12),
-
-                // Level badge
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 12),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      child: Opacity(
+        opacity: isLocked ? 0.6 : 1.0,
+        child: Container(
+          decoration: ApplicationUtil.getBoxDecorationOne(context),
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            children: [
+              // Level badge
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [Colors.purple.shade400, Colors.blue.shade400],
-                      ),
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(
-                      'LV ${game.level}',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    child: Text('LV ${game.level}', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.white)),
                   ),
+                  if (!isLocked)
+                    const Icon(Icons.play_circle_filled, color: Colors.greenAccent, size: 20)
+                  else
+                    const Icon(Icons.lock, color: Colors.white54, size: 20),
+                ],
+              ),
+              const SizedBox(height: 8),
+              // Game icon
+              Expanded(
+                child: Lottie.network(game.gameIcon, fit: BoxFit.contain),
+              ),
+              const SizedBox(height: 8),
+              // Game name
+              Text(
+                game.name,
+                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 8),
+              // Stars or lock requirement
+              if (!isLocked) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List.generate(3, (index) {
+                    return Icon(
+                      index < game.stars ? Icons.star : Icons.star_border,
+                      color: Colors.amberAccent,
+                      size: 16,
+                    );
+                  }),
                 ),
-
-                // Game icon
-                Expanded(
-                  child: Opacity(
-                    opacity: isLocked ? 0.4 : 1.0,
-                    child: Lottie.network(
-                      game.gameIcon,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-
-                // Game info
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: isLocked
-                        ? Colors.grey.shade200
-                        : Colors.white.withOpacity(0.9),
-                    borderRadius: const BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Text(
-                        game.name,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: isLocked ? Colors.grey.shade600 : Colors.black87,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: 8),
-
-                      if (!isLocked) ...[
-                        // Stars display
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(3, (index) {
-                            return Icon(
-                              index < game.stars ? Icons.star : Icons.star_border,
-                              color: Colors.amber,
-                              size: 20,
-                            );
-                          }),
-                        ),
-                        const SizedBox(height: 4),
-
-                        // Score/Coins
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(Icons.emoji_events, size: 14, color: Colors.purple),
-                                const SizedBox(width: 4),
-                                Text(
-                                  '${game.currentScore}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Icon(Icons.monetization_on, size: 14, color: Colors.amber),
-                                const SizedBox(width: 4),
-                                Text(
-                                  '${game.coinsEarned}',
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ] else ...[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.star, color: Colors.amber, size: 16),
-                            const SizedBox(width: 4),
-                            Text(
-                              '${game.requiredStarsToUnlock} stars needed',
-                              style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.grey.shade700,
-                              ),
-                            ),
-                          ],
-                        ),
+                const SizedBox(height: 4),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.emoji_events, size: 12, color: Colors.white70),
+                        const SizedBox(width: 3),
+                        Text('${game.currentScore}', style: const TextStyle(fontSize: 10, color: Colors.white70)),
                       ],
-                    ],
-                  ),
+                    ),
+                    Row(
+                      children: [
+                        const Icon(Icons.monetization_on, size: 12, color: Colors.amberAccent),
+                        const SizedBox(width: 3),
+                        Text('${game.coinsEarned}', style: const TextStyle(fontSize: 10, color: Colors.white70)),
+                      ],
+                    ),
+                  ],
+                ),
+              ] else ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.star, color: Colors.amberAccent, size: 14),
+                    const SizedBox(width: 4),
+                    Text('${game.requiredStarsToUnlock} stars', style: const TextStyle(fontSize: 11, color: Colors.white70)),
+                  ],
                 ),
               ],
-            ),
-
-            // Lock overlay
-            if (isLocked)
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: const Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                    size: 48,
-                  ),
-                ),
-              ),
-
-            // Play indicator for unlocked games
-            if (!isLocked)
-              Positioned(
-                top: 12,
-                left: 12,
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.green.withOpacity(0.5),
-                        blurRadius: 8,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.play_arrow,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -439,52 +256,33 @@ class _GameHomePageNewState extends State<GameHomePageNew>
     showDialog(
       context: context,
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.purple.shade100, Colors.blue.shade100],
-            ),
-            borderRadius: BorderRadius.circular(20),
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Lottie.asset(
-                'assets/json/unlock.json',
-                height: 120,
-                repeat: true,
-              ),
+              Lottie.asset('assets/json/unlock.json', height: 100, repeat: true),
               const SizedBox(height: 16),
-              Text(
-                '${game.name} Locked',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.deepPurple,
-                ),
-              ),
+              Text('${game.name} Locked', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white)),
               const SizedBox(height: 12),
               Text(
-                'Earn ${game.requiredStarsToUnlock} stars in Level ${game.level - 1} to unlock this game!',
+                'Earn ${game.requiredStarsToUnlock} stars in Level ${game.level - 1} to unlock!',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 14, color: Colors.white70),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
-                  foregroundColor: Colors.white,
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  decoration: ApplicationUtil.getBoxDecorationOne(context),
+                  child: const Text('Got it!', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
                 ),
-                child: const Text('Got it!'),
               ),
             ],
           ),
@@ -496,92 +294,65 @@ class _GameHomePageNewState extends State<GameHomePageNew>
   void _showAchievements() {
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).primaryColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
       builder: (context) => Container(
         height: MediaQuery.of(context).size.height * 0.7,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(25),
-            topRight: Radius.circular(25),
-          ),
-        ),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            const SizedBox(height: 12),
             Container(
               width: 50,
               height: 5,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade300,
-                borderRadius: BorderRadius.circular(10),
-              ),
+              decoration: BoxDecoration(color: Colors.white30, borderRadius: BorderRadius.circular(10)),
             ),
-            const Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                'Achievements',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            const SizedBox(height: 16),
+            const Text('Achievements', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(height: 20),
             Expanded(
               child: BlocBuilder<RewardCubit, RewardState>(
                 builder: (context, state) {
                   if (state.achievements.isEmpty) {
-                    return const Center(child: Text('No achievements yet'));
+                    return const Center(child: Text('No achievements yet', style: TextStyle(color: Colors.white70)));
                   }
 
                   return ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    physics: const BouncingScrollPhysics(),
                     itemCount: state.achievements.length,
                     itemBuilder: (context, index) {
                       final achievement = state.achievements[index];
                       return Container(
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: achievement.isUnlocked
-                                ? [Colors.amber.shade100, Colors.orange.shade100]
-                                : [Colors.grey.shade200, Colors.grey.shade300],
-                          ),
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                        decoration: achievement.isUnlocked
+                            ? BoxDecoration(
+                                color: Colors.green.shade400,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: const [
+                                  BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
+                                  BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
+                                ],
+                              )
+                            : ApplicationUtil.getBoxDecorationOne(context),
                         child: Row(
                           children: [
-                            Text(
-                              achievement.icon,
-                              style: const TextStyle(fontSize: 40),
-                            ),
+                            Text(achievement.icon, style: const TextStyle(fontSize: 36)),
                             const SizedBox(width: 16),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    achievement.title,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Text(
-                                    achievement.description,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey.shade700,
-                                    ),
-                                  ),
+                                  Text(achievement.title, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white)),
+                                  Text(achievement.description, style: const TextStyle(fontSize: 12, color: Colors.white70)),
                                 ],
                               ),
                             ),
                             if (achievement.isUnlocked)
-                              const Icon(Icons.check_circle, color: Colors.green, size: 32)
+                              const Icon(Icons.check_circle, color: Colors.white, size: 28)
                             else
-                              Icon(Icons.lock, color: Colors.grey.shade600, size: 28),
+                              const Icon(Icons.lock, color: Colors.white54, size: 24),
                           ],
                         ),
                       );
@@ -597,7 +368,7 @@ class _GameHomePageNewState extends State<GameHomePageNew>
   }
 
   void _navigateToGame(GameType gameType) {
-    Widget gameWidget;
+    Widget? gameWidget;
 
     switch (gameType) {
       case GameType.alphabetMatchGame:
@@ -626,9 +397,17 @@ class _GameHomePageNewState extends State<GameHomePageNew>
         return;
     }
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => gameWidget),
-    );
+    if (gameWidget != null) {
+      // Provide AudioCubit to all new games
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => BlocProvider<AudioCubit>(
+            create: (context) => AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+            child: gameWidget!,
+          ),
+        ),
+      );
+    }
   }
 }

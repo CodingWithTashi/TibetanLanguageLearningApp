@@ -6,6 +6,7 @@ import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
 import '../../../model/alphabet.dart';
 import '../../../util/constant.dart';
+import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 
@@ -164,15 +165,19 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
         : alphabets.last;
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text('Character Trace'),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 0,
         actions: [
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: Text(
                 'Progress: $completedCharacters/$totalCharacters',
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ),
@@ -180,42 +185,19 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.orange.shade50,
-                  Colors.pink.shade50,
-                ],
-              ),
-            ),
-            child: SafeArea(
+          SafeArea(
               child: Column(
                 children: [
                   const SizedBox(height: 20),
 
                   // Score display
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.orange.withOpacity(0.3),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildStat('Score', score.toString(), Icons.star, Colors.amber),
-                        _buildStat('Traced', '$completedCharacters', Icons.check_circle, Colors.green),
+                        _buildStat('Score', score.toString(), Icons.star),
+                        _buildStat('Traced', '$completedCharacters', Icons.check_circle),
                       ],
                     ),
                   ),
@@ -228,7 +210,7 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.deepOrange,
+                      color: Colors.white,
                     ),
                   ),
 
@@ -238,18 +220,14 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     margin: const EdgeInsets.symmetric(horizontal: 40),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.orange, width: 2),
-                    ),
+                    decoration: ApplicationUtil.getBoxDecorationTwo(context),
                     child: Center(
                       child: Text(
                         currentAlphabet.alphabetName,
                         style: const TextStyle(
                           fontSize: 80,
                           fontFamily: 'jomolhari',
-                          color: Colors.black54,
+                          color: Colors.black87,
                         ),
                       ),
                     ),
@@ -261,19 +239,9 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
                   Expanded(
                     child: Container(
                       margin: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
+                      decoration: ApplicationUtil.getBoxDecorationTwo(context),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(10),
                         child: GestureDetector(
                           onPanStart: (details) {
                             setState(() {
@@ -306,16 +274,18 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
                     child: Row(
                       children: [
                         Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: _clearDrawing,
-                            icon: const Icon(Icons.clear),
-                            label: const Text('Clear'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              foregroundColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: _clearDrawing,
+                            child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                              decoration: ApplicationUtil.getBoxDecorationOne(context),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.clear, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text('Clear', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                                ],
                               ),
                             ),
                           ),
@@ -323,16 +293,18 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
                         const SizedBox(width: 12),
                         Expanded(
                           flex: 2,
-                          child: ElevatedButton.icon(
-                            onPressed: _checkDrawing,
-                            icon: const Icon(Icons.check),
-                            label: const Text('Check'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              foregroundColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: _checkDrawing,
+                            child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                              decoration: ApplicationUtil.getBoxDecorationOne(context),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.check, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text('Check', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                                ],
                               ),
                             ),
                           ),
@@ -361,33 +333,25 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
     );
   }
 
-  Widget _buildStat(String label, String value, IconData icon, Color color) {
-    return Row(
-      children: [
-        Icon(icon, color: color, size: 28),
-        const SizedBox(width: 8),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.grey.shade600,
-              ),
-            ),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: color,
-              ),
-            ),
-          ],
-        ),
-      ],
+  Widget _buildStat(String label, String value, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500)),
+          const SizedBox(height: 4),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 16),
+              const SizedBox(width: 6),
+              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

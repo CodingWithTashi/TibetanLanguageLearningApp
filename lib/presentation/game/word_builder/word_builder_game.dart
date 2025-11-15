@@ -7,6 +7,7 @@ import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
 import '../../../model/verb.dart';
 import '../../../util/constant.dart';
+import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 
@@ -238,15 +239,19 @@ class _WordBuilderGameState extends State<WordBuilderGame>
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text('Word Builder'),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 0,
         actions: [
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: Text(
                 'Word ${currentWordIndex + 1}/$totalWords',
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ),
@@ -254,18 +259,7 @@ class _WordBuilderGameState extends State<WordBuilderGame>
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.teal.shade50,
-                  Colors.blue.shade50,
-                ],
-              ),
-            ),
-            child: SafeArea(
+          SafeArea(
               child: Column(
                 children: [
                   const SizedBox(height: 20),
@@ -276,9 +270,9 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildScoreCard('Score', score.toString(), Icons.star, Colors.amber),
-                        _buildScoreCard('Correct', correctWords.toString(), Icons.check, Colors.green),
-                        _buildScoreCard('Hints', hints.toString(), Icons.lightbulb, Colors.orange),
+                        _buildScoreCard('Score', score.toString(), Icons.star),
+                        _buildScoreCard('Correct', correctWords.toString(), Icons.check),
+                        _buildScoreCard('Hints', hints.toString(), Icons.lightbulb),
                       ],
                     ),
                   ),
@@ -290,19 +284,7 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                     onTap: _playWordAudio,
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [Colors.teal.shade400, Colors.blue.shade400],
-                        ),
-                        borderRadius: BorderRadius.circular(25),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.teal.withOpacity(0.4),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
+                      decoration: ApplicationUtil.getBoxDecorationOne(context),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -328,25 +310,14 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     padding: const EdgeInsets.all(20),
                     constraints: const BoxConstraints(minHeight: 100),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(color: Colors.teal, width: 2),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.teal.withOpacity(0.2),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
+                    decoration: ApplicationUtil.getBoxDecorationTwo(context),
                     child: selectedCharacters.isEmpty
                         ? const Center(
                             child: Text(
                               'Build the word here',
                               style: TextStyle(
                                 fontSize: 16,
-                                color: Colors.grey,
+                                color: Colors.black54,
                               ),
                             ),
                           )
@@ -360,7 +331,6 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                                 onTap: () => _removeCharacter(index),
                                 child: _buildCharacterChip(
                                   selectedCharacters[index],
-                                  Colors.teal,
                                   true,
                                 ),
                               ),
@@ -375,7 +345,7 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      color: Colors.teal,
+                      color: Colors.white,
                     ),
                   ),
 
@@ -395,7 +365,6 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                             onTap: () => _selectCharacter(index),
                             child: _buildCharacterChip(
                               availableCharacters[index],
-                              Colors.blue,
                               false,
                             ),
                           ),
@@ -410,32 +379,36 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                     child: Row(
                       children: [
                         Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: hints > 0 ? _useHint : null,
-                            icon: const Icon(Icons.lightbulb_outline),
-                            label: Text('Hint ($hints)'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange,
-                              foregroundColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: hints > 0 ? _useHint : null,
+                            child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                              decoration: hints > 0 ? ApplicationUtil.getBoxDecorationOne(context) : ApplicationUtil.getBoxDecorationTwo(context),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.lightbulb_outline, color: hints > 0 ? Colors.white : Colors.grey),
+                                  const SizedBox(width: 8),
+                                  Text('Hint ($hints)', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: hints > 0 ? Colors.white : Colors.grey)),
+                                ],
                               ),
                             ),
                           ),
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: _skip,
-                            icon: const Icon(Icons.skip_next),
-                            label: const Text('Skip'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey,
-                              foregroundColor: Colors.white,
+                          child: GestureDetector(
+                            onTap: _skip,
+                            child: Container(
                               padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                              decoration: ApplicationUtil.getBoxDecorationOne(context),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.skip_next, color: Colors.white),
+                                  SizedBox(width: 8),
+                                  Text('Skip', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                                ],
                               ),
                             ),
                           ),
@@ -464,71 +437,40 @@ class _WordBuilderGameState extends State<WordBuilderGame>
     );
   }
 
-  Widget _buildScoreCard(String label, String value, IconData icon, Color color) {
+  Widget _buildScoreCard(String label, String value, IconData icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 22),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 16),
+              const SizedBox(width: 6),
+              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            ],
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCharacterChip(String character, Color color, bool isSelected) {
+  Widget _buildCharacterChip(String character, bool isSelected) {
     return Container(
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            color.withOpacity(0.7),
-            color,
-          ],
-        ),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.4),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: isSelected
+        ? ApplicationUtil.getBoxDecorationOne(context)
+        : ApplicationUtil.getBoxDecorationTwo(context),
       child: Text(
         character,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 36,
           fontFamily: 'jomolhari',
-          color: Colors.white,
+          color: isSelected ? Colors.white : Colors.black87,
           fontWeight: FontWeight.bold,
         ),
       ),

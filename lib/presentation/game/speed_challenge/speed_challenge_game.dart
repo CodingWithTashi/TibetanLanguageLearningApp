@@ -7,6 +7,7 @@ import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
 import '../../../model/alphabet.dart';
 import '../../../util/constant.dart';
+import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 
@@ -78,16 +79,12 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
       context: context,
       barrierDismissible: false,
       builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Colors.red.shade100, Colors.orange.shade100],
-            ),
-            borderRadius: BorderRadius.circular(20),
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.circular(10),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -95,7 +92,7 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
               const Icon(
                 Icons.timer,
                 size: 80,
-                color: Colors.red,
+                color: Colors.white,
               ),
               const SizedBox(height: 16),
               const Text(
@@ -103,32 +100,28 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(height: 12),
               Text(
                 'Answer as many questions as you can in $timeLimit seconds!',
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, color: Colors.white70),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
+              GestureDetector(
+                onTap: () {
                   Navigator.pop(context);
                   _startGame();
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
+                child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                  decoration: ApplicationUtil.getBoxDecorationOne(context),
+                  child: const Text(
+                    'START',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
                   ),
-                ),
-                child: const Text(
-                  'START',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -291,25 +284,16 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text('Speed Challenge'),
-        backgroundColor: Colors.red,
+        backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Colors.white,
+        elevation: 0,
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.red.shade50,
-                  Colors.orange.shade50,
-                ],
-              ),
-            ),
-            child: SafeArea(
+          SafeArea(
               child: Column(
                 children: [
                   const SizedBox(height: 10),
@@ -324,32 +308,35 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                           children: [
                             Text(
                               'Time: ${timeRemaining}s',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: timeRemaining <= 10 ? Colors.red : Colors.black87,
+                                color: Colors.white,
                               ),
                             ),
                             Text(
                               'Streak: $streak 🔥',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: streak >= 5 ? Colors.orange : Colors.black87,
+                                color: Colors.white,
                               ),
                             ),
                           ],
                         ),
                         const SizedBox(height: 8),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: LinearProgressIndicator(
-                            value: timeRemaining / timeLimit,
-                            backgroundColor: Colors.grey.shade300,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              timeRemaining <= 10 ? Colors.red : Colors.orange,
+                        Container(
+                          decoration: ApplicationUtil.getBoxDecorationTwo(context),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: LinearProgressIndicator(
+                              value: timeRemaining / timeLimit,
+                              backgroundColor: Colors.white24,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                timeRemaining <= 10 ? Colors.red.shade400 : Theme.of(context).primaryColorLight,
+                              ),
+                              minHeight: 12,
                             ),
-                            minHeight: 12,
                           ),
                         ),
                       ],
@@ -364,9 +351,9 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildScoreCard('Score', score.toString(), Icons.star, Colors.amber),
-                        _buildScoreCard('Correct', correctAnswers.toString(), Icons.check, Colors.green),
-                        _buildScoreCard('Wrong', wrongAnswers.toString(), Icons.close, Colors.red),
+                        _buildScoreCard('Score', score.toString(), Icons.star),
+                        _buildScoreCard('Correct', correctAnswers.toString(), Icons.check),
+                        _buildScoreCard('Wrong', wrongAnswers.toString(), Icons.close),
                       ],
                     ),
                   ),
@@ -377,21 +364,7 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                   Container(
                     width: 100,
                     height: 100,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Colors.red.shade400, Colors.orange.shade400],
-                      ),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.red.withOpacity(0.4),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
+                    decoration: ApplicationUtil.getBoxDecorationOne(context).copyWith(shape: BoxShape.circle),
                     child: const Icon(
                       Icons.headphones,
                       size: 50,
@@ -438,38 +411,22 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
     );
   }
 
-  Widget _buildScoreCard(String label, String value, IconData icon, Color color) {
+  Widget _buildScoreCard(String label, String value, IconData icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 20),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 10,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 16),
+              const SizedBox(width: 6),
+              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            ],
           ),
         ],
       ),
@@ -482,40 +439,41 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
         options[index].fileName == currentQuestion!.fileName;
     final isWrong = isSelected && !isCorrect;
 
-    Color backgroundColor = Colors.white;
-    Color borderColor = Colors.grey.shade300;
-
+    BoxDecoration decoration;
     if (isCorrect) {
-      backgroundColor = Colors.green.shade100;
-      borderColor = Colors.green;
+      decoration = BoxDecoration(
+        color: Colors.green.shade400,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
+          BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
+        ],
+      );
     } else if (isWrong) {
-      backgroundColor = Colors.red.shade100;
-      borderColor = Colors.red;
+      decoration = BoxDecoration(
+        color: Colors.red.shade400,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
+          BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
+        ],
+      );
+    } else {
+      decoration = ApplicationUtil.getBoxDecorationTwo(context);
     }
 
     return GestureDetector(
       onTap: () => _selectOption(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: borderColor, width: 2),
-          boxShadow: [
-            BoxShadow(
-              color: borderColor.withOpacity(0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
+        decoration: decoration,
         child: Center(
           child: Text(
             options[index].alphabetName,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 60,
               fontFamily: 'jomolhari',
-              color: Colors.black87,
+              color: (isCorrect || isWrong) ? Colors.white : Colors.black87,
             ),
           ),
         ),

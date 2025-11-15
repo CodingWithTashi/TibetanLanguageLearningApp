@@ -7,6 +7,7 @@ import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
 import '../../../model/alphabet.dart';
 import '../../../util/constant.dart';
+import '../../../util/application_util.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
 
@@ -187,15 +188,19 @@ class _SoundQuizGameState extends State<SoundQuizGame>
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
         title: const Text('Sound Quiz'),
+        backgroundColor: Theme.of(context).primaryColor,
+        foregroundColor: Colors.white,
+        elevation: 0,
         actions: [
           Center(
             child: Padding(
               padding: const EdgeInsets.only(right: 16.0),
               child: Text(
                 'Question ${currentQuestionIndex + 1}/$totalQuestions',
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ),
@@ -203,18 +208,7 @@ class _SoundQuizGameState extends State<SoundQuizGame>
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.indigo.shade50,
-                  Colors.cyan.shade50,
-                ],
-              ),
-            ),
-            child: SafeArea(
+          SafeArea(
               child: Column(
                 children: [
                   const SizedBox(height: 20),
@@ -225,9 +219,9 @@ class _SoundQuizGameState extends State<SoundQuizGame>
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildScoreCard('Score', score.toString(), Icons.star, Colors.amber),
-                        _buildScoreCard('Correct', correctAnswers.toString(), Icons.check_circle, Colors.green),
-                        _buildScoreCard('Wrong', wrongAnswers.toString(), Icons.cancel, Colors.red),
+                        _buildScoreCard('Score', score.toString(), Icons.star),
+                        _buildScoreCard('Correct', correctAnswers.toString(), Icons.check_circle),
+                        _buildScoreCard('Wrong', wrongAnswers.toString(), Icons.cancel),
                       ],
                     ),
                   ),
@@ -240,7 +234,7 @@ class _SoundQuizGameState extends State<SoundQuizGame>
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
-                      color: Colors.indigo,
+                      color: Colors.white,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -253,21 +247,7 @@ class _SoundQuizGameState extends State<SoundQuizGame>
                     child: Container(
                       width: 120,
                       height: 120,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [Colors.blue.shade400, Colors.purple.shade400],
-                        ),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.blue.withOpacity(0.4),
-                            blurRadius: 20,
-                            offset: const Offset(0, 8),
-                          ),
-                        ],
-                      ),
+                      decoration: ApplicationUtil.getBoxDecorationOne(context).copyWith(shape: BoxShape.circle),
                       child: const Icon(
                         Icons.volume_up,
                         size: 60,
@@ -315,38 +295,22 @@ class _SoundQuizGameState extends State<SoundQuizGame>
     );
   }
 
-  Widget _buildScoreCard(String label, String value, IconData icon, Color color) {
+  Widget _buildScoreCard(String label, String value, IconData icon) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, color: color, size: 24),
+          Text(label, style: const TextStyle(fontSize: 11, color: Colors.white70, fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.grey.shade600,
-            ),
-          ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 16),
+              const SizedBox(width: 6),
+              Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white)),
+            ],
           ),
         ],
       ),
@@ -359,15 +323,27 @@ class _SoundQuizGameState extends State<SoundQuizGame>
         options[index].fileName == currentQuestion!.fileName;
     final isWrong = hasAnswered && isSelected && !isCorrect;
 
-    Color backgroundColor = Colors.white;
-    Color borderColor = Colors.grey.shade300;
-
+    BoxDecoration decoration;
     if (isCorrect) {
-      backgroundColor = Colors.green.shade100;
-      borderColor = Colors.green;
+      decoration = BoxDecoration(
+        color: Colors.green.shade400,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
+          BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
+        ],
+      );
     } else if (isWrong) {
-      backgroundColor = Colors.red.shade100;
-      borderColor = Colors.red;
+      decoration = BoxDecoration(
+        color: Colors.red.shade400,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black26, offset: Offset(-3, -3), blurRadius: 6),
+          BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
+        ],
+      );
+    } else {
+      decoration = ApplicationUtil.getBoxDecorationTwo(context);
     }
 
     return AnimatedBuilder(
@@ -385,25 +361,14 @@ class _SoundQuizGameState extends State<SoundQuizGame>
         onTap: () => _selectOption(index),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: borderColor, width: 2),
-            boxShadow: [
-              BoxShadow(
-                color: borderColor.withOpacity(0.3),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
+          decoration: decoration,
           child: Center(
             child: Text(
               options[index].alphabetName,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 60,
                 fontFamily: 'jomolhari',
-                color: Colors.black87,
+                color: (isCorrect || isWrong) ? Colors.white : Colors.black87,
               ),
             ),
           ),
