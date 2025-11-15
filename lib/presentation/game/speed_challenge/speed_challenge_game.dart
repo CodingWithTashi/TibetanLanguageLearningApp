@@ -56,6 +56,13 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
     );
 
     _initializeGame();
+
+    // Show start dialog after first frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted && allAlphabets.length >= 4) {
+        _showStartDialog();
+      }
+    });
   }
 
   @override
@@ -70,10 +77,6 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
   void _initializeGame() {
     allAlphabets = AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET)
         .toList();
-
-    if (allAlphabets.length >= 4) {
-      _showStartDialog();
-    }
   }
 
   void _showStartDialog() {
