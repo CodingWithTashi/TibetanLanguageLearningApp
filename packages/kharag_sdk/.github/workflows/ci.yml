@@ -1,0 +1,133 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop, claude/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        working-directory: packages/kharag_sdk
+        run: flutter pub get
+
+      - name: Run code generation
+        working-directory: packages/kharag_sdk
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze code
+        working-directory: packages/kharag_sdk
+        run: flutter analyze
+
+      - name: Check formatting
+        working-directory: packages/kharag_sdk
+        run: dart format --set-exit-if-changed .
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        working-directory: packages/kharag_sdk
+        run: flutter pub get
+
+      - name: Run code generation
+        working-directory: packages/kharag_sdk
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Run tests
+        working-directory: packages/kharag_sdk
+        run: flutter test --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: packages/kharag_sdk/coverage/lcov.info
+          flags: unittests
+          name: kharag-sdk-coverage
+
+  publish_dry_run:
+    name: Publish Dry Run
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        working-directory: packages/kharag_sdk
+        run: flutter pub get
+
+      - name: Run code generation
+        working-directory: packages/kharag_sdk
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Dry run publish
+        working-directory: packages/kharag_sdk
+        run: flutter pub publish --dry-run
+
+  example_app:
+    name: Build Example App
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Get SDK dependencies
+        working-directory: packages/kharag_sdk
+        run: flutter pub get
+
+      - name: Run code generation
+        working-directory: packages/kharag_sdk
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Get example dependencies
+        working-directory: packages/kharag_sdk/example
+        run: flutter pub get
+
+      - name: Build example app (Android)
+        working-directory: packages/kharag_sdk/example
+        run: flutter build apk --debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: example-app-debug.apk
+          path: packages/kharag_sdk/example/build/app/outputs/flutter-apk/app-debug.apk
