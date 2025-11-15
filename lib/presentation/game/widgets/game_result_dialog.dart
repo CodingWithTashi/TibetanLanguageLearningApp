@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../../../util/application_util.dart';
 
 class GameResultDialog extends StatelessWidget {
   final String title;
@@ -25,20 +26,13 @@ class GameResultDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Colors.purple.shade100,
-              Colors.blue.shade100,
-            ],
-          ),
-          borderRadius: BorderRadius.circular(20),
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -58,7 +52,7 @@ class GameResultDialog extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepPurple,
+                color: Colors.white,
               ),
             ),
             const SizedBox(height: 10),
@@ -67,9 +61,9 @@ class GameResultDialog extends StatelessWidget {
             Text(
               message,
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16,
-                color: Colors.grey.shade700,
+                color: Colors.white70,
               ),
             ),
             const SizedBox(height: 20),
@@ -95,16 +89,16 @@ class GameResultDialog extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 _buildStatCard(
+                  context,
                   'Score',
                   score.toString(),
                   Icons.emoji_events,
-                  Colors.deepPurple,
                 ),
                 _buildStatCard(
+                  context,
                   'Coins',
                   '+$coinsEarned',
                   Icons.monetization_on,
-                  Colors.amber,
                 ),
               ],
             ),
@@ -114,37 +108,33 @@ class GameResultDialog extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: onExit,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey.shade400,
-                      foregroundColor: Colors.white,
+                  child: GestureDetector(
+                    onTap: onExit,
+                    child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      decoration: ApplicationUtil.getBoxDecorationOne(context),
+                      child: const Center(
+                        child: Text(
+                          'Exit',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'Exit',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: ElevatedButton(
-                    onPressed: onPlayAgain,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
-                      foregroundColor: Colors.white,
+                  child: GestureDetector(
+                    onTap: onPlayAgain,
+                    child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      decoration: ApplicationUtil.getBoxDecorationOne(context),
+                      child: const Center(
+                        child: Text(
+                          'Play Again',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
                       ),
-                    ),
-                    child: const Text(
-                      'Play Again',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -156,37 +146,28 @@ class GameResultDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+  Widget _buildStatCard(BuildContext context, String label, String value, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: color.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
       child: Column(
         children: [
-          Icon(icon, color: color, size: 32),
+          Icon(icon, color: Colors.white, size: 32),
           const SizedBox(height: 8),
           Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
-              color: Colors.grey.shade600,
+              color: Colors.white70,
+              fontWeight: FontWeight.w500,
             ),
           ),
           Text(
             value,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: color,
+              color: Colors.white,
             ),
           ),
         ],
