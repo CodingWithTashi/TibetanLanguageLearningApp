@@ -136,6 +136,28 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.greenAccent),
               ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: const [
+                    Text(
+                      '⭐ Star Requirements:',
+                      style: TextStyle(fontSize: 14, color: Colors.white, fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 6),
+                    Text(
+                      '🌟🌟🌟 15+ correct  |  🌟🌟 10-14 correct  |  🌟 5-9 correct',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 12, color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
@@ -408,34 +430,58 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
       print('Could not stop audio: $e');
     }
 
-    // Calculate stars based on correct answers
+    // Calculate stars based on correct answers (realistic for 60 seconds)
     int stars = 1;
-    if (correctAnswers >= 30) {
-      stars = 3;
-    } else if (correctAnswers >= 20) {
-      stars = 2;
+    if (correctAnswers >= 15) {
+      stars = 3; // Excellent performance - ~15+ correct in 60s
+    } else if (correctAnswers >= 10) {
+      stars = 2; // Good performance - ~10-14 correct in 60s
+    } else if (correctAnswers >= 5) {
+      stars = 1; // Basic performance - ~5-9 correct in 60s
+    } else {
+      stars = 0; // Failed - less than 5 correct
     }
 
     final coinsEarned = score + (stars * 10);
 
-    // Update game stats
-    context.read<GameBloc>().add(UpdateGameStars(
-          gameType: GameType.speedChallengeGame,
-          stars: stars,
-          coinsEarned: coinsEarned,
-        ));
+    // Update game stats - only save if player earned at least 1 star
+    if (stars > 0) {
+      context.read<GameBloc>().add(UpdateGameStars(
+            gameType: GameType.speedChallengeGame,
+            stars: stars,
+            coinsEarned: coinsEarned,
+          ));
+    }
 
     Future.delayed(const Duration(milliseconds: 500), () {
+      if (!mounted) return;
+
+      String resultTitle;
+      String resultMessage;
+
+      if (stars == 3) {
+        resultTitle = 'Excellent! ⚡🌟';
+        resultMessage = 'Correct: $correctAnswers | Wrong: $wrongAnswers\nMax Streak: $maxStreak\n\nYou\'re a Speed Champion!';
+      } else if (stars == 2) {
+        resultTitle = 'Great Job! ⚡';
+        resultMessage = 'Correct: $correctAnswers | Wrong: $wrongAnswers\nMax Streak: $maxStreak\n\nKeep practicing!';
+      } else if (stars == 1) {
+        resultTitle = 'Good Try! ⚡';
+        resultMessage = 'Correct: $correctAnswers | Wrong: $wrongAnswers\nMax Streak: $maxStreak\n\nNext level unlocked!';
+      } else {
+        resultTitle = 'Keep Practicing! 💪';
+        resultMessage = 'Correct: $correctAnswers | Wrong: $wrongAnswers\nMax Streak: $maxStreak\n\nNeed 5+ correct to unlock next level';
+      }
+
       showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => GameResultDialog(
-          title: 'Time\'s Up! ⚡',
+          title: resultTitle,
           score: score,
           stars: stars,
           coinsEarned: coinsEarned,
-          message:
-              'Correct: $correctAnswers | Wrong: $wrongAnswers\nMax Streak: $maxStreak',
+          message: resultMessage,
           onPlayAgain: () {
             Navigator.pop(context);
             _resetGame();
