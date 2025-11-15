@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:confetti/confetti.dart';
 import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
+import '../../../model/alphabet.dart';
 import '../../../util/constant.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
@@ -64,8 +65,7 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
   }
 
   void _initializeGame() {
-    allAlphabets = AppConstant.alphabetList
-        .where((a) => a.type == AlphabetType.ALPHABET)
+    allAlphabets = AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET)
         .toList();
 
     if (allAlphabets.length >= 4) {
@@ -175,7 +175,7 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
     });
 
     // Play audio
-    context.read<AudioCubit>().loadAudio(currentQuestion!.fileName);
+    context.read<AudioCubit>().loadAudio(fileName: currentQuestion!.fileName);
     context.read<AudioCubit>().playAudio();
   }
 

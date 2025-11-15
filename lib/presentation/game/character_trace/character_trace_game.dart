@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:confetti/confetti.dart';
 import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
+import '../../../model/alphabet.dart';
 import '../../../util/constant.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
@@ -41,8 +42,7 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
 
   void _initializeGame() {
     final random = Random();
-    final allAlphabets = AppConstant.alphabetList
-        .where((a) => a.type == AlphabetType.ALPHABET)
+    final allAlphabets = AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET)
         .toList()
       ..shuffle(random);
 
@@ -53,7 +53,9 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
   void _playCurrentCharacterAudio() {
     if (currentIndex < alphabets.length) {
       final current = alphabets[currentIndex];
-      context.read<AudioCubit>().loadAudio(current.fileName);
+      context.read<AudioCubit>().loadAudio(
+        fileName: current.fileName
+      );
       context.read<AudioCubit>().playAudio();
     }
   }

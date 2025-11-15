@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:confetti/confetti.dart';
 import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
+import '../../../model/verb.dart';
 import '../../../util/constant.dart';
 import '../util/game_model.dart';
 import '../widgets/game_result_dialog.dart';
@@ -81,7 +82,9 @@ class _WordBuilderGameState extends State<WordBuilderGame>
 
   void _playWordAudio() {
     if (currentWord != null) {
-      context.read<AudioCubit>().loadAudio(currentWord!.fileName);
+      context.read<AudioCubit>().loadAudio(
+        fileName: currentWord!.fileName
+      );
       context.read<AudioCubit>().playAudio();
     }
   }
@@ -506,7 +509,10 @@ class _WordBuilderGameState extends State<WordBuilderGame>
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [color.shade300, color.shade500],
+          colors: [
+            color.withOpacity(0.7),
+            color,
+          ],
         ),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [

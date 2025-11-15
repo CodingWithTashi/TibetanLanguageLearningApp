@@ -14,7 +14,7 @@ class AudioCubit extends Cubit<AudioState> {
   }
 
   Future<void> loadAudio(
-      {required String pathName, required String fileName}) async {
+      { String pathName="assets/audio/", required String fileName}) async {
     try {
       emit(AudioLoading());
       audioPlayer =

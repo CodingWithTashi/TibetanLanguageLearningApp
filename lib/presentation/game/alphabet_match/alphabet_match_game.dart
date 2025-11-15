@@ -51,8 +51,7 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
   void _initializeGame() {
     // Get random alphabets from the constants
     final random = Random();
-    final alphabets = AppConstant.alphabetList
-        .where((a) => a.type == AlphabetType.ALPHABET)
+    final alphabets = AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET)
         .toList()
       ..shuffle(random);
 
@@ -97,7 +96,10 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
 
     // Play audio for the card
     final card = cards[index];
-    context.read<AudioCubit>().loadAudio(card.audioFileName);
+    context.read<AudioCubit>().loadAudio(
+          pathName: "assets/audio/",
+          fileName: '${card.audioFileName}.mp3',
+    );
     context.read<AudioCubit>().playAudio();
 
     if (selectedIndices.length == 2) {
