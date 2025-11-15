@@ -244,7 +244,24 @@ class _SoundQuizGameState extends State<SoundQuizGame>
                     child: Container(
                       width: 120,
                       height: 120,
-                      decoration: ApplicationUtil.getBoxDecorationOne(context).copyWith(shape: BoxShape.circle),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        shape: BoxShape.circle,
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black,
+                            offset: Offset(-5, -3),
+                            spreadRadius: -4,
+                            blurRadius: 10,
+                          ),
+                          BoxShadow(
+                            color: Colors.white24,
+                            offset: Offset(5, 5),
+                            spreadRadius: 3,
+                            blurRadius: 10,
+                          ),
+                        ],
+                      ),
                       child: const Icon(
                         Icons.volume_up,
                         size: 60,

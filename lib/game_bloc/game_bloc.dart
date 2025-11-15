@@ -175,7 +175,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       const Game(
         name: 'Sound Quiz',
         description: 'Listen and identify the correct Tibetan character!',
-        gameIcon: 'https://lottie.host/8c7e8f3a-7b42-4a57-9f5e-95d7f0c7e8b4/dFqHkLxz5C.json',
+        gameIcon: 'https://assets2.lottiefiles.com/packages/lf20_xyadyfwx.json',
         gameType: GameType.soundQuizGame,
         requiredScoreInPreviousLevelToUnlock: 0,
         requiredStarsToUnlock: 1,
@@ -208,7 +208,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       const Game(
         name: 'Speed Challenge',
         description: 'Race against time to identify characters!',
-        gameIcon: 'https://lottie.host/1c4a2f3d-6e5b-4c8a-9f7e-3d5e6f7a8b9c/xYzAbC123d.json',
+        gameIcon: 'https://assets1.lottiefiles.com/packages/lf20_poqmycwy.json',
         gameType: GameType.speedChallengeGame,
         requiredScoreInPreviousLevelToUnlock: 0,
         requiredStarsToUnlock: 2,
