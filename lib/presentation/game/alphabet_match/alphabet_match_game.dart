@@ -48,7 +48,7 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
 
   void _initializeGame() {
     final random = Random();
-    final alphabets = AppConstant.alphabetList.where((a) => a.type == AlphabetType.ALPHABET).toList()..shuffle(random);
+    final alphabets = AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET).toList()..shuffle(random);
     final selectedAlphabets = alphabets.take(totalPairs).toList();
 
     cards.clear();
@@ -68,7 +68,7 @@ class _AlphabetMatchGameState extends State<AlphabetMatchGame>
       moves++;
     });
 
-    context.read<AudioCubit>().loadAudio(cards[index].audioFileName);
+    context.read<AudioCubit>().loadAudio(fileName: cards[index].audioFileName);
     context.read<AudioCubit>().playAudio();
 
     if (selectedIndices.length == 2) {
