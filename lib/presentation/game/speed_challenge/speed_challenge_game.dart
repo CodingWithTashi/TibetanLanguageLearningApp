@@ -41,6 +41,9 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
   int maxStreak = 0;
   bool isGameActive = false;
   int? selectedOption;
+  bool isAudioPlaying = false;
+  bool canAnswer = false;
+  String? errorMessage;
 
   @override
   void initState() {
@@ -59,7 +62,11 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
 
     // Show start dialog after first frame is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && allAlphabets.length >= 4) {
+      if (!mounted) return;
+
+      if (allAlphabets.length < 4) {
+        _showErrorDialog('Not enough content available. Need at least 4 alphabets to play.');
+      } else {
         _showStartDialog();
       }
     });
@@ -71,6 +78,14 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
     _timerController.dispose();
     _correctAnimController.dispose();
     gameTimer?.cancel();
+
+    // Stop audio when leaving the screen
+    try {
+      context.read<AudioCubit>().pauseAudio();
+    } catch (e) {
+      print('Could not stop audio on dispose: $e');
+    }
+
     super.dispose();
   }
 
@@ -114,6 +129,12 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 16, color: Colors.white70),
               ),
+              const SizedBox(height: 8),
+              const Text(
+                '🎧 Audio plays at 2x speed for faster gameplay!',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 14, color: Colors.greenAccent),
+              ),
               const SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
@@ -126,6 +147,66 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                   child: const Text(
                     'START',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Container(
+          padding: const EdgeInsets.all(24),
+          decoration: BoxDecoration(
+            color: Colors.red.shade400,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.error_outline,
+                size: 80,
+                color: Colors.white,
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Game Error',
+                style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                message,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),
+              const SizedBox(height: 20),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Text(
+                    'GO BACK',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red),
                   ),
                 ),
               ),
@@ -163,6 +244,8 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
   }
 
   void _loadNextQuestion() {
+    if (!mounted || !isGameActive) return;
+
     final random = Random();
     final shuffled = List<Alphabet>.from(allAlphabets)..shuffle(random);
 
@@ -170,18 +253,85 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
       currentQuestion = shuffled[0];
       options = shuffled.take(4).toList()..shuffle(random);
       selectedOption = null;
+      isAudioPlaying = true;
+      canAnswer = false;
+      errorMessage = null;
     });
 
-    // Play audio
-    context.read<AudioCubit>().loadAudio(fileName: currentQuestion!.fileName);
-    context.read<AudioCubit>().playAudio();
+    // Load and play audio at 2x speed
+    _playQuestionAudio();
+  }
+
+  Future<void> _playQuestionAudio() async {
+    try {
+      if (!mounted || currentQuestion == null) return;
+
+      final audioCubit = context.read<AudioCubit>();
+      await audioCubit.loadAudio(fileName: currentQuestion!.fileName);
+
+      // Set speed to 2x for faster gameplay
+      await audioCubit.setPlaybackSpeed(2.0);
+      await audioCubit.playAudio();
+
+      // Listen to audio completion
+      final audioPlayer = audioCubit.audioPlayer;
+      final subscription = audioPlayer.playerStateStream.listen((state) {
+        if (state.processingState == ProcessingState.completed) {
+          if (mounted) {
+            setState(() {
+              isAudioPlaying = false;
+              canAnswer = true;
+            });
+          }
+        }
+      });
+
+      // Cleanup subscription after a reasonable time
+      Future.delayed(const Duration(seconds: 5), () {
+        subscription.cancel();
+      });
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          isAudioPlaying = false;
+          canAnswer = true;
+          errorMessage = 'Audio playback error. Tap to continue.';
+        });
+      }
+    }
   }
 
   void _selectOption(int index) {
-    if (!isGameActive || selectedOption != null) return;
+    // Prevent interaction if game is not active
+    if (!isGameActive) {
+      setState(() {
+        errorMessage = 'Game is not active!';
+      });
+      _clearErrorMessage();
+      return;
+    }
+
+    // Prevent repeat presses
+    if (selectedOption != null) {
+      setState(() {
+        errorMessage = 'Please wait for next question...';
+      });
+      _clearErrorMessage();
+      return;
+    }
+
+    // Prevent answering while audio is playing
+    if (isAudioPlaying || !canAnswer) {
+      setState(() {
+        errorMessage = '🎧 Please wait for audio to finish!';
+      });
+      _clearErrorMessage();
+      return;
+    }
 
     setState(() {
       selectedOption = index;
+      errorMessage = null;
     });
 
     final isCorrect = options[index].fileName == currentQuestion!.fileName;
@@ -207,7 +357,7 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
 
       // Quick transition to next question
       Future.delayed(const Duration(milliseconds: 400), () {
-        if (isGameActive) {
+        if (mounted && isGameActive) {
           _loadNextQuestion();
         }
       });
@@ -219,20 +369,43 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
 
       // Short delay before next question
       Future.delayed(const Duration(milliseconds: 800), () {
-        if (isGameActive) {
+        if (mounted && isGameActive) {
           _loadNextQuestion();
         }
       });
     }
   }
 
+  void _clearErrorMessage() {
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      if (mounted) {
+        setState(() {
+          errorMessage = null;
+        });
+      }
+    });
+  }
+
   void _gameOver() {
+    if (!mounted) return;
+
     setState(() {
       isGameActive = false;
+      isAudioPlaying = false;
+      canAnswer = false;
+      errorMessage = null;
     });
 
     gameTimer?.cancel();
     _timerController.stop();
+
+    // Stop audio if still playing
+    try {
+      context.read<AudioCubit>().pauseAudio();
+    } catch (e) {
+      // Audio cubit might not be available
+      print('Could not stop audio: $e');
+    }
 
     // Calculate stars based on correct answers
     int stars = 1;
@@ -342,36 +515,89 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
           ),
           gameContent: Column(
             children: [
-              // Question - Listen to character
-              Container(
+              // Question - Listen to character with animation
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: isAudioPlaying
+                      ? Theme.of(context).primaryColorLight
+                      : Theme.of(context).primaryColor,
                   shape: BoxShape.circle,
-                  boxShadow: const [
+                  boxShadow: [
                     BoxShadow(
                       color: Colors.black,
-                      offset: Offset(-5, -3),
-                      spreadRadius: -4,
+                      offset: const Offset(-5, -3),
+                      spreadRadius: isAudioPlaying ? -2 : -4,
                       blurRadius: 10,
                     ),
                     BoxShadow(
-                      color: Colors.white24,
-                      offset: Offset(5, 5),
-                      spreadRadius: 3,
-                      blurRadius: 10,
+                      color: isAudioPlaying ? Colors.greenAccent.withOpacity(0.5) : Colors.white24,
+                      offset: const Offset(5, 5),
+                      spreadRadius: isAudioPlaying ? 5 : 3,
+                      blurRadius: isAudioPlaying ? 15 : 10,
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.headphones,
+                child: Icon(
+                  isAudioPlaying ? Icons.hearing : Icons.headphones,
                   size: 50,
                   color: Colors.white,
                 ),
               ),
 
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
+
+              // Audio status indicator
+              AnimatedOpacity(
+                opacity: isAudioPlaying ? 1.0 : 0.0,
+                duration: const Duration(milliseconds: 300),
+                child: const Text(
+                  '🎵 Playing...',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.greenAccent,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Error message overlay
+              if (errorMessage != null)
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.red.shade400,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        offset: Offset(0, 4),
+                        blurRadius: 8,
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 28),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          errorMessage!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
               // Options grid
               Expanded(
@@ -413,8 +639,11 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
     final isCorrect = selectedOption != null &&
         options[index].fileName == currentQuestion!.fileName;
     final isWrong = isSelected && !isCorrect;
+    final isDisabled = isAudioPlaying || !canAnswer || selectedOption != null;
 
     BoxDecoration decoration;
+    Color textColor;
+
     if (isCorrect) {
       decoration = BoxDecoration(
         color: Colors.green.shade400,
@@ -424,6 +653,7 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
           BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
         ],
       );
+      textColor = Colors.white;
     } else if (isWrong) {
       decoration = BoxDecoration(
         color: Colors.red.shade400,
@@ -433,8 +663,20 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
           BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
         ],
       );
+      textColor = Colors.white;
+    } else if (isDisabled) {
+      decoration = BoxDecoration(
+        color: Colors.grey.shade400,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, offset: Offset(-2, -2), blurRadius: 4),
+          BoxShadow(color: Colors.white12, offset: Offset(2, 2), blurRadius: 4),
+        ],
+      );
+      textColor = Colors.grey.shade600;
     } else {
       decoration = ApplicationUtil.getBoxDecorationTwo(context);
+      textColor = Colors.black87;
     }
 
     return GestureDetector(
@@ -442,15 +684,30 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: decoration,
-        child: Center(
-          child: Text(
-            options[index].alphabetName,
-            style: TextStyle(
-              fontSize: 60,
-              fontFamily: 'jomolhari',
-              color: (isCorrect || isWrong) ? Colors.white : Colors.black87,
+        child: Stack(
+          children: [
+            Center(
+              child: Text(
+                options[index].alphabetName,
+                style: TextStyle(
+                  fontSize: 60,
+                  fontFamily: 'jomolhari',
+                  color: textColor,
+                ),
+              ),
             ),
-          ),
+            // Show lock icon when disabled
+            if (isDisabled && selectedOption == null)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Icon(
+                  Icons.lock,
+                  color: Colors.grey.shade600,
+                  size: 20,
+                ),
+              ),
+          ],
         ),
       ),
     );

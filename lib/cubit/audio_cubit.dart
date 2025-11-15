@@ -42,6 +42,15 @@ class AudioCubit extends Cubit<AudioState> {
     await audioPlayer.play();
   }
 
+  Future<void> playAudioWithSpeed(double speed) async {
+    await audioPlayer.setSpeed(speed);
+    await audioPlayer.play();
+  }
+
+  Future<void> setPlaybackSpeed(double speed) async {
+    await audioPlayer.setSpeed(speed);
+  }
+
   Future<void> pauseAudio() async {
     await audioPlayer.pause();
   }
