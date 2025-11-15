@@ -277,7 +277,6 @@ class _SoundQuizGameState extends State<SoundQuizGame>
                 ],
               ),
             ),
-          ),
 
           Align(
             alignment: Alignment.topCenter,

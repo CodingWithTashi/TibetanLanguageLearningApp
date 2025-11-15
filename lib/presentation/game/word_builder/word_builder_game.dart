@@ -419,7 +419,6 @@ class _WordBuilderGameState extends State<WordBuilderGame>
                 ],
               ),
             ),
-          ),
 
           Align(
             alignment: Alignment.topCenter,

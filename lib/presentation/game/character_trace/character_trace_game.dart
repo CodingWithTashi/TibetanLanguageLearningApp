@@ -315,7 +315,6 @@ class _CharacterTraceGameState extends State<CharacterTraceGame> {
                 ],
               ),
             ),
-          ),
 
           Align(
             alignment: Alignment.topCenter,

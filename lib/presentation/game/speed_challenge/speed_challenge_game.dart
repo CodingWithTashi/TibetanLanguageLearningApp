@@ -393,7 +393,6 @@ class _SpeedChallengeGameState extends State<SpeedChallengeGame>
                 ],
               ),
             ),
-          ),
 
           Align(
             alignment: Alignment.center,
