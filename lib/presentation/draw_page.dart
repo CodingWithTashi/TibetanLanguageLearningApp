@@ -26,7 +26,6 @@ class _DrawingPageState extends State<DrawingPage> {
   bool _finished = false;
   PainterController _controller = _newController();
   bool _isTraceMode = false;
-  String? _feedbackMessage;
 
   @override
   void initState() {
@@ -37,20 +36,6 @@ class _DrawingPageState extends State<DrawingPage> {
   void _onModeChanged(bool isTraceMode) {
     setState(() {
       _isTraceMode = isTraceMode;
-    });
-  }
-
-  void _onFeedback(String message) {
-    setState(() {
-      _feedbackMessage = message;
-    });
-    // Clear feedback after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        setState(() {
-          _feedbackMessage = null;
-        });
-      }
     });
   }
 
@@ -78,10 +63,6 @@ class _DrawingPageState extends State<DrawingPage> {
                   ? _buildTraceMode()
                   : _buildFreeDrawMode(),
             ),
-
-            // Feedback message
-            if (_feedbackMessage != null)
-              _buildFeedbackMessage(),
           ],
         ),
       ),
@@ -161,7 +142,7 @@ class _DrawingPageState extends State<DrawingPage> {
     return LetterTracerWidget(
       alphabet: widget.alphabet!,
       onComplete: () {
-        _onFeedback('Letter complete! Great job!');
+        // Letter complete
       },
       onStrokeComplete: () {
         // Stroke completed
@@ -169,42 +150,6 @@ class _DrawingPageState extends State<DrawingPage> {
       onProgressChanged: (progress) {
         // Progress updated
       },
-      onFeedback: _onFeedback,
-    );
-  }
-
-  Widget _buildFeedbackMessage() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16, left: 16, right: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
-            blurRadius: 8,
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Icon(
-            Icons.info_outline,
-            color: Theme.of(context).primaryColor,
-          ),
-          SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              _feedbackMessage!,
-              style: TextStyle(
-                color: Theme.of(context).primaryColor,
-                fontSize: 14,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
