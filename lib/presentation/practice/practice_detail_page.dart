@@ -4,6 +4,7 @@ import 'package:tibetan_language_learning_app/presentation/draw_page.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
+import 'package:tibetan_language_learning_app/widgets/trace_mode_toggle.dart';
 
 class PracticeDetailPage extends StatefulWidget {
   static const routeName = "/practice-detail-page";
@@ -64,7 +65,9 @@ class _PracticeDetailPageState extends State<PracticeDetailPage> {
                     margin: EdgeInsets.all(10),
                     height: screenHeight / 2 + 10,
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
-                    child: DrawingPage(),
+                    child: DrawingPage(
+                      alphabet: alphabetList[selectedPageIndex],
+                    ),
                   ),
                 ],
               ),

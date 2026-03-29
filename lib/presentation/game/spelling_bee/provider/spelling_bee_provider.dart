@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
 import '../../../../game_bloc/game_bloc.dart';
 import '../../util/game_model.dart';
+import '../../widgets/game_result_dialog.dart';
 
 class SpellingBeeProvider extends ChangeNotifier {
   int totalLetters = 0, lettersAnswered = 0, wordAnswered = 0;
@@ -23,53 +23,42 @@ class SpellingBeeProvider extends ChangeNotifier {
         sessionCompleted = true;
       }
       if (sessionCompleted) {
-        context.read<GameBloc>().add(UpdateGameScore(
+        // Calculate stars and coins based on performance
+        final totalWords = AppConstant.verbsList.length;
+        final stars = 3; // Perfect completion = 3 stars
+        final score = wordAnswered * 10; // 10 points per word
+        final coinsEarned = score + (stars * 20);
+
+        // Update game stats
+        context.read<GameBloc>().add(UpdateGameStars(
               gameType: GameType.spellingBeeGame,
-              score: 1,
+              stars: stars,
+              coinsEarned: coinsEarned,
             ));
+
         showDialog(
-            barrierDismissible: false,
-            context: context,
-            builder: (dialogContext) {
-              String title =
-                  "Congrats! You just cracked spelling bee contest ❤.";
-              String buttonText = "Exit Game";
-              return AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                actionsAlignment: MainAxisAlignment.center,
-                title: Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                actions: [
-                  InkWell(
-                    child: Container(
-                      width: 120,
-                      decoration: ApplicationUtil.getBoxDecorationOne(context),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(5.0),
-                          child: Text(
-                            buttonText,
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      reset();
-                      Navigator.pop(dialogContext);
-                      Navigator.pop(context);
-                    },
-                  )
-                ],
-              );
-            });
+          barrierDismissible: false,
+          context: context,
+          builder: (dialogContext) {
+            return GameResultDialog(
+              title: 'Perfect! 🐝🌟',
+              score: score,
+              stars: stars,
+              coinsEarned: coinsEarned,
+              message:
+                  'You completed all $totalWords words!\n\nYou\'re a Spelling Bee Champion!',
+              onPlayAgain: () {
+                reset();
+                Navigator.pop(dialogContext);
+              },
+              onExit: () {
+                reset();
+                Navigator.pop(dialogContext);
+                Navigator.pop(context);
+              },
+            );
+          },
+        );
       } else {
         requestWord(request: true);
       }

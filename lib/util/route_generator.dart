@@ -6,7 +6,7 @@ import 'package:tibetan_language_learning_app/bloc/snake_game/snake_game_bloc.da
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
-import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
+import 'package:tibetan_language_learning_app/presentation/game/game_home_page_new.dart';
 import 'package:tibetan_language_learning_app/presentation/game/memory_match/memory_match_screen.dart';
 import 'package:tibetan_language_learning_app/presentation/game/snake_game/snake_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
@@ -131,27 +131,47 @@ class RouteGenerator {
           }
           return _errorRoute();
         }
-      case GameHomePage.routeName:
+      case GameHomePageNew.routeName:
         return MaterialPageRoute(
-          builder: (_) => GameHomePage(),
+          builder: (_) => BlocProvider<AudioCubit>(
+            create: (context) => AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+            child: const GameHomePageNew(),
+          ),
         );
       case SpellingBeePage.routeName:
         return MaterialPageRoute(
-          builder: (_) => ChangeNotifierProvider<SpellingBeeProvider>(
-            create: (BuildContext context) => SpellingBeeProvider(),
-            child: SpellingBeePage(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<AudioCubit>(
+                create: (context) => AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+              ),
+            ],
+            child: ChangeNotifierProvider<SpellingBeeProvider>(
+              create: (BuildContext context) => SpellingBeeProvider(),
+              child: SpellingBeePage(),
+            ),
           ),
         );
       case SnakeGamePage.routeName:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => SnakeGameBloc(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (context) => SnakeGameBloc(),
+              ),
+              BlocProvider<AudioCubit>(
+                create: (context) => AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+              ),
+            ],
             child: SnakeGamePage(),
           ),
         );
       case MemoryMatchGameScreen.routeName:
         return MaterialPageRoute(
-          builder: (_) => MemoryMatchGameScreen(),
+          builder: (_) => BlocProvider<AudioCubit>(
+            create: (context) => AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
+            child: MemoryMatchGameScreen(),
+          ),
         );
 
       default:

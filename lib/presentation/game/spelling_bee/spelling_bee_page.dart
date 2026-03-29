@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
-import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/provider/spelling_bee_provider.dart';
@@ -11,8 +10,8 @@ import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/wid
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/widget/fly_in_animation.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
-
-import '../../../l10n/app_localizations.dart';
+import '../widgets/game_layout.dart';
+import '../widgets/game_score_card.dart';
 
 class SpellingBeePage extends StatefulWidget {
   static const routeName = 'spelling-bee';
@@ -61,38 +60,60 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () => _showWarningDialog(),
-      child: Scaffold(
-        body: Selector<SpellingBeeProvider, bool>(
-          selector: (_, controller) => controller.generateWord,
-          builder: (_, generate, __) {
-            if (generate) {
-              if (_tempList.isNotEmpty) {
-                _generateWord();
-              }
+      child: Selector<SpellingBeeProvider, bool>(
+        selector: (_, controller) => controller.generateWord,
+        builder: (_, generate, __) {
+          if (generate) {
+            if (_tempList.isNotEmpty) {
+              _generateWord();
             }
-            return Stack(
-              children: [
-                _getBackgroundImage(),
-                Column(
+          }
+
+          final provider = context.watch<SpellingBeeProvider>();
+          final totalWords = AppConstant.verbsList.length;
+          final wordsCompleted = provider.wordAnswered;
+          final progress = wordsCompleted / totalWords;
+
+          return Stack(
+            children: [
+              GameLayout(
+                title: 'Spelling Bee Contest 🐝',
+                scoreCards: [
+                  GameScoreCard(
+                    label: 'Words',
+                    value: '$wordsCompleted/$totalWords',
+                    icon: Icons.check_circle,
+                  ),
+                  GameScoreCard(
+                    label: 'Progress',
+                    value: '${(progress * 100).toInt()}%',
+                    icon: Icons.trending_up,
+                  ),
+                  GameScoreCard(
+                    label: 'Letters',
+                    value: '${provider.lettersAnswered}/${provider.totalLetters}',
+                    icon: Icons.text_fields,
+                  ),
+                ],
+                gameContent: Column(
                   children: [
-                    SizedBox(
-                      height: kToolbarHeight,
-                    ),
-                    _getHeader(),
+                    const SizedBox(height: 10),
                     _getDropContent(),
+                    const SizedBox(height: 20),
                     _getImageForWord(),
+                    const SizedBox(height: 20),
                     _getDragContent(),
-                    _getProgressIndicator(),
+                    const SizedBox(height: 20),
+                    _getProgressBar(progress, wordsCompleted, totalWords),
+                    const SizedBox(height: 10),
                   ],
                 ),
-                _getFinishCelebAnimation(),
-                _getCelebAnimationOnCorrectAnswer(),
-              ],
-            );
-          },
-        ),
-        floatingActionButton: ApplicationUtil.getFloatingActionButton(context,
-            floatingPosition: 30),
+              ),
+              _getFinishCelebAnimation(),
+              _getCelebAnimationOnCorrectAnswer(),
+            ],
+          );
+        },
       ),
     );
   }
@@ -119,119 +140,97 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
     });
   }
 
-  _getBackgroundImage() {
-    return Image.asset(
-      'assets/images/tree.jpg',
-      fit: BoxFit.cover,
-      height: double.infinity,
-      width: double.infinity,
-      alignment: Alignment.centerLeft,
+
+  Widget _getDropContent() {
+    return Container(
+      height: 100,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: selectedVerb.characterList
+              .map((e) => FlyInAnimation(animate: true, child: Drop(letter: e)))
+              .toList(),
+        ),
+      ),
     );
   }
 
-  _getHeader() => Expanded(
-        flex: 1,
-        child: Container(
-          padding: EdgeInsets.all(5),
-          margin: EdgeInsets.symmetric(
-            horizontal: 10,
-          ),
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          width: double.infinity,
-          child: Center(
-            child: Text(
-              AppLocalizations.of(context)!.spellingBeeContest,
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 28,
-                  shadows: [
-                    Shadow(
-                        offset: Offset(2, 2),
-                        color: Colors.black38,
-                        blurRadius: 10),
-                    Shadow(
-                        offset: Offset(-2, -2),
-                        color: Colors.white.withOpacity(0.35),
-                        blurRadius: 10)
-                  ],
-                  color: Colors.grey.shade300),
-            ),
-          ),
-        ),
-      );
+  Widget _getImageForWord() {
+    return Container(
+      height: 150,
+      padding: const EdgeInsets.all(10),
+      child: Image.asset(
+        ApplicationUtil.getImagePath(selectedVerb.fileName),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
 
-  _getDropContent() => Expanded(
-        flex: 3,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: selectedVerb.characterList
-                .map((e) =>
-                    FlyInAnimation(animate: true, child: Drop(letter: e)))
-                .toList(),
-          ),
-        ),
-      );
-
-  _getImageForWord() => Expanded(
-        flex: 3,
-        child: Image.asset(
-          ApplicationUtil.getImagePath(selectedVerb.fileName),
-        ),
-      );
-
-  _getDragContent() => Expanded(
-        flex: 3,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: shuffledVerb.characterList
-                .map((e) => FlyInAnimation(
-                      animate: true,
-                      child: Drag(
-                        letter: e,
-                      ),
-                    ))
-                .toList(),
-          ),
-        ),
-      );
-
-  _getProgressIndicator() => Expanded(
-        flex: 1,
+  Widget _getDragContent() {
+    return Container(
+      height: 100,
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
         child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                child: LiquidLinearProgressIndicator(
-                  value: _getValue(), // Defaults to 0.5.
-                  valueColor: AlwaysStoppedAnimation(
-                    Theme.of(context).primaryColor,
-                  ), // Defaults to the current Theme's accentColor.
-                  backgroundColor: Colors
-                      .white, // Defaults to the current Theme's backgroundColor.
-                  borderColor: Theme.of(context).primaryColor,
-                  borderWidth: 4.0,
-                  borderRadius: 5,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: shuffledVerb.characterList
+              .map((e) => FlyInAnimation(
+                    animate: true,
+                    child: Drag(letter: e),
+                  ))
+              .toList(),
+        ),
+      ),
+    );
+  }
 
-                  direction: Axis
-                      .horizontal, // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-                  center: Text(
-                    "${AppConstant.getTibetanNumberByNumber(number: (AppConstant.verbsList.length - (_tempList.length + 1)).toString())} / ${AppConstant.getTibetanNumberByNumber(number: AppConstant.verbsList.length.toString())}",
-                    style: TextStyle(fontSize: 20),
-                  ),
+  Widget _getProgressBar(double progress, int completed, int total) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(12),
+      decoration: ApplicationUtil.getBoxDecorationTwo(context),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Game Progress',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
+              Text(
+                '$completed / $total',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 12,
+              backgroundColor: Colors.white24,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Theme.of(context).primaryColorLight,
+              ),
             ),
-          ],
-        ),
-      );
-
-  _getValue() =>
-      (AppConstant.verbsList.length - (_tempList.length + 1)) /
-      AppConstant.verbsList.length;
+          ),
+        ],
+      ),
+    );
+  }
 
   _getTopCelebrateAnimation() {
     return Align(
@@ -323,29 +322,96 @@ class _SpellingBeePageState extends State<SpellingBeePage> {
     );
   }
 
-  _showWarningDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Alert'),
-            content: Text('Do you really want to exit?'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                },
-                child: const Text('Yes'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text('Cancel'),
-              )
-            ],
-          );
-        });
+  Future<bool> _showWarningDialog() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: Container(
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.warning_amber_rounded,
+                  size: 60,
+                  color: Colors.orange,
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Exit Game?',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Your progress will be lost!',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pop(dialogContext, false),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: ApplicationUtil.getBoxDecorationTwo(context),
+                          child: const Center(
+                            child: Text(
+                              'Cancel',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () => Navigator.pop(dialogContext, true),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          decoration: ApplicationUtil.getBoxDecorationOne(context),
+                          child: const Center(
+                            child: Text(
+                              'Exit',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+
+    if (result == true) {
+      Navigator.pop(context);
+      return true;
+    }
+    return false;
   }
 }

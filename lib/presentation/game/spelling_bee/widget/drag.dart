@@ -33,43 +33,41 @@ class _DragState extends State<Drag> {
             child: _accepted
                 ? SizedBox()
                 : Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5),
                     width: size.width * 0.15,
                     height: size.width * 0.15,
                     decoration: ApplicationUtil.getBoxDecorationOne(context),
                     child: Center(
-                      child: Draggable(
+                      child: Draggable<String>(
                         data: widget.letter,
-                        childWhenDragging: SizedBox(),
+                        childWhenDragging: const SizedBox(),
                         onDragEnd: (details) {
                           if (details.wasAccepted) {
-                            _accepted = true;
-                            setState(() {});
-                            Provider.of<SpellingBeeProvider>(context,
-                                    listen: false)
+                            setState(() {
+                              _accepted = true;
+                            });
+                            Provider.of<SpellingBeeProvider>(context, listen: false)
                                 .incrementLetters(context: context);
                           }
                         },
                         feedback: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 5),
+                          margin: const EdgeInsets.symmetric(horizontal: 5),
                           width: size.width * 0.10,
                           height: size.width * 0.10,
-                          decoration:
-                              ApplicationUtil.getBoxDecorationOne(context),
+                          decoration: ApplicationUtil.getBoxDecorationOne(context),
                           child: Center(
                             child: Text(
                               widget.letter,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
+                              style: const TextStyle(
+                                fontFamily: 'jomolhari',
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.white,
-                                fontFamily: AppConstant.JOMAHALI_FAMILY,
                                 shadows: [
                                   Shadow(
                                     offset: Offset(3, 3),
-                                    color: Colors.black.withOpacity(0.4),
+                                    color: Colors.black38,
                                     blurRadius: 5,
                                   ),
                                 ],
@@ -80,18 +78,17 @@ class _DragState extends State<Drag> {
                         child: Container(
                           width: size.width * 0.15,
                           height: size.width * 0.15,
-                          decoration:
-                              ApplicationUtil.getBoxDecorationOne(context),
+                          decoration: ApplicationUtil.getBoxDecorationOne(context),
                           child: Center(
                             child: Text(
                               widget.letter,
                               textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    color: Colors.white,
-                                  ),
+                              style: const TextStyle(
+                                fontFamily: 'jomolhari',
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),

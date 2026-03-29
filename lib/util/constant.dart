@@ -135,7 +135,7 @@ class AppConstant {
       word: 'ཁ་པར།',
       characterList: ['ཁ་', 'པ', 'ར།'],
     ),
-/*    Verb(
+    Verb(
         fileName: 'balloon',
         word: 'སྒང་ཕུག།',
         characterList: ['སྒ', 'ང་', 'ཕུ', 'ག།']),
@@ -143,8 +143,8 @@ class AppConstant {
       fileName: 'duck',
       word: 'ངང་པ།',
       characterList: ['ང', 'ང་', 'པ།'],
-    ),*/
-    /* Verb(
+    ),
+    Verb(
       fileName: 'chain',
       word: 'ལྕགས་ཐག།',
       characterList: ['ལྕ', 'ག', 'ས་', 'ཐ', 'ག།'],
@@ -269,7 +269,7 @@ class AppConstant {
       fileName: 'mango',
       word: 'ཨམ།',
       characterList: ['ཨ', 'མ།'],
-    ),*/
+    ),
   ];
   static getAudioByVerb(String verb) {
     return 'assets/audio/words/' + verb + ".mp3";

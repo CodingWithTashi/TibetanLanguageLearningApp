@@ -14,7 +14,7 @@ class AudioCubit extends Cubit<AudioState> {
   }
 
   Future<void> loadAudio(
-      {required String pathName, required String fileName}) async {
+      { String pathName="assets/audio/", required String fileName}) async {
     try {
       emit(AudioLoading());
       audioPlayer =
@@ -40,6 +40,15 @@ class AudioCubit extends Cubit<AudioState> {
 
   Future<void> playAudio() async {
     await audioPlayer.play();
+  }
+
+  Future<void> playAudioWithSpeed(double speed) async {
+    await audioPlayer.setSpeed(speed);
+    await audioPlayer.play();
+  }
+
+  Future<void> setPlaybackSpeed(double speed) async {
+    await audioPlayer.setSpeed(speed);
   }
 
   Future<void> pauseAudio() async {

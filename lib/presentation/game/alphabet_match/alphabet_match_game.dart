@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:confetti/confetti.dart';
 import '../../../game_bloc/game_bloc.dart';
 import '../../../cubit/audio_cubit.dart';
-import '../../../model/verb.dart';
 import '../../../util/constant.dart';
 import '../../../util/application_util.dart';
 import '../util/game_model.dart';
@@ -13,22 +12,20 @@ import '../widgets/game_result_dialog.dart';
 import '../widgets/game_score_card.dart';
 import '../widgets/game_layout.dart';
 
-class MemoryMatchGameScreen extends StatefulWidget {
-  static const routeName = 'memory-match-game';
-
-  const MemoryMatchGameScreen({Key? key}) : super(key: key);
+class AlphabetMatchGame extends StatefulWidget {
+  const AlphabetMatchGame({Key? key}) : super(key: key);
 
   @override
-  State<MemoryMatchGameScreen> createState() => _MemoryMatchGameScreenState();
+  State<AlphabetMatchGame> createState() => _AlphabetMatchGameState();
 }
 
-class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
+class _AlphabetMatchGameState extends State<AlphabetMatchGame>
     with SingleTickerProviderStateMixin {
   late ConfettiController _confettiController;
-  late AnimationController _flipController;
+  late AnimationController _animationController;
 
-  List<MemoryCard> cards = [];
-  List<int> flippedIndices = [];
+  List<MatchCard> cards = [];
+  List<int> selectedIndices = [];
   List<int> matchedIndices = [];
   int moves = 0;
   int matches = 0;
@@ -40,69 +37,60 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
   void initState() {
     super.initState();
     _confettiController = ConfettiController(duration: const Duration(seconds: 2));
-    _flipController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     _initializeGame();
   }
 
   @override
   void dispose() {
     _confettiController.dispose();
-    _flipController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   void _initializeGame() {
     final random = Random();
-    final verbs = AppConstant.verbsList.toList()..shuffle(random);
-    final selectedVerbs = verbs.take(totalPairs).toList();
+    final alphabets = AppConstant.getAlphabetList(AlphabetCategoryType.ALPHABET).toList()..shuffle(random);
+    final selectedAlphabets = alphabets.take(totalPairs).toList();
 
     cards.clear();
-    for (var verb in selectedVerbs) {
-      cards.add(MemoryCard(id: verb.fileName, verb: verb));
-      cards.add(MemoryCard(id: verb.fileName, verb: verb));
+    for (var alphabet in selectedAlphabets) {
+      cards.add(MatchCard(id: alphabet.fileName, displayText: alphabet.alphabetName, isCharacter: true, audioFileName: alphabet.fileName));
+      cards.add(MatchCard(id: alphabet.fileName, displayText: alphabet.fileName.toUpperCase(), isCharacter: false, audioFileName: alphabet.fileName));
     }
     cards.shuffle(random);
     setState(() {});
   }
 
   void _onCardTap(int index) {
-    if (isProcessing ||
-        flippedIndices.contains(index) ||
-        matchedIndices.contains(index) ||
-        flippedIndices.length >= 2) return;
+    if (isProcessing || selectedIndices.contains(index) || matchedIndices.contains(index) || selectedIndices.length >= 2) return;
 
     setState(() {
-      flippedIndices.add(index);
-      if (flippedIndices.length == 1) {
-        moves++;
-      }
+      selectedIndices.add(index);
+      moves++;
     });
 
-    // Play audio
-    context.read<AudioCubit>().loadAudio(fileName: cards[index].verb.fileName);
+    context.read<AudioCubit>().loadAudio(fileName: cards[index].audioFileName);
     context.read<AudioCubit>().playAudio();
 
-    if (flippedIndices.length == 2) {
+    if (selectedIndices.length == 2) {
       _checkMatch();
     }
   }
 
   void _checkMatch() {
     isProcessing = true;
-    final firstCard = cards[flippedIndices[0]];
-    final secondCard = cards[flippedIndices[1]];
+    final firstCard = cards[selectedIndices[0]];
+    final secondCard = cards[selectedIndices[1]];
 
     if (firstCard.id == secondCard.id) {
-      _flipController.forward().then((_) => _flipController.reverse());
+      _animationController.forward().then((_) => _animationController.reverse());
 
       setState(() {
-        matchedIndices.addAll(flippedIndices);
+        matchedIndices.addAll(selectedIndices);
         matches++;
-        score += 15;
-        flippedIndices.clear();
+        score += 10;
+        selectedIndices.clear();
         isProcessing = false;
       });
 
@@ -110,9 +98,9 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
         _gameComplete();
       }
     } else {
-      Timer(const Duration(milliseconds: 1200), () {
+      Timer(const Duration(milliseconds: 1000), () {
         setState(() {
-          flippedIndices.clear();
+          selectedIndices.clear();
           isProcessing = false;
         });
       });
@@ -122,14 +110,11 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
   void _gameComplete() {
     _confettiController.play();
 
-    int stars = moves <= 14 ? 3 : (moves <= 20 ? 2 : 1);
+    int stars = moves <= 12 ? 3 : (moves <= 16 ? 2 : 1);
     final coinsEarned = score + (stars * 15);
 
-    context.read<GameBloc>().add(UpdateGameStars(
-          gameType: GameType.memoryGame,
-          stars: stars,
-          coinsEarned: coinsEarned,
-        ));
+    context.read<GameBloc>().add(UpdateGameStars(gameType: GameType.alphabetMatchGame, stars: stars, coinsEarned: coinsEarned));
+    context.read<GameBloc>().add(UpdateGameScore(gameType: GameType.alphabetMatchGame, score: score));
 
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
@@ -137,7 +122,7 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
           context: context,
           barrierDismissible: false,
           builder: (context) => GameResultDialog(
-            title: 'Well Done! 🎊',
+            title: 'Amazing! 🎉',
             score: score,
             stars: stars,
             coinsEarned: coinsEarned,
@@ -158,7 +143,7 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
 
   void _resetGame() {
     setState(() {
-      flippedIndices.clear();
+      selectedIndices.clear();
       matchedIndices.clear();
       moves = 0;
       matches = 0;
@@ -173,7 +158,7 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
     return Stack(
       children: [
         GameLayout(
-          title: 'Memory Match',
+          title: 'Alphabet Match',
           scoreCards: [
             GameScoreCard(label: 'Moves', value: moves.toString(), icon: Icons.touch_app),
             GameScoreCard(label: 'Pairs', value: '$matches/$totalPairs', icon: Icons.check_circle),
@@ -187,13 +172,13 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
                 crossAxisCount: 3,
                 crossAxisSpacing: 12,
                 mainAxisSpacing: 12,
-                childAspectRatio: 0.8,
+                childAspectRatio: 0.75,
               ),
               itemCount: cards.length,
               itemBuilder: (context, index) {
-                final isFlipped = flippedIndices.contains(index);
+                final isSelected = selectedIndices.contains(index);
                 final isMatched = matchedIndices.contains(index);
-                return _buildCard(cards[index], isFlipped, isMatched, index);
+                return _buildCard(cards[index], isSelected, isMatched, index);
               },
             ),
           ),
@@ -214,10 +199,12 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
     );
   }
 
-  Widget _buildCard(MemoryCard card, bool isFlipped, bool isMatched, int index) {
-    BoxDecoration frontDecoration;
+  Widget _buildCard(MatchCard card, bool isSelected, bool isMatched, int index) {
+    BoxDecoration decoration;
+    Color textColor;
+
     if (isMatched) {
-      frontDecoration = BoxDecoration(
+      decoration = BoxDecoration(
         color: Colors.green.shade400,
         borderRadius: BorderRadius.circular(10),
         boxShadow: const [
@@ -225,67 +212,42 @@ class _MemoryMatchGameScreenState extends State<MemoryMatchGameScreen>
           BoxShadow(color: Colors.white24, offset: Offset(3, 3), blurRadius: 6),
         ],
       );
+      textColor = Colors.white;
+    } else if (isSelected) {
+      decoration = ApplicationUtil.getBoxDecorationTwo(context);
+      textColor = Colors.black87;
     } else {
-      frontDecoration = ApplicationUtil.getBoxDecorationTwo(context);
+      decoration = ApplicationUtil.getBoxDecorationOne(context);
+      textColor = Colors.white;
     }
 
     return GestureDetector(
       onTap: () => _onCardTap(index),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        decoration: isFlipped || isMatched
-            ? frontDecoration
-            : ApplicationUtil.getBoxDecorationOne(context),
-        child: isFlipped || isMatched
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Image
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        ApplicationUtil.getImagePath(card.verb.fileName),
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  // Name below image
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      card.verb.word,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontFamily: 'jomolhari',
-                        fontWeight: FontWeight.bold,
-                        color: isMatched ? Colors.white : Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              )
-            : const Center(
-                child: Icon(
-                  Icons.help_outline,
-                  size: 40,
-                  color: Colors.white,
-                ),
-              ),
+        decoration: decoration,
+        child: Center(
+          child: Text(
+            card.displayText,
+            style: TextStyle(
+              fontSize: card.isCharacter ? 42 : 18,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+              fontFamily: card.isCharacter ? 'jomolhari' : null,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
     );
   }
 }
 
-class MemoryCard {
+class MatchCard {
   final String id;
-  final Verb verb;
+  final String displayText;
+  final bool isCharacter;
+  final String audioFileName;
 
-  MemoryCard({
-    required this.id,
-    required this.verb,
-  });
+  MatchCard({required this.id, required this.displayText, required this.isCharacter, required this.audioFileName});
 }
