@@ -24,6 +24,14 @@
       "playGame":"Game",
       "spellingBeeContest":"Spelling Contest",
       "spellingBee": "Spelling Bee",
-      "snakeGame": "Snake Game"
+      "snakeGame": "Snake Game",
+     "shop": "Shop",
+     "buyOnAmazon": "Buy on {domain}",
+     "@buyOnAmazon": {
+       "placeholders": {
+         "domain": { "type": "String" }
+       }
+     },
+     "couldNotOpenLink": "Could not open the link"
 
 }

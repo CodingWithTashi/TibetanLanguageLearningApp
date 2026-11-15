@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
 import 'package:tibetan_language_learning_app/game_bloc/game_bloc.dart';
@@ -14,12 +13,12 @@ import 'package:tibetan_language_learning_app/l10n/localization_delegate.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:tibetan_language_learning_app/util/route_generator.dart';
-
+import 'package:material_ui/material_ui.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {
     await Firebase.initializeApp();
-    MobileAds.instance.initialize();
+    // MobileAds.instance.initialize();
   }
   setupLocator();
   GetIt.I.isReady<SharedPreferences>().then((_) {
@@ -63,7 +62,7 @@ class StartPage extends StatelessWidget {
             AppLocalizations.delegate,
             ...GlobalMaterialLocalizations.delegates,
             GlobalCupertinoLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate
+            //GlobalWidgetsLocalizations.delegate
           ],
           supportedLocales: L10n.all,
           theme: ThemeData(

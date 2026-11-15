@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +20,7 @@ import 'package:tibetan_language_learning_app/presentation/learn/verbs/verb_deta
 import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/shop/shop_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/service/audio_service.dart';
@@ -152,6 +153,10 @@ class RouteGenerator {
       case MemoryMatchGameScreen.routeName:
         return MaterialPageRoute(
           builder: (_) => MemoryMatchGameScreen(),
+        );
+      case ShopPage.routeName:
+        return MaterialPageRoute(
+          builder: (_) => ShopPage(),
         );
 
       default:

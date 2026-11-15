@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/learn_menu_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/shop/shop_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/presentation/widget/language_widget.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
@@ -25,9 +25,9 @@ class _HomePageState extends State<HomePage> {
   double menuFontSize = 22;
   double _buttonOpacity = 0;
   bool isExtended = false;
-  late BannerAd myBanner;
+/*  late BannerAd myBanner;
   late BannerAdListener listener;
-  late AdWidget adWidget;
+  late AdWidget adWidget;*/
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    myBanner.dispose();
+    // myBanner.dispose();
     super.dispose();
   }
 
@@ -72,162 +72,186 @@ class _HomePageState extends State<HomePage> {
   }
 
   _getButtons() => Positioned(
-        bottom: 90,
-        child: Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _getLearnButtons(),
-              SizedBox(
-                height: 20,
-              ),
-              _getPracticeButtons(),
-              SizedBox(
-                height: 20,
-              ),
-              _useCasesButtons(),
-              SizedBox(
-                height: 20,
-              ),
-              _playGameButtons(),
-            ],
+    bottom: 90,
+    child: Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _getLearnButtons(),
+          SizedBox(
+            height: 20,
           ),
-        ),
-      );
+          _getPracticeButtons(),
+          SizedBox(
+            height: 20,
+          ),
+          _useCasesButtons(),
+          SizedBox(
+            height: 20,
+          ),
+          _playGameButtons(),
+          SizedBox(
+            height: 20,
+          ),
+          _getShopButton(),
+        ],
+      ),
+    ),
+  );
 
   _getLearnButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, LearnMenuPage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.learnLangauge,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
+    onTap: () {
+      Navigator.pushNamed(context, LearnMenuPage.routeName);
+    },
+    child: AnimatedOpacity(
+      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+      opacity: _buttonOpacity,
+      child: Container(
+        width: 200,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        decoration: ApplicationUtil.getBoxDecorationOne(context),
+        child: Text(
+          AppLocalizations.of(context)!.learnLangauge,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
         ),
-      );
+      ),
+    ),
+  );
 
   _getPracticeButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, PracticeMenuPage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.practiceLanguage,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
+    onTap: () {
+      Navigator.pushNamed(context, PracticeMenuPage.routeName);
+    },
+    child: AnimatedOpacity(
+      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+      opacity: _buttonOpacity,
+      child: Container(
+        width: 200,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        decoration: ApplicationUtil.getBoxDecorationOne(context),
+        child: Text(
+          AppLocalizations.of(context)!.practiceLanguage,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
         ),
-      );
+      ),
+    ),
+  );
 
   _getBackgroundImage() => Hero(
-        tag: 'image',
-        child: Container(
-          child: Image.asset(
-            'assets/images/tree.jpg',
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.centerLeft,
-          ),
-        ),
-      );
+    tag: 'image',
+    child: Container(
+      child: Image.asset(
+        'assets/images/tree.jpg',
+        fit: BoxFit.cover,
+        height: double.infinity,
+        width: double.infinity,
+        alignment: Alignment.centerLeft,
+      ),
+    ),
+  );
 
   _getBottomSheetButton() => Positioned(
-        bottom: 20,
-        child: GestureDetector(
-            onPanUpdate: (details) {
-              if (details.delta.dy < 0) {
-                ApplicationUtil.showAboutUs(context);
-              }
-            },
-            onTap: () {
-              ApplicationUtil.showAboutUs(context);
-            },
-            child: RotatedBox(
-              quarterTurns: -1,
-              child: Icon(
-                Icons.arrow_forward_ios_outlined,
-                size: 30,
-                color: Theme.of(context).primaryColorLight,
-              ),
-            )),
-      );
+    bottom: 20,
+    child: GestureDetector(
+        onPanUpdate: (details) {
+          if (details.delta.dy < 0) {
+            ApplicationUtil.showAboutUs(context);
+          }
+        },
+        onTap: () {
+          ApplicationUtil.showAboutUs(context);
+        },
+        child: RotatedBox(
+          quarterTurns: -1,
+          child: Icon(
+            Icons.arrow_forward_ios_outlined,
+            size: 30,
+            color: Theme.of(context).primaryColorLight,
+          ),
+        )),
+  );
 
   _topBannerAds() => Positioned(
-        top: MediaQuery.of(context).padding.top + 70,
-        child: !kIsWeb
-            ? Container(
-                alignment: Alignment.center,
-                child: adWidget,
-                width: myBanner.size.width.toDouble(),
-                height: myBanner.size.height.toDouble(),
-              )
-            : Container(),
-      );
+    top: MediaQuery.of(context).padding.top + 70,
+    child: !kIsWeb
+        ? Container(
+      alignment: Alignment.center,
+      // child: adWidget,
+      // width: myBanner.size.width.toDouble(),
+      // height: myBanner.size.height.toDouble(),
+    )
+        : Container(),
+  );
 
   _useCasesButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, UseCaseMenuPage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.useCases,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
+    onTap: () {
+      Navigator.pushNamed(context, UseCaseMenuPage.routeName);
+    },
+    child: AnimatedOpacity(
+      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+      opacity: _buttonOpacity,
+      child: Container(
+        width: 200,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        decoration: ApplicationUtil.getBoxDecorationOne(context),
+        child: Text(
+          AppLocalizations.of(context)!.useCases,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
         ),
-      );
+      ),
+    ),
+  );
   _playGameButtons() => InkWell(
-        onTap: () {
-          Navigator.pushNamed(context, GameHomePage.routeName);
-        },
-        child: AnimatedOpacity(
-          duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-          opacity: _buttonOpacity,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-            decoration: ApplicationUtil.getBoxDecorationOne(context),
-            child: Text(
-              AppLocalizations.of(context)!.playGame,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-            ),
-          ),
+    onTap: () {
+      Navigator.pushNamed(context, GameHomePage.routeName);
+    },
+    child: AnimatedOpacity(
+      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+      opacity: _buttonOpacity,
+      child: Container(
+        width: 200,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        decoration: ApplicationUtil.getBoxDecorationOne(context),
+        child: Text(
+          AppLocalizations.of(context)!.playGame,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
         ),
-      );
+      ),
+    ),
+  );
+
+  _getShopButton() => InkWell(
+    onTap: () {
+      Navigator.pushNamed(context, ShopPage.routeName);
+    },
+    child: AnimatedOpacity(
+      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
+      opacity: _buttonOpacity,
+      child: Container(
+        width: 200,
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+        decoration: ApplicationUtil.getBoxDecorationOne(context),
+        child: Text(
+          AppLocalizations.of(context)!.shop,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
+        ),
+      ),
+    ),
+  );
 
   _languageSwitch() => Positioned(
-        top: MediaQuery.of(context).padding.top,
-        right: 20,
-        child: LanguageWidget(),
-      );
+    top: MediaQuery.of(context).padding.top,
+    right: 20,
+    child: LanguageWidget(),
+  );
 
   void initBannerAds() {
-    listener = BannerAdListener(
+    /* listener = BannerAdListener(
       // Called when an ad is successfully received.
       onAdLoaded: (Ad ad) => print('Ad loaded.'),
       // Called when an ad request failed.
@@ -257,6 +281,6 @@ class _HomePageState extends State<HomePage> {
     if (!kIsWeb) {
       adWidget = AdWidget(ad: myBanner);
       myBanner.load();
-    }
+    }*/
   }
 }

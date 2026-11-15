@@ -82,4 +82,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get snakeGame => 'Snake Game';
+
+  @override
+  String get shop => 'Shop';
+
+  @override
+  String buyOnAmazon(String domain) {
+    return 'Buy on $domain';
+  }
+
+  @override
+  String get couldNotOpenLink => 'Could not open the link';
 }

@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
@@ -19,15 +18,15 @@ class PracticeMenuPage extends StatefulWidget {
 }
 
 class _PracticeMenuPageState extends State<PracticeMenuPage> {
-  late BannerAd myBanner;
+/*  late BannerAd myBanner;
   late BannerAdListener listener;
-  late AdWidget adWidget;
+  late AdWidget adWidget;*/
   double menuFontSize = 30;
   List<Alphabet> alphabetList = [];
   @override
   void initState() {
     if (!kIsWeb) {
-      listener = BannerAdListener(
+    /*  listener = BannerAdListener(
         onAdLoaded: (Ad ad) => print('Ad loaded.'),
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
           ad.dispose();
@@ -49,7 +48,7 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
         listener: listener,
       );
       adWidget = AdWidget(ad: myBanner);
-      myBanner.load();
+      myBanner.load();*/
     }
     alphabetList = AppConstant.getAlphabetList(getIt<AlphabetType>().type);
     super.initState();
@@ -147,9 +146,9 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
   _getBannerAds() => !kIsWeb
       ? Container(
           alignment: Alignment.center,
-          child: adWidget,
+         /* child: adWidget,
           width: myBanner.size.width.toDouble(),
-          height: myBanner.size.height.toDouble(),
+          height: myBanner.size.height.toDouble(),*/
         )
       : Container();
 }

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:confetti/confetti.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:liquid_progress_indicator_v2/liquid_progress_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';

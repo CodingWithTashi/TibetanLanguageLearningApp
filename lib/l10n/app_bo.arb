@@ -24,5 +24,9 @@
     "playGame":"རྩེད་མོ་",
     "spellingBeeContest":"དག་ཆ་། འགྲན་སྡུར།",
     "spellingBee": "དག་ཆ་ཡིག་ཚད།",
-    "snakeGame": "སྦྲུལ་རྩེད་མོ།"
+    "snakeGame": "སྦྲུལ་རྩེད་མོ།",
+    "couldNotOpenLink":"Could not open link",
+    "shop": "ཚོང་ཁང་",
+    "buyOnAmazon": "{domain} ནས་ཉོ།",
+    "couldNotOpenLink": "སྦྲེལ་ཐག་ཁ་ཕྱེ་མ་ཐུབ།"
 }
