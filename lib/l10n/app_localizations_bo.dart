@@ -82,4 +82,15 @@ class AppLocalizationsBo extends AppLocalizations {
 
   @override
   String get snakeGame => 'སྦྲུལ་རྩེད་མོ།';
+
+  @override
+  String get shop => 'ཚོང་ཁང་';
+
+  @override
+  String buyOnAmazon(String domain) {
+    return '$domain ནས་ཉོ།';
+  }
+
+  @override
+  String get couldNotOpenLink => 'སྦྲེལ་ཐག་ཁ་ཕྱེ་མ་ཐུབ།';
 }

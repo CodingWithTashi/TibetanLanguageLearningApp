@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
@@ -18,22 +17,12 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
         children: [
-          Hero(
-            tag: 'image',
-            child: Container(
-              child: Image.asset(
-                'assets/images/tree.jpg',
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
           Container(
             constraints: BoxConstraints(maxWidth: 500),
             width: double.infinity,
@@ -41,21 +30,9 @@ class _UseCaseMenuPageState extends State<UseCaseMenuPage> {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
-              child: AnimationLimiter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(
-                        milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      verticalOffset: -50.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
-                    ),
-                    children: _getWidgetList(),
-                  ),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: _getWidgetList(),
               ),
             ),
           ),

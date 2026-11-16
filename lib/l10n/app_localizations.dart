@@ -247,6 +247,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Snake Game'**
   String get snakeGame;
+
+  /// No description provided for @shop.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get shop;
+
+  /// No description provided for @buyOnAmazon.
+  ///
+  /// In en, this message translates to:
+  /// **'Buy on {domain}'**
+  String buyOnAmazon(String domain);
+
+  /// No description provided for @couldNotOpenLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the link'**
+  String get couldNotOpenLink;
 }
 
 class _AppLocalizationsDelegate

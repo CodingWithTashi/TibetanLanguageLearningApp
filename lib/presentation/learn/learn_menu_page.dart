@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_list_page.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
@@ -19,13 +17,13 @@ class LearnMenuPage extends StatefulWidget {
 }
 
 class _LearnMenuPageState extends State<LearnMenuPage> {
-  late BannerAd myBanner;
+ /* late BannerAd myBanner;
   late BannerAdListener listener;
-  late AdWidget adWidget;
+  late AdWidget adWidget;*/
   double menuFontSize = 30;
   @override
   void initState() {
-    if (!kIsWeb) {
+    if (!kIsWeb) {/*
       listener = BannerAdListener(
         onAdLoaded: (Ad ad) => print('Ad loaded.'),
         onAdFailedToLoad: (Ad ad, LoadAdError error) {
@@ -48,7 +46,7 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
         listener: listener,
       );
       adWidget = AdWidget(ad: myBanner);
-      myBanner.load();
+      myBanner.load();*/
     }
     super.initState();
   }
@@ -62,21 +60,12 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
       menuFontSize = 22;
     }
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
         children: [
-          Hero(
-            tag: 'image',
-            child: Container(
-              child: Image.asset(
-                'assets/images/tree.jpg',
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
           Column(
             children: [
               SizedBox(height: MediaQuery.of(context).padding.top),
@@ -87,28 +76,15 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
                   child: SingleChildScrollView(
                     physics: BouncingScrollPhysics(
                         parent: AlwaysScrollableScrollPhysics()),
-                    child: AnimationLimiter(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            right: 40,
-                            left: 50,
-                            top: MediaQuery.of(context).padding.top + 20),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: AnimationConfiguration.toStaggeredList(
-                            duration: const Duration(
-                                milliseconds:
-                                    ApplicationUtil.ANIMATION_DURATION),
-                            childAnimationBuilder: (widget) => SlideAnimation(
-                              horizontalOffset: 50.0,
-                              child: FadeInAnimation(
-                                child: widget,
-                              ),
-                            ),
-                            children: _getWidgetList(),
-                          ),
-                        ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          right: 40,
+                          left: 50,
+                          top: MediaQuery.of(context).padding.top + 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: _getWidgetList(),
                       ),
                     ),
                   ),
@@ -314,9 +290,9 @@ class _LearnMenuPageState extends State<LearnMenuPage> {
   _getBannerAds() => !kIsWeb
       ? Container(
           alignment: Alignment.center,
-          child: adWidget,
-          width: myBanner.size.width.toDouble(),
-          height: myBanner.size.height.toDouble(),
+          // child: adWidget,
+          // width: myBanner.size.width.toDouble(),
+          // height: myBanner.size.height.toDouble(),
         )
       : Container();
 

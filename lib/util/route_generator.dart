@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/bloc/snake_game/snake_game_bloc.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
+import 'package:tibetan_language_learning_app/model/book_item.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/memory_match/memory_match_screen.dart';
@@ -20,8 +21,11 @@ import 'package:tibetan_language_learning_app/presentation/learn/verbs/verb_deta
 import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/shop/book_detail_page.dart';
+import 'package:tibetan_language_learning_app/presentation/shop/shop_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
+import 'package:tibetan_language_learning_app/presentation/widget/parallax_background.dart';
 import 'package:tibetan_language_learning_app/service/audio_service.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -31,11 +35,11 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => LanguageTypePage(),
         );
       case HomePage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => HomePage(),
         );
       case LearnMenuPage.routeName:
@@ -55,11 +59,11 @@ class RouteGenerator {
                 ).animate(animation),
               );
             });*/
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => LearnMenuPage(),
         );
       case AlphabetListPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => AlphabetListPage(),
         );
       case AlphabetDetailPage.routeName:
@@ -78,7 +82,7 @@ class RouteGenerator {
           return _errorRoute();
         }
       case PracticeMenuPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => PracticeMenuPage(),
         );
       case PracticeDetailPage.routeName:
@@ -94,7 +98,7 @@ class RouteGenerator {
         }
 
       case VerbListPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => VerbListPage(),
         );
       case VerbDetailPage.routeName:
@@ -113,13 +117,13 @@ class RouteGenerator {
           return _errorRoute();
         }
       case UseCaseMenuPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => UseCaseMenuPage(),
         );
       case UseCaseItemList.routeName:
         {
           if (settings.arguments != null && settings.arguments is UseCaseType) {
-            return MaterialPageRoute(
+            return ParallaxPageRoute(
               builder: (_) => BlocProvider<AudioCubit>(
                 create: (context) =>
                     AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
@@ -132,27 +136,38 @@ class RouteGenerator {
           return _errorRoute();
         }
       case GameHomePage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => GameHomePage(),
+        return ParallaxPageRoute(
+          builder: (_) => const GameHomePage(),
         );
       case SpellingBeePage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => ChangeNotifierProvider<SpellingBeeProvider>(
             create: (BuildContext context) => SpellingBeeProvider(),
             child: SpellingBeePage(),
           ),
         );
       case SnakeGamePage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => SnakeGameBloc(),
             child: SnakeGamePage(),
           ),
         );
       case MemoryMatchGameScreen.routeName:
-        return MaterialPageRoute(
-          builder: (_) => MemoryMatchGameScreen(),
+        return ParallaxPageRoute(
+          builder: (_) => const MemoryMatchGameScreen(),
         );
+      case ShopPage.routeName:
+        return ParallaxPageRoute(
+          builder: (_) => const ShopPage(),
+        );
+      case BookDetailPage.routeName:
+        if (args is BookItem) {
+          return ParallaxPageRoute(
+            builder: (_) => BookDetailPage(book: args),
+          );
+        }
+        return _errorRoute();
 
       default:
         return _errorRoute();

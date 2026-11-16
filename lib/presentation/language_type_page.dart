@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tibetan_language_learning_app/cubit/language_cubit.dart';
@@ -112,7 +112,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
                           .setString('familyName', AppConstant.TSUTUNG_FAMILY);
                       /* cubit.updateLocale(
                           L10n.all[1], AppConstant.TSUTUNG_FAMILY);*/
-                      Navigator.popAndPushNamed(context, HomePage.routeName);
+                      Navigator.pushReplacementNamed(context, HomePage.routeName);
                     },
                     child: Container(
                       width: 250,
@@ -170,7 +170,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
 
                       // cubit.updateLocale(
                       //     L10n.all[1], AppConstant.JOMAHALI_FAMILY);
-                      Navigator.popAndPushNamed(context, HomePage.routeName);
+                      Navigator.pushReplacementNamed(context, HomePage.routeName);
                     },
                     child: Container(
                       width: 250,

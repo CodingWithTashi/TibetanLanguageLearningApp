@@ -44,3 +44,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+/kdp/alphabet-tracing-book/
+/kdp/alphabet-tracing-book-tibetan/
+/kdp/book/
+/kdp/

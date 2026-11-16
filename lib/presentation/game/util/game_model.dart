@@ -4,7 +4,6 @@ import 'package:equatable/equatable.dart';
 class Game extends Equatable {
   final String name;
   final String description;
-  final String gameIcon;
   final GameType gameType;
   final int requiredScoreInPreviousLevelToUnlock;
   final bool isUnlocked;
@@ -14,7 +13,6 @@ class Game extends Equatable {
   const Game({
     required this.name,
     required this.description,
-    required this.gameIcon,
     required this.gameType,
     required this.requiredScoreInPreviousLevelToUnlock,
     required this.level,
@@ -29,7 +27,6 @@ class Game extends Equatable {
     return Game(
       name: this.name,
       description: this.description,
-      gameIcon: this.gameIcon,
       gameType: this.gameType,
       requiredScoreInPreviousLevelToUnlock:
           this.requiredScoreInPreviousLevelToUnlock,
@@ -43,7 +40,6 @@ class Game extends Equatable {
   List<Object?> get props => [
         name,
         description,
-        gameIcon,
         gameType,
         requiredScoreInPreviousLevelToUnlock,
         isUnlocked,

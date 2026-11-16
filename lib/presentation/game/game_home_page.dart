@@ -1,268 +1,116 @@
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:tibetan_language_learning_app/presentation/game/snake_game/snake_game.dart';
 import 'package:tibetan_language_learning_app/presentation/game/spelling_bee/spelling_bee_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/util/game_model.dart';
 
 import '../../game_bloc/game_bloc.dart';
 import '../../util/application_util.dart';
+import '../../util/constant.dart';
 import 'memory_match/memory_match_screen.dart';
+import 'widget/game_animations.dart';
+import 'widget/game_ui.dart';
 
-class GameHomePage extends StatelessWidget {
+class GameHomePage extends StatefulWidget {
   static const routeName = 'game-home';
-  double height = 0.0;
-  double width = 0.0;
+
+  const GameHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<GameHomePage> createState() => _GameHomePageState();
+}
+
+class _GameHomePageState extends State<GameHomePage>
+    with SingleTickerProviderStateMixin {
+  // Cards slide in one after another when the page opens.
+  late final AnimationController _entrance = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 700),
+  );
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _entrance.value = 1;
+    } else if (_entrance.isDismissed) {
+      _entrance.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _entrance.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    height = MediaQuery.of(context).size.height;
-    width = MediaQuery.of(context).size.width;
-    return BlocConsumer<GameBloc, GameState>(
-      listener: (context, state) {
-        if (state.error != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error!)),
-          );
-        }
-      },
-      builder: (context, state) {
-        if (state.isLoading) {
-          return Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
-        }
-
-        return Scaffold(
-          backgroundColor: Theme.of(context).primaryColor,
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Theme.of(context).primaryColor,
-                  Theme.of(context).primaryColor.withOpacity(0.8),
-                ],
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: BlocConsumer<GameBloc, GameState>(
+        listener: (context, state) {
+          if (state.error != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error!)),
+            );
+          }
+        },
+        builder: (context, state) {
+          if (state.isLoading && state.games.isEmpty) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: GamePalette.of(context).lime,
               ),
-            ),
+            );
+          }
+          final games = state.games;
+          return SafeArea(
+            bottom: false,
             child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CarouselSlider(
-                    items: state.games
-                        .map((game) => _buildGameCard(context, game))
-                        .toList(),
-                    options: CarouselOptions(
-                      scrollPhysics: BouncingScrollPhysics(),
-                      enableInfiniteScroll: false,
-                      enlargeCenterPage: true,
-                      height: height * 0.35,
-                      viewportFraction: 0.8,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 560),
+                child: ListView.separated(
+                  // Bottom room for the back button.
+                  padding: const EdgeInsets.fromLTRB(20, 24, 20, 110),
+                  itemCount: games.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 16),
+                  itemBuilder: (context, i) => StaggeredEntrance(
+                    animation: _entrance,
+                    index: i,
+                    child: _GameCard(
+                      game: games[i],
+                      previous: i > 0 ? games[i - 1] : null,
+                      onTap: () => games[i].isUnlocked
+                          ? _openGame(context, games[i].gameType)
+                          : _showLocked(
+                              context, games[i], i > 0 ? games[i - 1] : null),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildGameCard(BuildContext context, Game game) {
-    return InkResponse(
-      onTap: () => game.isUnlocked
-          ? _navigateToGameScreen(context, game.gameType)
-          : _showUnlockRequirements(context, game),
-      child: Opacity(
-        opacity: game.isUnlocked ? 1.0 : 0.7,
-        child: Container(
-          decoration: ApplicationUtil.getBoxDecorationOne(context),
-          margin: EdgeInsets.all(20.0),
-          child: Stack(
-            children: [
-              Opacity(
-                opacity: game.isUnlocked ? 1.0 : 0.6,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(32.0),
-                      child: Lottie.network(
-                        game.gameIcon,
-                      ),
-                    ),
-                    ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                      child: Stack(
-                        children: <Widget>[],
-                      ),
-                    ),
-                    Positioned(
-                      bottom: 0.0,
-                      left: 0.0,
-                      right: 0.0,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          gradient: LinearGradient(
-                            colors: [
-                              Color.fromARGB(80, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0)
-                            ],
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              '${game.name}',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20.0,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            _buildLevelBadge(game),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
               ),
-              Positioned(
-                  bottom: 0,
-                  right: 0,
-                  left: 0,
-                  top: 0,
-                  child: game.isUnlocked
-                      ? Icon(
-                          Icons.play_circle_fill_outlined,
-                          color: Colors.white,
-                          size: 40,
-                        )
-                      : Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                          size: 50,
-                        ))
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
+      floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
     );
   }
 
-  Widget _buildLevelBadge(Game game) {
-    return Container(
-      margin: EdgeInsets.all(16),
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.blue,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Text(
-        'Level ${game.level}',
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
+  void _showLocked(BuildContext context, Game game, Game? previous) {
+    showGameDialog(
+      context,
+      dismissible: true,
+      header: const LockedAnimation(),
+      title: '${game.name} is locked',
+      message: _unlockHint(game, previous),
+      actions: const [
+        GameDialogAction('Got it!', icon: Icons.check_rounded, filled: true),
+      ],
     );
   }
 
-  Widget _buildGameContent(Game game) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Lottie.network(
-        game.gameIcon,
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
-  Widget _buildGameInfo(Game game) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(20),
-          bottomRight: Radius.circular(20),
-        ),
-      ),
-      child: Column(
-        children: [
-          Text(
-            game.name,
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 8),
-          Text(
-            game.description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.grey[600],
-            ),
-          ),
-          if (game.currentScore > 0) ...[
-            SizedBox(height: 8),
-            Text(
-              'Best Score: ${game.currentScore}',
-              style: TextStyle(
-                color: Colors.blue,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ],
-      ),
-    );
-  }
-
-  void _showUnlockRequirements(BuildContext context, Game game) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Level ${game.level} Locked'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Lottie.asset(
-              'assets/json/unlock.json',
-              height: 100,
-              repeat: true,
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Score ${game.requiredScoreInPreviousLevelToUnlock} points in Level ${game.level - 1} to unlock ${game.name}!',
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Got it!'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _navigateToGameScreen(BuildContext context, GameType gameType) {
-    print("GameType: $gameType");
+  void _openGame(BuildContext context, GameType gameType) {
     switch (gameType) {
       case GameType.spellingBeeGame:
         Navigator.pushNamed(context, SpellingBeePage.routeName);
@@ -274,5 +122,148 @@ class GameHomePage extends StatelessWidget {
         Navigator.pushNamed(context, MemoryMatchGameScreen.routeName);
         break;
     }
+  }
+}
+
+/// What the player has to do in the game before this one. Worded the way
+/// each game reports its score to GameBloc, not as raw points:
+/// Spelling Bee sends 1 after kSpellingBeeWordsToUnlock words, and Snake sends
+/// kLevelOneScoreLimit once a single round goes past it.
+String _unlockHint(Game game, Game? previous) {
+  switch (previous?.gameType) {
+    case GameType.spellingBeeGame:
+      return 'Spell $kSpellingBeeWordsToUnlock words in one round of '
+          '${previous!.name} to unlock it.';
+    case GameType.snakeGame:
+      return 'Eat ${kLevelOneScoreLimit + 1} letters in one round of '
+          '${previous!.name} to unlock it.';
+    default:
+      final points = game.requiredScoreInPreviousLevelToUnlock;
+      final where = previous?.name ?? 'Level ${game.level - 1}';
+      return 'Score $points ${points == 1 ? 'point' : 'points'} in $where '
+          'to unlock it.';
+  }
+}
+
+class _GameCard extends StatelessWidget {
+  const _GameCard({
+    required this.game,
+    required this.previous,
+    required this.onTap,
+  });
+
+  final Game game;
+  final Game? previous;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = GamePalette.of(context);
+    final locked = !game.isUnlocked;
+    // Small phones get a smaller picture so the text keeps enough room.
+    final compact = MediaQuery.sizeOf(context).width < 360;
+    final preview = compact ? 84.0 : 112.0;
+    final button = compact ? 38.0 : 44.0;
+    return Semantics(
+      button: true,
+      label: locked ? '${game.name}, locked' : 'Play ${game.name}',
+      child: GamePanel(
+        padding: const EdgeInsets.all(12),
+        onTap: onTap,
+        child: Row(
+          children: [
+            SizedBox.square(
+              dimension: preview,
+              child: GameInset(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Opacity(
+                      opacity: locked ? 0.35 : 1,
+                      child: GamePreview(type: game.gameType),
+                    ),
+                    if (locked)
+                      Center(
+                        child: Icon(Icons.lock_rounded,
+                            color: palette.cream, size: 36),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(width: compact ? 10 : 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // Shrinks a long name on narrow phones rather than cutting it.
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: AlignmentDirectional.centerStart,
+                    child: Text(
+                      game.name,
+                      maxLines: 1,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 19,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    locked ? _unlockHint(game, previous) : game.description,
+                    // The unlock hint is the instruction, so never cut it off.
+                    maxLines: locked ? 4 : 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: palette.cream.withValues(alpha: 0.9),
+                      fontSize: 13.5,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: [
+                      GameChip(
+                        icon: Icons.flag_rounded,
+                        label: 'Level ${game.level}',
+                      ),
+                      // The saved score only records that the unlock goal was
+                      // met, so show that rather than a number.
+                      if (game.currentScore > 0)
+                        const GameChip(
+                          icon: Icons.check_circle_rounded,
+                          label: 'Cleared',
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 8),
+            Container(
+              width: button,
+              height: button,
+              decoration: BoxDecoration(
+                color: locked ? Colors.transparent : palette.lime,
+                shape: BoxShape.circle,
+                border: locked
+                    ? Border.all(
+                        color: palette.cream.withValues(alpha: 0.6), width: 1.5)
+                    : null,
+              ),
+              child: Icon(
+                locked ? Icons.lock_outline_rounded : Icons.play_arrow_rounded,
+                color: locked ? palette.cream : palette.ink,
+                size: button * 0.6,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

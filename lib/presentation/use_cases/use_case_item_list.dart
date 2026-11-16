@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
@@ -45,26 +44,19 @@ class _UseCaseItemListState extends State<UseCaseItemList>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
-        children: [_getBackgroundImage(), _getAnimatedAlphabetListWidget()],
+        children: [
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
+          _getAnimatedAlphabetListWidget(),
+        ],
       ),
       floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
     );
   }
 
-  _getBackgroundImage() => Hero(
-        tag: 'image',
-        child: Container(
-          child: Image.asset(
-            'assets/images/tree.jpg',
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.centerRight,
-          ),
-        ),
-      );
   _getAnimatedAlphabetListWidget() => Container(
         constraints: BoxConstraints(maxWidth: 500),
         width: double.infinity,
@@ -73,24 +65,12 @@ class _UseCaseItemListState extends State<UseCaseItemList>
         child: SingleChildScrollView(
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          child: AnimationLimiter(
-            child: Padding(
-              padding: EdgeInsets.only(right: 20, left: 20, top: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: AnimationConfiguration.toStaggeredList(
-                  duration: const Duration(
-                      milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                  childAnimationBuilder: (widget) => SlideAnimation(
-                    verticalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: widget,
-                    ),
-                  ),
-                  children: _getWordList(),
-                ),
-              ),
+          child: Padding(
+            padding: EdgeInsets.only(right: 20, left: 20, top: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: _getWordList(),
             ),
           ),
         ),
