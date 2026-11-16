@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tibetan_language_learning_app/bloc/snake_game/snake_game_bloc.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
+import 'package:tibetan_language_learning_app/model/book_item.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/game/game_home_page.dart';
 import 'package:tibetan_language_learning_app/presentation/game/memory_match/memory_match_screen.dart';
@@ -20,6 +21,7 @@ import 'package:tibetan_language_learning_app/presentation/learn/verbs/verb_deta
 import 'package:tibetan_language_learning_app/presentation/learn/verbs/verbs_list_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_menu_page.dart';
+import 'package:tibetan_language_learning_app/presentation/shop/book_detail_page.dart';
 import 'package:tibetan_language_learning_app/presentation/shop/shop_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
@@ -134,31 +136,38 @@ class RouteGenerator {
           return _errorRoute();
         }
       case GameHomePage.routeName:
-        return MaterialPageRoute(
-          builder: (_) => GameHomePage(),
+        return ParallaxPageRoute(
+          builder: (_) => const GameHomePage(),
         );
       case SpellingBeePage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => ChangeNotifierProvider<SpellingBeeProvider>(
             create: (BuildContext context) => SpellingBeeProvider(),
             child: SpellingBeePage(),
           ),
         );
       case SnakeGamePage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => BlocProvider(
             create: (context) => SnakeGameBloc(),
             child: SnakeGamePage(),
           ),
         );
       case MemoryMatchGameScreen.routeName:
-        return MaterialPageRoute(
-          builder: (_) => MemoryMatchGameScreen(),
+        return ParallaxPageRoute(
+          builder: (_) => const MemoryMatchGameScreen(),
         );
       case ShopPage.routeName:
         return ParallaxPageRoute(
-          builder: (_) => ShopPage(),
+          builder: (_) => const ShopPage(),
         );
+      case BookDetailPage.routeName:
+        if (args is BookItem) {
+          return ParallaxPageRoute(
+            builder: (_) => BookDetailPage(book: args),
+          );
+        }
+        return _errorRoute();
 
       default:
         return _errorRoute();

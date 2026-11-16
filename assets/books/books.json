@@ -1,0 +1,87 @@
+{
+  "_howTo": "The Shop's books as built into the app, shown until Firestore (collection shop_books) answers. How to add or edit a book: docs/shop-books.md",
+  "books": [
+    {
+      "id": "my-first-tibetan-alphabet",
+      "title": "My First Tibetan Alphabet",
+      "subtitle": "30 letters · 30 pictures · audio on every page",
+      "author": "",
+      "publisher": "KharagEdition",
+      "badge": "Level 1",
+      "description": "Meet all 30 letters of the Tibetan alphabet. Every page pairs a big, bright letter with a word and a picture, and a QR code lets your child hear the word spoken. The book ends with the numbers one to ten, ready for counting practice.",
+      "ages": "",
+      "pages": 46,
+      "format": "Paperback · 8.5 × 8.5 in",
+      "cover": "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Fmy-first-tibetan-alphabet-cover.jpg?alt=media&token=5184b8e7-adc8-4f30-8b1f-f23a1c9f6e22",
+      "previews": [
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Fmy-first-tibetan-alphabet-page-1.jpg?alt=media&token=e8d87741-a5cd-41f7-98c6-40322c5bf816",
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Fmy-first-tibetan-alphabet-page-2.jpg?alt=media&token=937f8143-3b6e-496e-b44f-b0ddf4f045a0",
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Fmy-first-tibetan-alphabet-page-3.jpg?alt=media&token=fa422e26-d9d6-405f-b5fb-f013cafea88b",
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Fmy-first-tibetan-alphabet-page-4.jpg?alt=media&token=1229ab8a-930b-43c2-8e91-974334d57f02"
+      ],
+      "links": {
+        "world": "https://www.amazon.com/dp/B0HR4LJ42T",
+        "india": ""
+      }
+    },
+    {
+      "id": "trace-and-write-tibetan",
+      "title": "Trace & Write Tibetan Alphabet",
+      "subtitle": "My first Tibetan writing workbook",
+      "author": "",
+      "publisher": "KharagEdition",
+      "badge": "New",
+      "description": "Learn to write all 30 Tibetan letters, stroke by stroke. Meet each letter, trace it, then write it on your own, with games between the lessons and a certificate at the end. QR codes open every letter in the Rangjong app to trace it on screen.",
+      "ages": "",
+      "pages": 73,
+      "format": "Paperback · 8.5 × 11 in",
+      "cover": "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ftrace-and-write-tibetan-cover.jpg?alt=media&token=271df76b-cd81-456b-9046-bde56782521d",
+      "previews": [
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ftrace-and-write-tibetan-page-1.jpg?alt=media&token=0a6b96d9-df97-42b0-9d37-e0142799b8e8",
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ftrace-and-write-tibetan-page-2.jpg?alt=media&token=40c06703-7299-4cd7-8d12-3122a9740456",
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ftrace-and-write-tibetan-page-3.jpg?alt=media&token=a502e3a2-a377-489d-87f7-3226e71c95ba",
+        "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ftrace-and-write-tibetan-page-4.jpg?alt=media&token=9b679099-acf4-41a1-92bd-8253f331bbc1"
+      ],
+      "links": {
+        "world": "",
+        "india": ""
+      }
+    },
+    {
+      "id": "fruits-and-vegetables",
+      "title": "Tibetan Language Learning: Fruits & Vegetables",
+      "subtitle": "",
+      "author": "",
+      "publisher": "KharagEdition",
+      "badge": "",
+      "description": "Learn the Tibetan names of everyday fruits and vegetables.",
+      "ages": "",
+      "pages": 53,
+      "format": "",
+      "cover": "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ffruits-and-vegetables-cover.jpg?alt=media&token=7a5823d5-5c16-481d-a97e-10c63c169f42",
+      "previews": [],
+      "links": {
+        "world": "https://www.amazon.com/dp/B0C2MWLY61",
+        "india": ""
+      }
+    },
+    {
+      "id": "tibetan-alphabet-coloring-book",
+      "title": "Tibetan Alphabet Coloring Book for Kids",
+      "subtitle": "",
+      "author": "",
+      "publisher": "KharagEdition",
+      "badge": "",
+      "description": "Colour your way through the letters of the Tibetan alphabet.",
+      "ages": "",
+      "pages": 31,
+      "format": "",
+      "cover": "https://firebasestorage.googleapis.com/v0/b/tibetanlanguagelearningapp.firebasestorage.app/o/shop_books%2Ftibetan-alphabet-coloring-book-cover.jpg?alt=media&token=f0e93a87-ad96-478f-8153-b2b00e81e292",
+      "previews": [],
+      "links": {
+        "world": "https://www.amazon.com/dp/B0C1J7N94C",
+        "india": ""
+      }
+    }
+  ]
+}

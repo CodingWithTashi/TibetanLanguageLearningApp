@@ -114,7 +114,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       Game(
         name: 'Spelling Bee',
         description: 'Master Tibetan spelling with this exciting game!',
-        gameIcon: 'https://assets6.lottiefiles.com/packages/lf20_yU09RI.json',
         gameType: GameType.spellingBeeGame,
         requiredScoreInPreviousLevelToUnlock: 0,
         level: 1,
@@ -123,7 +122,6 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       Game(
         name: 'Snake Game',
         description: 'Collect Tibetan letters while growing your snake!',
-        gameIcon: 'https://assets6.lottiefiles.com/packages/lf20_qoo3cyxi.json',
         gameType: GameType.snakeGame,
         requiredScoreInPreviousLevelToUnlock: 1,
         level: 2,
@@ -131,9 +129,7 @@ class GameBloc extends Bloc<GameEvent, GameState> {
       ),
       Game(
         name: 'Memory Match',
-        description: 'Collect Tibetan letters while growing your snake!',
-        gameIcon:
-            'https://lottie.host/embed/e878b150-a736-48c1-a865-35b03bc19920/7zmeLDaVtf.json',
+        description: 'Remember the letters, then find the matching pairs!',
         gameType: GameType.memoryGame,
         requiredScoreInPreviousLevelToUnlock: kLevelOneScoreLimit,
         level: 3,

@@ -29,10 +29,6 @@ dependencies:
   firebase_analytics: ^13.0.1
   shared_preferences: ^2.5.6
   provider:
-  liquid_progress_indicator_v2: ^0.5.0
-  confetti: ^0.8.0
-  carousel_slider: ^5.1.2
-  lottie: ^3.8.2
   purchases_flutter: ^11.0.2
 
   flutter_localizations:
@@ -42,6 +38,9 @@ dependencies:
   bloc: any
   material_ui: any
   meta: any
+  cloud_firestore: ^7.2.0
+  cached_network_image: ^4.0.7
+  http: ^1.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -86,8 +85,8 @@ flutter:
     - assets/audio/number/
     - assets/audio/pronoun/
     - assets/others/
+    - assets/books/
     - assets/
-    - assets/json/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
