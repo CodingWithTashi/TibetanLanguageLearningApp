@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/alphabet/alphabet_detail_page.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
@@ -27,50 +26,30 @@ class _AlphabetListPageState extends State<AlphabetListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
-        children: [_getBackgroundImage(), _getAnimatedAlphabetListWidget()],
+        children: [
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
+          _getAnimatedAlphabetListWidget(),
+        ],
       ),
       floatingActionButton: ApplicationUtil.getFloatingActionButton(context),
     );
   }
-
-  _getBackgroundImage() => Hero(
-        tag: 'image',
-        child: Container(
-          child: Image.asset(
-            'assets/images/tree.jpg',
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-            alignment: Alignment.centerRight,
-          ),
-        ),
-      );
 
   _getAnimatedAlphabetListWidget() => Container(
         padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: SingleChildScrollView(
           physics:
               BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          child: AnimationLimiter(
-            child: Padding(
-              padding: EdgeInsets.only(right: 40, left: 50, top: 40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: AnimationConfiguration.toStaggeredList(
-                  duration: const Duration(
-                      milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                  childAnimationBuilder: (widget) => SlideAnimation(
-                    horizontalOffset: 50.0,
-                    child: FadeInAnimation(
-                      child: widget,
-                    ),
-                  ),
-                  children: _getAlphabetList(),
-                ),
-              ),
+          child: Padding(
+            padding: EdgeInsets.only(right: 40, left: 50, top: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: _getAlphabetList(),
             ),
           ),
         ),

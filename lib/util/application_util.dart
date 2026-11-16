@@ -9,8 +9,6 @@ import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ApplicationUtil {
-  static const ANIMATION_DURATION = 300;
-
   static getBoxDecorationOne(BuildContext context) {
     return BoxDecoration(
       color: Theme.of(context).primaryColor,

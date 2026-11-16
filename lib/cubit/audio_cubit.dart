@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/service/audio_service.dart';
@@ -8,6 +10,7 @@ part 'audio_state.dart';
 class AudioCubit extends Cubit<AudioState> {
   final AudioService audioService;
   AudioPlayer audioPlayer;
+  StreamSubscription<PlayerState>? _playerStateSubscription;
   AudioCubit(this.audioService, {required this.audioPlayer})
       : super(AudioInitial()) {
     initAudioListener();
@@ -52,7 +55,11 @@ class AudioCubit extends Cubit<AudioState> {
   }
 
   void initAudioListener() {
-    audioPlayer.playerStateStream.listen((playerState) {
+    _playerStateSubscription =
+        audioPlayer.playerStateStream.listen((playerState) {
+      // Disposing the player when the page closes sends one last state,
+      // after the cubit has already been closed.
+      if (isClosed) return;
       final isPlaying = playerState.playing;
       final processingState = playerState.processingState;
       if (processingState == ProcessingState.loading ||
@@ -85,5 +92,11 @@ class AudioCubit extends Cubit<AudioState> {
 
   void destroyAudioPlayer() {
     audioPlayer.dispose();
+  }
+
+  @override
+  Future<void> close() async {
+    await _playerStateSubscription?.cancel();
+    return super.close();
   }
 }

@@ -10,6 +10,7 @@ import 'package:tibetan_language_learning_app/game_bloc/game_bloc.dart';
 import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/l10n/l10n.dart';
 import 'package:tibetan_language_learning_app/l10n/localization_delegate.dart';
+import 'package:tibetan_language_learning_app/presentation/widget/parallax_background.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:tibetan_language_learning_app/util/route_generator.dart';
@@ -46,8 +47,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
+
+  @override
+  State<StartPage> createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  // One instance for the app's lifetime: a new observer on every locale
+  // change would lose track of the pages already on the stack.
+  final ParallaxDepthObserver _parallaxObserver = ParallaxDepthObserver();
+
+  @override
+  void dispose() {
+    _parallaxObserver.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +88,17 @@ class StartPage extends StatelessWidget {
             ),
             pageTransitionsTheme: PageTransitionsTheme(builders: {
               TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+              TargetPlatform.macOS: CupertinoPageTransitionsBuilder(),
             }),
           ),
           initialRoute: '/',
           onGenerateRoute: RouteGenerator.generateRoute,
+          navigatorObservers: [_parallaxObserver],
+          builder: (context, child) => ParallaxBackground(
+            observer: _parallaxObserver,
+            child: child!,
+          ),
         );
       },
     );

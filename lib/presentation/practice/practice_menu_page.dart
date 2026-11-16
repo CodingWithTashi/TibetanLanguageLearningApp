@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/practice/practice_detail_page.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
@@ -57,22 +56,12 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
         children: [
-          Hero(
-            tag: 'image',
-            child: Container(
-              child: Image.asset(
-                'assets/images/tree.jpg',
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
           Column(
             children: [
               SizedBox(height: MediaQuery.of(context).padding.top),
@@ -81,31 +70,16 @@ class _PracticeMenuPageState extends State<PracticeMenuPage> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   constraints: BoxConstraints(maxWidth: 500),
-                  child: AnimationLimiter(
-                    child: GridView.count(
-                      physics: BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
-                      ),
-                      crossAxisSpacing: 30,
-                      mainAxisSpacing: 10,
-                      crossAxisCount: 2,
-                      children: List.generate(
-                        alphabetList.length,
-                        (int index) {
-                          return AnimationConfiguration.staggeredGrid(
-                            position: index,
-                            duration: const Duration(
-                                milliseconds:
-                                    ApplicationUtil.ANIMATION_DURATION),
-                            columnCount: 2,
-                            child: ScaleAnimation(
-                              child: FadeInAnimation(
-                                child: _getGridViewItem(alphabetList[index]),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
+                  child: GridView.count(
+                    physics: BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics(),
+                    ),
+                    crossAxisSpacing: 30,
+                    mainAxisSpacing: 10,
+                    crossAxisCount: 2,
+                    children: List.generate(
+                      alphabetList.length,
+                      (int index) => _getGridViewItem(alphabetList[index]),
                     ),
                   ),
                 ),

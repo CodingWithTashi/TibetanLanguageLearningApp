@@ -23,6 +23,7 @@ import 'package:tibetan_language_learning_app/presentation/practice/practice_men
 import 'package:tibetan_language_learning_app/presentation/shop/shop_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_case_item_list.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
+import 'package:tibetan_language_learning_app/presentation/widget/parallax_background.dart';
 import 'package:tibetan_language_learning_app/service/audio_service.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 
@@ -32,11 +33,11 @@ class RouteGenerator {
 
     switch (settings.name) {
       case '/':
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => LanguageTypePage(),
         );
       case HomePage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => HomePage(),
         );
       case LearnMenuPage.routeName:
@@ -56,11 +57,11 @@ class RouteGenerator {
                 ).animate(animation),
               );
             });*/
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => LearnMenuPage(),
         );
       case AlphabetListPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => AlphabetListPage(),
         );
       case AlphabetDetailPage.routeName:
@@ -79,7 +80,7 @@ class RouteGenerator {
           return _errorRoute();
         }
       case PracticeMenuPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => PracticeMenuPage(),
         );
       case PracticeDetailPage.routeName:
@@ -95,7 +96,7 @@ class RouteGenerator {
         }
 
       case VerbListPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => VerbListPage(),
         );
       case VerbDetailPage.routeName:
@@ -114,13 +115,13 @@ class RouteGenerator {
           return _errorRoute();
         }
       case UseCaseMenuPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => UseCaseMenuPage(),
         );
       case UseCaseItemList.routeName:
         {
           if (settings.arguments != null && settings.arguments is UseCaseType) {
-            return MaterialPageRoute(
+            return ParallaxPageRoute(
               builder: (_) => BlocProvider<AudioCubit>(
                 create: (context) =>
                     AudioCubit(AudioService(), audioPlayer: AudioPlayer()),
@@ -155,7 +156,7 @@ class RouteGenerator {
           builder: (_) => MemoryMatchGameScreen(),
         );
       case ShopPage.routeName:
-        return MaterialPageRoute(
+        return ParallaxPageRoute(
           builder: (_) => ShopPage(),
         );
 

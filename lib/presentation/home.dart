@@ -23,7 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   double menuFontSize = 22;
-  double _buttonOpacity = 0;
   bool isExtended = false;
 /*  late BannerAd myBanner;
   late BannerAdListener listener;
@@ -31,10 +30,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 500), () {
-      _buttonOpacity = 1;
-      setState(() {});
-    });
     if (!kIsWeb) {
       initBannerAds();
     }
@@ -57,10 +52,12 @@ class _HomePageState extends State<HomePage> {
       menuFontSize = 20;
     }
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          _getBackgroundImage(),
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
           _getButtons(),
           _topBannerAds(),
           _languageSwitch(),
@@ -103,18 +100,14 @@ class _HomePageState extends State<HomePage> {
     onTap: () {
       Navigator.pushNamed(context, LearnMenuPage.routeName);
     },
-    child: AnimatedOpacity(
-      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-      opacity: _buttonOpacity,
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          AppLocalizations.of(context)!.learnLangauge,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-        ),
+    child: Container(
+      width: 200,
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
+      child: Text(
+        AppLocalizations.of(context)!.learnLangauge,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: menuFontSize, color: Colors.white),
       ),
     ),
   );
@@ -123,31 +116,14 @@ class _HomePageState extends State<HomePage> {
     onTap: () {
       Navigator.pushNamed(context, PracticeMenuPage.routeName);
     },
-    child: AnimatedOpacity(
-      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-      opacity: _buttonOpacity,
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          AppLocalizations.of(context)!.practiceLanguage,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-        ),
-      ),
-    ),
-  );
-
-  _getBackgroundImage() => Hero(
-    tag: 'image',
     child: Container(
-      child: Image.asset(
-        'assets/images/tree.jpg',
-        fit: BoxFit.cover,
-        height: double.infinity,
-        width: double.infinity,
-        alignment: Alignment.centerLeft,
+      width: 200,
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
+      child: Text(
+        AppLocalizations.of(context)!.practiceLanguage,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: menuFontSize, color: Colors.white),
       ),
     ),
   );
@@ -189,18 +165,14 @@ class _HomePageState extends State<HomePage> {
     onTap: () {
       Navigator.pushNamed(context, UseCaseMenuPage.routeName);
     },
-    child: AnimatedOpacity(
-      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-      opacity: _buttonOpacity,
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          AppLocalizations.of(context)!.useCases,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-        ),
+    child: Container(
+      width: 200,
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
+      child: Text(
+        AppLocalizations.of(context)!.useCases,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: menuFontSize, color: Colors.white),
       ),
     ),
   );
@@ -208,18 +180,14 @@ class _HomePageState extends State<HomePage> {
     onTap: () {
       Navigator.pushNamed(context, GameHomePage.routeName);
     },
-    child: AnimatedOpacity(
-      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-      opacity: _buttonOpacity,
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          AppLocalizations.of(context)!.playGame,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-        ),
+    child: Container(
+      width: 200,
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
+      child: Text(
+        AppLocalizations.of(context)!.playGame,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: menuFontSize, color: Colors.white),
       ),
     ),
   );
@@ -228,18 +196,14 @@ class _HomePageState extends State<HomePage> {
     onTap: () {
       Navigator.pushNamed(context, ShopPage.routeName);
     },
-    child: AnimatedOpacity(
-      duration: Duration(milliseconds: ApplicationUtil.ANIMATION_DURATION),
-      opacity: _buttonOpacity,
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-        decoration: ApplicationUtil.getBoxDecorationOne(context),
-        child: Text(
-          AppLocalizations.of(context)!.shop,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: menuFontSize, color: Colors.white),
-        ),
+    child: Container(
+      width: 200,
+      padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+      decoration: ApplicationUtil.getBoxDecorationOne(context),
+      child: Text(
+        AppLocalizations.of(context)!.shop,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: menuFontSize, color: Colors.white),
       ),
     ),
   );

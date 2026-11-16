@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/learn/verbs/verb_detail_page.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
@@ -24,51 +23,27 @@ class _VerbListPageState extends State<VerbListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
         children: [
-          Hero(
-            tag: 'image',
-            child: Container(
-              child: Image.asset(
-                'assets/images/tree.jpg',
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
           Container(
             constraints: BoxConstraints(maxWidth: 500),
             padding: EdgeInsets.only(
               top: MediaQuery.of(context).padding.top,
             ),
-            child: AnimationLimiter(
-              child: GridView.count(
-                physics: BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                crossAxisSpacing: 30,
-                mainAxisSpacing: 10,
-                crossAxisCount: 2,
-                children: List.generate(
-                  verbsList.length,
-                  (int index) {
-                    return AnimationConfiguration.staggeredGrid(
-                      position: index,
-                      duration: const Duration(
-                          milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                      columnCount: 2,
-                      child: ScaleAnimation(
-                        child: FadeInAnimation(
-                          child: _getGridViewItem(verbsList[index]),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+            child: GridView.count(
+              physics: BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              crossAxisSpacing: 30,
+              mainAxisSpacing: 10,
+              crossAxisCount: 2,
+              children: List.generate(
+                verbsList.length,
+                (int index) => _getGridViewItem(verbsList[index]),
               ),
             ),
           )

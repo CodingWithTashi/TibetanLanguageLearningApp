@@ -1,4 +1,3 @@
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:tibetan_language_learning_app/l10n/app_localizations.dart';
 import 'package:tibetan_language_learning_app/model/book_item.dart';
@@ -33,22 +32,12 @@ class ShopPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final marketplace = AmazonLinkUtil.currentMarketplace();
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Colors.transparent,
       body: Stack(
         alignment: Alignment.topRight,
         children: [
-          Hero(
-            tag: 'image',
-            child: Container(
-              child: Image.asset(
-                'assets/images/tree.jpg',
-                fit: BoxFit.cover,
-                height: double.infinity,
-                width: double.infinity,
-                alignment: Alignment.center,
-              ),
-            ),
-          ),
+          // Keeps the Stack full-screen; the image is in ParallaxBackground.
+          const SizedBox.expand(),
           Container(
             constraints: BoxConstraints(maxWidth: 500),
             width: double.infinity,
@@ -56,21 +45,9 @@ class ShopPage extends StatelessWidget {
             child: SingleChildScrollView(
               physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics()),
-              child: AnimationLimiter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(
-                        milliseconds: ApplicationUtil.ANIMATION_DURATION),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      verticalOffset: -50.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
-                    ),
-                    children: _getWidgetList(context, marketplace),
-                  ),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: _getWidgetList(context, marketplace),
               ),
             ),
           ),

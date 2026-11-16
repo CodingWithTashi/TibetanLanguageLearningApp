@@ -112,7 +112,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
                           .setString('familyName', AppConstant.TSUTUNG_FAMILY);
                       /* cubit.updateLocale(
                           L10n.all[1], AppConstant.TSUTUNG_FAMILY);*/
-                      Navigator.popAndPushNamed(context, HomePage.routeName);
+                      Navigator.pushReplacementNamed(context, HomePage.routeName);
                     },
                     child: Container(
                       width: 250,
@@ -170,7 +170,7 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
 
                       // cubit.updateLocale(
                       //     L10n.all[1], AppConstant.JOMAHALI_FAMILY);
-                      Navigator.popAndPushNamed(context, HomePage.routeName);
+                      Navigator.pushReplacementNamed(context, HomePage.routeName);
                     },
                     child: Container(
                       width: 250,
