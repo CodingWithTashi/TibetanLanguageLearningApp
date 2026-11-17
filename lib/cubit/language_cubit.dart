@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tibetan_language_learning_app/l10n/l10n.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 
 part 'language_state.dart';

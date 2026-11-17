@@ -2,7 +2,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
-import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/model/word.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
@@ -192,7 +191,7 @@ class _UseCaseItemListState extends State<UseCaseItemList>
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                  color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+                  color: Theme.of(context).primaryColorLight.withValues(alpha: 0.3),
                   offset: Offset(5, 10),
                   spreadRadius: 3,
                   blurRadius: 10),
@@ -209,7 +208,7 @@ class _UseCaseItemListState extends State<UseCaseItemList>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-              color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+              color: Theme.of(context).primaryColorLight.withValues(alpha: 0.3),
               offset: Offset(5, 10),
               spreadRadius: 3,
               blurRadius: 10),

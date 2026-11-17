@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/model/verb.dart';
 import 'package:tibetan_language_learning_app/presentation/widget/alphabet_audio_control.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
