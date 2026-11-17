@@ -48,3 +48,11 @@ app.*.map.json
 /kdp/alphabet-tracing-book-tibetan/
 /kdp/book/
 /kdp/
+
+# The release keystore CI decodes from a secret; keep real ones out of git too.
+*.jks
+
+# fastlane run output (fastlane/Fastfile).
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output
