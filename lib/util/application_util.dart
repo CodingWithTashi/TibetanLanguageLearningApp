@@ -20,7 +20,7 @@ class ApplicationUtil {
             spreadRadius: -4,
             blurRadius: 10),
         BoxShadow(
-            color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+            color: Theme.of(context).primaryColorLight.withValues(alpha: 0.3),
             offset: Offset(5, 5),
             spreadRadius: 3,
             blurRadius: 10),
@@ -39,7 +39,7 @@ class ApplicationUtil {
             spreadRadius: -4,
             blurRadius: 10),
         BoxShadow(
-            color: Colors.white70.withOpacity(0.3),
+            color: Colors.white70.withValues(alpha: 0.3),
             offset: Offset(5, 5),
             spreadRadius: 3,
             blurRadius: 10),
@@ -83,7 +83,9 @@ class ApplicationUtil {
   static MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
     final swatch = <int, Color>{};
-    final int r = color.red, g = color.green, b = color.blue;
+    // The 0-255 channel values that the deprecated Color.red/green/blue returned.
+    int channel(double c) => (c * 255.0).round().clamp(0, 255);
+    final int r = channel(color.r), g = channel(color.g), b = channel(color.b);
 
     for (int i = 1; i < 10; i++) {
       strengths.add(0.1 * i);
@@ -97,7 +99,7 @@ class ApplicationUtil {
         1,
       );
     });
-    return MaterialColor(color.value, swatch);
+    return MaterialColor(color.toARGB32(), swatch);
   }
 
   static getAudioAssetPath({required pathName, required String audioName}) {
@@ -108,14 +110,9 @@ class ApplicationUtil {
     return 'assets/images/' + verb + ".png";
   }
 
-  static Future<void> launchInBrowser(url) async {
-    if (await canLaunch(url)) {
-      await launch(
-        url,
-        forceSafariVC: false,
-        forceWebView: false,
-      );
-    } else {
+  static Future<void> launchInBrowser(String url) async {
+    // externalApplication = the old forceSafariVC: false / forceWebView: false (browser or store app).
+    if (!await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
       throw 'Could not launch $url';
     }
   }
@@ -220,12 +217,12 @@ class ApplicationUtil {
                   ),
                   title: new Text('Share'),
                   onTap: () {
-                    Share.share(
-                        Platform.isIOS
+                    SharePlus.instance.share(ShareParams(
+                        text: Platform.isIOS
                             ? AppConstant.IOS_APP_URL
                             : AppConstant.SHARE_URL,
                         subject:
-                            'Check out this Tibetan Language Learning  App.');
+                            'Check out this Tibetan Language Learning  App.'));
                     Navigator.pop(context);
                   },
                 ),
@@ -260,7 +257,7 @@ class ApplicationUtil {
       path: '$email',
       query: encodeQueryParameters(<String, String>{'subject': sub}),
     );
-    launch(emailLaunchUri.toString());
+    launchUrl(emailLaunchUri);
   }
 
   static void setScreenOrientation({required bool disabledLandscape}) {

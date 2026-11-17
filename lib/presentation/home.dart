@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
@@ -10,7 +9,6 @@ import 'package:tibetan_language_learning_app/presentation/shop/shop_page.dart';
 import 'package:tibetan_language_learning_app/presentation/use_cases/use_cases_menu.dart';
 import 'package:tibetan_language_learning_app/presentation/widget/language_widget.dart';
 import 'package:tibetan_language_learning_app/util/application_util.dart';
-import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class HomePage extends StatefulWidget {
   static const routeName = "/home";

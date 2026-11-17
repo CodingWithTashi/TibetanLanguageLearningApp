@@ -14,7 +14,6 @@ import 'package:tibetan_language_learning_app/presentation/widget/parallax_backg
 import 'package:tibetan_language_learning_app/servie_locater.dart';
 import 'package:tibetan_language_learning_app/util/constant.dart';
 import 'package:tibetan_language_learning_app/util/route_generator.dart';
-import 'package:material_ui/material_ui.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (!kIsWeb) {

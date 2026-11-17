@@ -412,10 +412,6 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   String get keyboardKeyDelete => '';
 
   @override
-  // TODO: implement keyboardKeyEisu
-  String get keyboardKeyEisu => '';
-
-  @override
   // TODO: implement keyboardKeyEject
   String get keyboardKeyEject => '';
 
@@ -432,44 +428,12 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   String get keyboardKeyFn => '';
 
   @override
-  // TODO: implement keyboardKeyHangulMode
-  String get keyboardKeyHangulMode => '';
-
-  @override
-  // TODO: implement keyboardKeyHanjaMode
-  String get keyboardKeyHanjaMode => '';
-
-  @override
-  // TODO: implement keyboardKeyHankaku
-  String get keyboardKeyHankaku => '';
-
-  @override
-  // TODO: implement keyboardKeyHiragana
-  String get keyboardKeyHiragana => '';
-
-  @override
-  // TODO: implement keyboardKeyHiraganaKatakana
-  String get keyboardKeyHiraganaKatakana => '';
-
-  @override
   // TODO: implement keyboardKeyHome
   String get keyboardKeyHome => '';
 
   @override
   // TODO: implement keyboardKeyInsert
   String get keyboardKeyInsert => '';
-
-  @override
-  // TODO: implement keyboardKeyKanaMode
-  String get keyboardKeyKanaMode => '';
-
-  @override
-  // TODO: implement keyboardKeyKanjiMode
-  String get keyboardKeyKanjiMode => '';
-
-  @override
-  // TODO: implement keyboardKeyKatakana
-  String get keyboardKeyKatakana => '';
 
   @override
   // TODO: implement keyboardKeyMeta
@@ -588,10 +552,6 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   String get keyboardKeyPrintScreen => '';
 
   @override
-  // TODO: implement keyboardKeyRomaji
-  String get keyboardKeyRomaji => '';
-
-  @override
   // TODO: implement keyboardKeyScrollLock
   String get keyboardKeyScrollLock => '';
 
@@ -602,14 +562,6 @@ class MaterialLocalizationTb extends MaterialLocalizations {
   @override
   // TODO: implement keyboardKeySpace
   String get keyboardKeySpace => '';
-
-  @override
-  // TODO: implement keyboardKeyZenkaku
-  String get keyboardKeyZenkaku => '';
-
-  @override
-  // TODO: implement keyboardKeyZenkakuHankaku
-  String get keyboardKeyZenkakuHankaku => '';
 
   @override
   // TODO: implement bottomSheetLabel

@@ -1,3 +1,6 @@
 arb-dir: lib/l10n
 template-arb-file: app_en.arb
 output-localization-file: app_localizations.dart
+# Flutter 3.50 gen-l10n still emits the flutter_localizations delegates that material_ui/cupertino_ui
+# replaced, so silence that one rule in the generated files (a hand edit is overwritten on regeneration).
+header: "// ignore_for_file: deprecated_member_use"

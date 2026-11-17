@@ -1,5 +1,4 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/model/alphabet.dart';
 import 'package:tibetan_language_learning_app/presentation/widget/alphabet_audio_control.dart';
 import 'package:tibetan_language_learning_app/servie_locater.dart';
@@ -72,7 +71,7 @@ class _AlphabetDetailPageState extends State<AlphabetDetailPage> {
                             'No Audio Found, We will update and let you know',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Colors.white.withOpacity(0.5),
+                                color: Colors.white.withValues(alpha: 0.5),
                                 fontSize: 20),
                           ),
                         )

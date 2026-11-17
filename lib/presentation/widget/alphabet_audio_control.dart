@@ -2,7 +2,6 @@ import 'package:material_ui/material_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:tibetan_language_learning_app/cubit/audio_cubit.dart';
-import 'package:tibetan_language_learning_app/util/constant.dart';
 
 class AlphabetAudioControl extends StatefulWidget {
   final String fileName;
@@ -84,7 +83,7 @@ class _AlphabetAudioControlState extends State<AlphabetAudioControl>
                                   ? Theme.of(context).primaryColorLight
                                   : Theme.of(context)
                                       .primaryColorLight
-                                      .withOpacity(0.3),
+                                      .withValues(alpha: 0.3),
                             )),
                           ),
                         ),
@@ -192,7 +191,7 @@ class _AlphabetAudioControlState extends State<AlphabetAudioControl>
             shape: BoxShape.circle,
             boxShadow: [
               BoxShadow(
-                  color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+                  color: Theme.of(context).primaryColorLight.withValues(alpha: 0.3),
                   offset: Offset(5, 10),
                   spreadRadius: 3,
                   blurRadius: 10),
@@ -209,7 +208,7 @@ class _AlphabetAudioControlState extends State<AlphabetAudioControl>
         shape: BoxShape.circle,
         boxShadow: [
           BoxShadow(
-              color: Theme.of(context).primaryColorLight.withOpacity(0.3),
+              color: Theme.of(context).primaryColorLight.withValues(alpha: 0.3),
               offset: Offset(5, 10),
               spreadRadius: 3,
               blurRadius: 10),

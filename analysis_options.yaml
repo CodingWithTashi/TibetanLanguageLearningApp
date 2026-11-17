@@ -1,0 +1,9 @@
+analyzer:
+  exclude:
+    # On a Mac, iOS builds copy the Swift Package plugin sources (and their own tests) into
+    # build/ios/SourcePackages; they aren't this app's code and CI never has them.
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - windows/**

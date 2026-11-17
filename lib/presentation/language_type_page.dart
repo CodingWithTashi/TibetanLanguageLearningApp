@@ -105,7 +105,6 @@ class _LanguageTypePageState extends State<LanguageTypePage> {
             BlocBuilder<LanguageCubit, LanguageState>(
               builder: (context, state) {
                 if (state is LanguageLoaded) {
-                  String lan = state.locale.languageCode;
                   return InkWell(
                     onTap: () {
                       getIt<SharedPreferences>()
