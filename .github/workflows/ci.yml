@@ -1,0 +1,32 @@
+name: Flutter checks
+
+# Analyzes and tests the app once, when a pull request to main is opened. Later pushes to the
+# pull request and the merge to main don't run it again; close and reopen the pull request to
+# check its latest commit. Nothing ships from here: release.yml calls this workflow first, then
+# ships to the stores by hand.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened]
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Analyze and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: pubspec.yaml # environment: flutter, the app's one pin.
+          cache: true
+
+      - run: flutter pub get
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter test
