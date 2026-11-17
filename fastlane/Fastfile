@@ -1,0 +1,146 @@
+# Store releases for the Flutter app. GitHub Actions runs these from .github/workflows/release.yml;
+# run them locally with `bundle exec fastlane <platform> <lane>`. The version and build number
+# always come from pubspec.yaml, so bump it before a release.
+require "yaml"
+
+skip_docs
+
+PROJECT_DIR = File.expand_path("..", __dir__)
+PLAY_PACKAGE = "com.kharagedition.tibetan_language_learning_app"
+TEAM_ID = "PZFFFQ5T9X"
+# Private repo holding the encrypted App Store certificate and profiles (`fastlane ios certs`),
+# shared by every app on the team.
+MATCH_GIT_URL = "https://github.com/CodingWithTashi/ios-certificates.git"
+# Every iOS target that ships in the archive, with its bundle id.
+IOS_TARGETS = {
+  "Runner" => "com.kharagedition.tibetanLanguageLearningApp",
+}
+
+def flutter(*args)
+  Dir.chdir(PROJECT_DIR) { sh("flutter", *args) }
+end
+
+# ["1.2.3", "45"] from `version: 1.2.3+45`.
+def pubspec_version
+  YAML.load_file("#{PROJECT_DIR}/pubspec.yaml").fetch("version").split("+")
+end
+
+def match_appstore(readonly:)
+  # On CI, match reads the certificates repo with this header. IOS_CERT_TOKEN is the token as GitHub
+  # shows it; a value that is already base64 of "user:token" passes through unchanged.
+  if is_ci
+    token = ENV.fetch("IOS_CERT_TOKEN").strip
+    ENV["MATCH_GIT_BASIC_AUTHORIZATION"] =
+      token.match?(/\A(github_pat_|gh[pousr]_)/) ? ["CodingWithTashi:#{token}"].pack("m0") : token
+  end
+  match(type: "appstore", readonly: readonly, git_url: MATCH_GIT_URL, team_id: TEAM_ID,
+        app_identifier: IOS_TARGETS.values)
+end
+
+platform :android do
+  desc "Build and upload to a Play track (track:internal|alpha|beta|production)"
+  lane :release do |options|
+    track = options.fetch(:track, "internal")
+    json_key = ENV.fetch("PLAY_STORE_JSON_KEY")
+
+    # Fail before the long build if this build number is already on the track.
+    _version, build = pubspec_version
+    on_track = google_play_track_version_codes(package_name: PLAY_PACKAGE, track: track, json_key_data: json_key)
+    if on_track.include?(build.to_i)
+      UI.user_error!("The #{track} track already has build #{build}; set a higher build number in pubspec.yaml")
+    end
+
+    # CI has none of the git-ignored signing files: write the Firebase config, decode the keystore,
+    # and write the android/key.properties that android/app/build.gradle signs with.
+    if is_ci
+      File.binwrite("#{PROJECT_DIR}/android/app/google-services.json",
+                    ENV.fetch("GOOGLE_SERVICES_JSON_BASE64").unpack1("m"))
+      keystore = "#{PROJECT_DIR}/android/app/upload-keystore.jks"
+      File.binwrite(keystore, ENV.fetch("ANDROID_KEYSTORE_BASE64").unpack1("m"))
+      File.write("#{PROJECT_DIR}/android/key.properties", <<~PROPERTIES)
+        storeFile=#{keystore}
+        storePassword=#{ENV.fetch("ANDROID_STORE_PASSWORD")}
+        keyAlias=#{ENV.fetch("ANDROID_KEY_ALIAS")}
+        keyPassword=#{ENV.fetch("ANDROID_KEY_PASSWORD")}
+      PROPERTIES
+    end
+
+    flutter("build", "appbundle", "--release")
+
+    mapping = "#{PROJECT_DIR}/build/app/outputs/mapping/release/mapping.txt"
+    upload_to_play_store(
+      package_name: PLAY_PACKAGE,
+      json_key_data: json_key,
+      track: track,
+      release_status: "completed",
+      aab: "#{PROJECT_DIR}/build/app/outputs/bundle/release/app-release.aab",
+      mapping: File.exist?(mapping) ? mapping : nil,
+      skip_upload_metadata: true,
+      skip_upload_changelogs: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+    )
+  end
+end
+
+platform :ios do
+  desc "Once per app, on your Mac: create or renew the App Store profiles in the match repo"
+  lane :certs do
+    match_appstore(readonly: false)
+  end
+
+  desc "Build with the match profiles and upload to TestFlight"
+  lane :release do
+    setup_ci
+    app_store_connect_api_key(
+      key_id: ENV.fetch("ASC_KEY_ID"),
+      issuer_id: ENV.fetch("ASC_ISSUER_ID"),
+      key_content: ENV.fetch("ASC_KEY_P8"),
+    )
+
+    # Fail before the long archive if this build number is already on TestFlight.
+    version, build = pubspec_version
+    uploaded = latest_testflight_build_number(app_identifier: IOS_TARGETS["Runner"], version: version,
+                                              initial_build_number: 0)
+    if build.to_i <= uploaded.to_i
+      UI.user_error!("TestFlight already has #{version} build #{uploaded}; set a higher build number in pubspec.yaml")
+    end
+
+    match_appstore(readonly: true)
+    # The committed project signs automatically for Xcode; CI has no Apple account, so each target
+    # switches to its match profile on the runner only.
+    if is_ci
+      profiles = lane_context[SharedValues::MATCH_PROVISIONING_PROFILE_MAPPING]
+      IOS_TARGETS.each do |target, bundle_id|
+        update_code_signing_settings(
+          path: "#{PROJECT_DIR}/ios/Runner.xcodeproj",
+          targets: [target],
+          use_automatic_signing: false,
+          team_id: TEAM_ID,
+          bundle_identifier: bundle_id,
+          code_sign_identity: "Apple Distribution",
+          profile_name: profiles.fetch(bundle_id),
+        )
+      end
+    end
+
+    # Writes Generated.xcconfig (build name and number, and any dart-defines) and runs pod install;
+    # the archive below compiles the Dart code once. CocoaPods runs on its own Ruby and breaks inside
+    # this bundle's environment, so the step runs outside it.
+    Bundler.with_unbundled_env { flutter("build", "ios", "--release", "--config-only") }
+    # build_app first reads `xcodebuild -showBuildSettings`, and fastlane allows it 3s doubling over
+    # four tries (45s in all). A Swift Package Manager project re-resolves its package graph there,
+    # which on a fresh runner takes longer than that, so the archive never starts. Two tries of 120s
+    # and 240s cap the wait at 6 minutes.
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] ||= "120"
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] ||= "1"
+    build_app(
+      workspace: "#{PROJECT_DIR}/ios/Runner.xcworkspace",
+      scheme: "Runner",
+      configuration: "Release",
+      export_method: "app-store",
+      output_directory: "#{PROJECT_DIR}/build/ios/ipa",
+    )
+    upload_to_testflight(skip_waiting_for_build_processing: true)
+  end
+end
